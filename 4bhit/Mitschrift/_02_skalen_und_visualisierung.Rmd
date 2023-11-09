@@ -1,0 +1,700 @@
+\clearpage
+
+# Skalen und Visualisierung
+
+## Messung und Skalierung von Variablen
+
+Variablen können aufgrund ihrer Eigenschaften in zwei Kategorien geteilt werden:
+
+- kategoriale Variablen; diskrete Kategorien
+  + nominal; ohne Ordnung
+  + ordinal; geordnet
+  
+- metrisch; numerische Zählungen und Messungen
+  + intervallskaliert; geordnet, Differenzen interpretierbar, aber Quotienten NICHT ($-\infty$, $\infty$)
+  + rational skaliert; geordnet, Differenzen und Quotienten interpretierbar; ($0$, $\infty$), absolute Null
+  
+## Häufigkeiten
+
+\tcolorbox
+Eine **Häufigkeitsverteilung** (oder **Häufigkeitstabelle**) gibt die Anzahlen oder die Anteils aller bestimmten \underline{Kategorien} zugeordneten Beobachtungen wieder.
+
+\vspace{2mm}
+
+Unterschieden werden folgende Unterteilungen:
+
+- absolute Häufigkeiten
+- relative Häufigkeiten
+- kummulative (absolute bzw. relative) Häufigkeiten
+
+\endtcolorbox
+
+Ein Beispiel:
+
+\includegraphics[width=12cm, center]{Fig1}
+
+### Bar charts
+
+Balken- bzw. Säulendiagramme (**bar charts**) visualisieren absolute oder relative kumulative und nichtkumulative Häufigkeiten von Kategorien (empfehlenswert in 90% aller Fälle) das menschliche Auge und Gehirn kann kleine Unterschiede bei Längen erkennen und gut unterscheiden; Flächen sind nur bis zu 20-25 verschiedenen Balken sinnvolle Informationsträger, dann für die Augen zu verwirrend.
+
+Ein Beispiel:
+
+```{r, fig.show="hold", out.width="50%"}
+barplot(VADeaths); barplot(VADeaths,beside = TRUE)
+```
+
+### Cleveland dot charts
+
+**Cleveland dot charts** visualisieren absolute oder relative Häufigkeiten. Das menschliche Auge und Gehirn kann kleine Unterschiede bei Längen erkennen und gut unterscheiden; wenn viele Häufigkeiten dargestellt werden müssen (mehr als 25) und die Flächen von Balkendiagrammen nicht geeignet sind, reduziert man die Information auf Punkte
+
+Ein Beispiel:
+
+```{r, fig.align = 'center', fig.height=8}
+dotchart(VADeaths,main="Death Rates in Virginia - 1940")
+```
+
+### Pie charts
+
+Tortendigramme (**pie charts**) visualisieren ausschließlich relative Häufigkeiten - absolute Häufigkeiten können damit nicht sinnvoll dargestellt werden. Relative Häufigkeiten werden auf die entsprechenden Anteile von 360°umgerechnet und als Kreissegmente eingezeichnet: das menschliche Auge und Gehirn kann kleine Unterschiede bei Winkeln aber schlecht erkennen und unterscheiden.
+
+Ein Beispiel:
+
+```{r, fig.align = 'center', fig.height=4}
+pie.sales <- c(0.12, 0.3, 0.26, 0.16, 0.04, 0.12)
+pie(pie.sales)
+```
+
+## Charakteristiken von metrischen Daten
+
+\tcolorbox
+
+1. **Lage (Lokation)**: beschreibt die Mitte/den Durchschnitt der Daten Modalität beschreibt, wieviele Datenzentren es gibt
+
+2. **Streuung (Variation)**: misst, wie stark die Daten um den Mittelwert schwanken
+
+3. **Symmetrie/Schiefe**: beschreibt, ob die Daten annähernd symmetrisch oder deutlich schief zum oberen oder unteren Rand hin verlaufen
+
+4. **Ränder und Ausreißer**: Ränder sind die Werte in der weitesten Entfernung vom Zentrum der Daten. Ausreißer sind Beobachtungen, die ein anderes Verhalten als die übrigen Daten zeigen
+
+5. **Zeit**: Prozesse, deren Eigenschaften sich abhängig von der Zeit ändern
+
+\endtcolorbox
+
+### Exkurs: Quantile
+
+\tcolorbox
+Quantile werden aus der geordneten Stichprobe $x_{(1)} = \text{min}, \, x_{(2)}, \, ... \, , \, x_{(n-1)}, \, = \text{max}$ berechnet:
+
+$$\text{Quantil eines Wertes x} \, = \cfrac{\text{Anzahl der Werte} \leq x}{\text{Gesamtazhal der Werte}}$$
+\endtcolorbox
+
+Mittels der Funktion `quantile()` lassen sich die einzelnen Quantile eines Datensatzes anzeigen:
+
+```{r}
+x <- x <- c(5, 3, 8, 2, 6, 1, 9, 4)
+quantile(x = x, probs = c(0.2, 0.4, 0.5, 0.6, 0.8))
+```
+
+Wichtige Quantile sind:
+
+\tcolorbox
+
+**Median** = 50% Quantil.
+
+\vspace{2mm}
+
+Die \underline{Quartile} sind die 25% und 75% Qunatile. Die Daten werden durch die Quartile und den Median "geviertelt". Ein robustes Maß für die Variation ist basiert auf den Quartile, die Interquartilsdistanz:
+$$\text{IQD} = X_{0.75} - X_{0.25}$$
+
+\endtcolorbox
+
+### Lageschätzer (Lokation)
+
+\tcolorbox
+
+\begin{center}
+$$
+\begin{array}{l|c|l}
+&\text{Formel}&\text{Code}\\
+\hline
+\hline
+&&\\[-0.25cm]
+\text{(Arithmetischer) Mittelwert} & \displaystyle \bar x =  \frac{1}{n}\sum_{i=1}^n x_i & \text{mean(x)}\\
+\hline
+\text{gewichteter Mittelwert} &  \displaystyle \bar x = \sum_{i=1}^n w_i x_i & \\
+& \sum_{i=1}^n{w_i}=1 & \\
+\text{getrimmter Mittelwert} &  \displaystyle \bar x =  \frac{1}{n}\sum_{i=q_{trim}}^{q_{1-trim}} x_{(i)}  & mean(x,trim=p)\\
+\hline
+\text{Geometrischer Mittelwert} &\displaystyle \sqrt[n]{\prod_{i=1}^n x_i} & exp(mean(log(x))) \\
+
+ 
+
+\hline
+&&\\[-0.25cm]
+\text{Harmonischer Mittelwert} & \displaystyle \frac{n}{\sum_{i=1}^n \frac{1}{x_i}} & 1/mean(1/x) \\
+\end{array}  
+$$
+\end{center}
+
+\endtcolorbox
+
+\tcolorbox
+
+\begin{center}
+$$
+\begin{array}{l|c|l}
+&\text{Formel}&\text{Code}\\
+\hline
+\hline
+&&\\[-0.25cm]
+\text{Median} & \text{mittlerer Wert} & \\ & \text{der geordneten Daten}&median\\
+\hline
+\text{Modus} & \text{Wert mit der} & \\ & \text{größten Häufigkeit} & - \\
+\hline
+&&\\[-0.25cm]
+\text{Midrange} & \displaystyle \frac{\max x_i + \min x_i}{2} &-\\
+\end{array} 
+$$
+\end{center}
+
+\endtcolorbox
+
+\tcolorbox
+Der \underline{Median} liegt genau in der Mitte der Datenverteilung und ist robust, sprich, er wird von Ausreißern nicht beeinflusst.
+
+Bei einer
+
+  - ungeraden Anzahl von Werten ist der Median genau der Wert in der Mitte
+  - geraden Anzahl ist der Median der Mittelwert zwischen den beiden Werten in der Mitte
+
+der Daten.
+\endtcolorbox
+
+\tcolorbox
+Der **Modus** (**Modalwert**) ist der Wert mit der höchsten Wahrscheinlichkeit der zugrundliegenden Verteilung. Bei einer diskreten oder kategorialen Stichprobe ist es die am häufigsten vorkommende Kategorie.
+
+\vspace{1mm}
+
+Wichtig ist hierbei zu beachten, dass es auch mehrere \underline{Modi} geben kann, wodurch zwischen \underline{Unimodalität}, \underline{Bimodalität} und \underline{Multimodalität} unterschieden werden kann:
+
+\vspace{5mm}
+
+```{r, fig.show='hold', fig.height=7, out.width='33%', echo=FALSE}
+umod <- c(1, 2, 3, 3, 3, 4, 5, 6, 6, 6, 6, 8, 8, 8, 9, 10)
+bmod <- c(1, 2, 3, 3, 3, 4, 5, 6, 7, 7, 7, 8, 8, 8, 9, 10)
+mmod <-c (1, 2, 2, 2, 3, 4, 5, 5, 5, 5, 5, 6, 7, 8, 9, 9, 9, 9, 9, 10, 11)
+hist(umod, main = 'Unimodalität', cex.main = 2.25)
+hist(bmod, main = 'Bimodalität', cex.main = 2.25)
+hist(mmod, main = 'Multimodalität', cex.main = 2.25)
+```
+\endtcolorbox
+
+### Streuungsschätzer (Variation)
+
+\includegraphics[width=12cm, center]{Fig4}
+
+\tcolorbox
+Die **Varianz** entspricht der Abweichung der einzelnen Werte von Mittelwert und Quadrat der Standardabweichung wird sehr wohl von Ausreißern beeinflusst.
+\endtcolorbox
+
+\tcolorbox
+Die **Standardabweichung** ist die Streubreite der Werte rund um den Mittelwert und Quadratwurzelder Varianz).
+\endtcolorbox
+
+\tcolorbox
+Der **Interquartilsdistanz** (auch IQR genannt) ist als die Differenz zwischen dem oberen (75%-) und dem unteren (25%-) Quartil definiert.
+\endtcolorbox
+
+\tcolorbox
+Die **Spannweite** $x_{max} - x_{min}$ misst den Abstand zwischen dem größten und kleinsten Messwert und schätzt damit ab, welche Größenordnung von Werten von den Messungen insgesamt "über-spannt" wird.
+\endtcolorbox
+
+### Symmetrie/Schiefe
+
+\tcolorbox
+Eine Funktion wird als **symmetrisch** bezeichnet, wenn sie durch Spiegelung eines Teilverlaufs an einer Achse oder einem Punkt zustande kommt. Dabei kann wieder unterschieden werden:
+
+```{r, fig.show='hold', fig.width=4, out.width='50%', echo=FALSE}
+x <- seq(-4, 4, length=100)
+y <- dnorm(x)
+
+plot(x, y, type='l', main="normal verteilt symmetrisch", xlab="Beobachtungen", ylab="Dichte")
+plot(c(x, x+8), c(y, y), type='l', main="bimodal symmetrisch", xlab="Beobachtungen", ylab="Dichte")
+```
+\endtcolorbox
+
+\tcolorbox
+Wenn die Verteilung der Daten in einer Richtung \underline{steiler} und der anderen Richtung \underline{schief auslaufend} verläuft, so spricht man dann von einer **schiefen Verteilung**. Je nachdem, in welche Richtung der lange Rand schief ausläuft, wird diese dann entweder \underline{rechtschief} oder \underline{linksschief} bezeichnet:
+
+```{r, fig.show='hold', fig.width=4, out.width='50%', echo = FALSE}
+rechtsSchief <- dbeta(seq(0, 1, by=0.02), 2, 5)
+linksSchief <- dbeta(seq(0, 1, by=0.02), 5, 2)
+plot(rechtsSchief, type="l", main="rechtsschief", xlab = "Beobachtungen", ylab = "Dichte")
+plot(linksSchief, type="l", main="linksschief", xlab = "Beobachtungen", ylab = "Dichte")
+```
+\endtcolorbox
+
+### Beispiel: Körpergrößen
+
+Um die einzelnen Maße der Lokation und Streuung noch besser zu verstehen, soll das Beispiel "Körpergößen" näher betrachtet werden. Definieren wir nun die Werte:
+
+ |
+--- | ---
+Körpergrößen | 1.82, 1.75, 1.89, 176, 1.65, 1.71
+
+Entsprechender R-Code:
+
+```{r}
+kg<-c(1.82, 1.75, 1.89, 176, 1.65, 1.71)
+```
+
+Schnell wird klar, dass ein Ausreißer, der Wert $176$, vorhanden ist. Nun soll das Verhalten der einzelnen Maße näher betrachtet werden.
+
+**Mittelwert:**
+
+```{r, eval = FALSE}
+mean(kg) # 30.80333
+```
+
+Man sieht hier deutlich, dass der arithmetische Mittelwert sehr sensitiv gegenüber Ausreißern ist. Des Weiteren wird dieser auch durch Asymmetrie und Rändern zerstört bzw. verzerrt. Schaut man sich das Bild des Medians an, so sieht man hier einen klaren Unterschied:
+
+**Median:**
+
+```{r, eval = FALSE}
+median(kg) # 1.785
+```
+
+Der eine Ausreißer tut dem Median offenbar nicht wirklich weh, er ist also \underline{robust}. Selbst ein Anteil von 50% an fehlerhaften Werten beeinflussen den Median nur geringfügig.
+
+**Varianz:**
+
+In diesem Fall besitzt die Varianz einen sehr hohen Wert, da der eine Ausreißer (gemäß der zu anwendenden Formel) insgesamt sechs Mal quadriert wird:
+
+```{r, eval = FALSE}
+var(kg) # 5059.704
+```
+
+**Standardabweichung:**
+
+... dementsprechend ist die Standardabweichung auch nicht robust:
+
+```{r, eval = FALSE}
+sd(kg) # 71.1316
+```
+
+**Interquartilsdistanz:**
+
+Durch seine Eigenschaften ist die IQR nicht robust:
+
+```{r, eval = FALSE}
+IQR(kg) # 0.1525
+```
+
+## Darstellung von metrischen Daten
+
+### Boxplot
+
+\tcolorbox
+Der **Boxplot** stellt den Median als Mitte der Box, die Quartile als die beiden Enden der Box dar, was die mittleren 50 % der Daten klar kennzeichnet. Darüber hinaus werden durch die Whiskers, die maximal das 1,5-fache des Quartilsabstands umfassen, die zentralen 95 % der Daten abgesteckt, wenn die Daten normalverteilt wären. Daher werden die Werte außerhalb der Whiskers als potentielle Ausreißer bezeichnet. Wenn die Verteilung der Daten aber inherent schief oder von schweren Rändern geprägt ist, ist diese Ausreißereinteilung jedenfalls falsch.
+
+Ein Beispiel:
+
+```{r, fig.align='center', fig.width=5, fig.height=3}
+boxplot(airquality$Ozone,
+  main = "Mean ozone in parts per billion at Roosevelt Island",
+  xlab = "Parts Per Billion",
+  ylab = "Ozone",
+  horizontal = TRUE,
+  cex.main = 1.1
+)
+```
+\endtcolorbox
+
+### Histogramme und stetige Dichteschätzer
+
+\tcolorbox
+Ein **Histogramm** ist ein Graph, der sich aus Balken zusammensetzt, deren Höhe die Anzahl der Anteil der Daten innerhalb von Teilintervallen ist.
+
+\vspace{2mm}
+
+Ein **Kerndichteschätzer** ist ein Graph, der die Verteilung der Daten durch eine Approximation mithilfe von Näherungsfunktionen (Kernen) stetig verlaufend wiedergibt.
+
+Ein Beispiel:
+
+```{r, fig.align='center', out.width="60%"}
+daten <- airquality$Temp
+hist(daten, main="Histogramm", xlab="Beobachtungen", ylab="Häufigkeit", freq = FALSE);
+lines(density(daten))
+```
+
+Mit Histogrammen können Eigenschaften wie Modalität oder Symmetrie der Daten klar dargestellt werden.
+\endtcolorbox
+
+### Vergleich Histogramm und Boxplot
+
+Mit dem eigenen Datensatz `oscars` soll hier gezeigt werden, dass es durchaus sinnvoll ist, ein Histogramm und ein Boxplot kombiniert darzustellen:
+
+```{r, fig.align='center', fig.show='hold', out.width='70%', echo=FALSE}
+oscars <- read.csv2("Daten/oscars.csv", sep=",")
+oscars2 <- oscars$Age [oscars$Age>=0 & oscars$Age <=70]
+hist(oscars2, breaks=9, main="Oscars", xlab="Alter der Gewinner/in", ylab="Häufigkeit")
+```
+
+```{r, fig.align='center', fig.show='hold', fig.height=3, out.width='70%', echo=FALSE}
+boxplot(oscars2, main="Oscars", xlab="Alter der Gewinner/in", horizontal = TRUE)
+```
+
+### Quantil-Quantil-Plot (QQ-Plot)
+
+\tcolorbox
+Ein **Quantil-Quantil-Plot (QQ-Plot)** ist ein Graph, der die Verteilung der Daten einer Stichprobe mit der Verteilung der Daten einer anderen Stichprobe oder einer theoretischen Verteilung der Datenwerte (z. B. Standardnormalverteilung) vergleicht.
+\endtcolorbox
+
+Ein Beispiel:
+
+```{r, include=FALSE, results='hide'}
+set.seed(14522)
+normaleDaten<-rnorm(200)
+gammaDaten<-rgamma(200,shape=5,rate=10)
+```
+
+```{r, fig.show="hold", out.width="50%"}
+qqnorm(normaleDaten); qqline(normaleDaten,col=2)
+qqnorm(gammaDaten); qqline(gammaDaten,col=2)
+```
+
+\clearpage
+
+ # Abhängigkeit von 2 oder mehr Variablen
+
+## Zusammenhänge zwischen 2 metrischen Variablen
+
+\tcolorbox
+Wenn man von Regression spricht, versucht man zu analysieren, eine beobachtete **abhängige** Variable durch eine (oder mehrere, siehe unten) **unabhängige** Variablen zu erklären. Bei linearer Regression geht man hierbei von einem linearen Modell aus:
+
+$$y = \alpha \; + \beta \; \cdot \; x$$
+
+\vspace{3mm}
+\includegraphics[width=10cm, center]{Fig7}
+\vspace{3mm}
+
+Allgemein legt man einer solchen Anpassung, welche Modellierung mittels linearer Regression genannt wird, eine **Regressionsgleichung** zugrunde:
+
+$$y_i = \alpha \; + \; \beta \; \cdot \; x_i \; + \; \epsilon_i$$
+
+\begin{conditions}
+\alpha  &   Achsenabschnitt (y-Wert, wenn x den Wert 0 annimmt) \\
+\beta   &   Steigung der Gerade (y steigt um $\beta$ Einheiten, wenn x um 1 vergrößert wird) \\
+\epsilon_i & Residuenfehler der Punkte (vertikale Entferung der Gerade vom tatsächlichen Punkt)
+\end{conditions}
+
+Diese Parameter haben auch eine mathematische Bedeutung:
+
+\vspace{2mm}
+
+\begin{conditions}
+\alpha  &   Wert auf der y-Achse, an dem die Gerade die y-Achse schneidet, bzw. Startwert für x=0 \\
+\beta > 0   &   ist die Gerade steigend \\
+\beta < 0   &   ist die Gerade fallend
+\end{conditions}
+
+\endtcolorbox
+
+\tcolorbox
+**Korrelation**
+
+Als standardisiertes Maß fürr die lineare Abhängigkeit wird der **Pearson Korrelationskoeffizient** definiert:
+
+$$r = r(X,Y) = \cfrac{\widehat{cov}(X, Y)}{s(X) \, \cdot \, s(Y)}$$
+
+Bei diesem Koeffizient wird die Achsenskalierung herausgerechnet und dadurch nimmt er ausschließlich
+Wert zwischen -1 und 1 an:
+
+```{r, fig.show='hold', fig.width=4, out.width='33%', echo=FALSE}
+library(ggplot2)
+library(patchwork)
+
+set.seed(20200616)
+
+n_pts <- 20
+x <- round(runif(n_pts) * 10, 1)
+
+low_pos <- data.frame(x = x, y = x)
+high_pos <- data.frame(x = x, y = x + runif(n_pts, 0, 4))
+perf_pos <- data.frame(x = x, y = x + runif(n_pts, 0, 10))
+
+plot(low_pos, main = "r = 0.5", lwd=2.0)
+plot(perf_pos, main = "r = 0.9", lwd=2.0)
+plot(high_pos, main = "r = 1.0", lwd=2.0)
+```
+
+\begin{conditions}
+negatives Vorzeichen & fallender Zusammenhang \\
+positives Vorzeichen & steigender Zusammenhang
+\end{conditions}
+
+Faustregel zur Interpreation des Korrelationskoeffizienten:
+
+\vspace{2mm}
+
+\begin{conditions}
+r_{(s)} = 0   &     keine Korrelation \\
+0 \le |r_{(s)}| \leq 0.5 & schwache Korrelation \\
+0.5 \le |r_{(s)}| \leq 0.75 & mittlere Korrelation \\
+0.75 \le |r_{(s)}| \le 1 & starke Korrelation \\
+r_{(s)} = 1   &     vollständige Korrelation
+\end{conditions}
+
+\endtcolorbox
+
+\clearpage
+
+## Multiple Regresion
+
+\tcolorbox
+Wenn wir anstatt nur einer unabhängigen erklärenden Variablen mehrere benutzen, gehen wir von
+simplen linearen Regressionsmodell zum multiplen linearen Regressionsmodell über:
+
+$$y_i = \alpha \, + \, \beta_1x_{1,i} \, + \, \beta_2x_{2,i} \, + \; ... \, + \beta_kx_{k,i} \, + \, \epsilon_i$$
+
+\endtcolorbox
+
+\tcolorbox
+**Annahmen und Voraussetzungen für multiple Regression:**
+
+(A1) Das Modell hat keinen systematischen Fehler.
+
+(A2) Die Fehlervarianz ist fur alle Beobachtungen gleich groß (homoskedastisch).
+
+(A3) Die Komponenten des Fehlerterms sind nicht korreliert.
+
+(A4) Der Modellfehler sei normalverteilt.
+
+(A5) Es gibt keine linearen Abhängigkeiten zwischen den Regressoren.
+\endtcolorbox
+
+### Beispiel mit dem Datensatz `state.x77`:
+
+Die ersten vier Annahmen können mit einem `pairs`-Plot analysiert werden:
+
+```{r}
+pairs(state.x77[,1:5], lower.panel = panel.smooth, upper.panel = panel.cor,
+diag.panel = panel.hist, las=1)
+```
+
+Man sieht hier deutlich, dass Life Expectancy und Illiteracy linear zusammenhängen, mit einem Korrelationskoeffizienten von 0.59. Bleiben beide Variablen im Modell drinnen, so würden diese unser Modell vollkommen zerstören. Daher muss eines von beiden raus.
+
+Murder und Life Expectancy bzw. Murder und Illiteracy dürfen korrelieren, da Murder die abhängige Variable darstellt.
+
+Entfernen wir nun Life Expectancy, schaut das so aus:
+
+```{r}
+pairs(state.x77[, c(1, 2, 3, 5)], lower.panel = panel.smooth, upper.panel = panel.cor,
+diag.panel = panel.hist, las=1)
+```
+
+\clearpage
+
+```{r}
+summary(lm(formula = Murder ~ .  - `Life Exp` - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+Dieses Modell ist für uns sehr schlecht, da bei drei Variablen die Irrtumswahrscheinlichkeit sehr hoch ist (bis 92 %!). Außerdem ist bei der Variable Income der Standard-Error größer als das Estimate selbst ist. Zusammen mit der extrem hohen Irrtumswahrscheinlichkeit kann diese Variable sehr schnell negativ werden.
+
+\tcolorbox
+**Fazit:** Dieses Modell ist für uns nicht geeignet!
+\endtcolorbox
+
+Schmeißen wir nun Illiteracy statt Life Expectancy raus:
+
+```{r}
+pairs(state.x77[, c(1, 2, 4, 5)], lower.panel = panel.smooth, upper.panel = panel.cor,
+diag.panel = panel.hist, las=1)
+```
+
+\clearpage
+
+```{r}
+summary(lm(formula = Murder ~ .  - Illiteracy - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+Dieses Modell ist nun viel besser als vorher (mit einem R-squared von 0.68 statt 0.54 vorher). Jedoch passt die Variable Income nach wie vor nicht. Mit einer Irrtumswahrscheinlichkeit von 68% ist diese nicht akzeptabel. Diese gehört also auch weg:
+
+```{r}
+summary(lm(formula = Murder ~ . - Income- Illiteracy - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+Dieses Modell ist nun das beste. Die Modellgleichung ist nun folgende:
+
+$$
+\text{Murder} = 154.7 + 2.413 \cdot 10^{-4} \cdot \text{Population} - 2.093 \cdot \text{Life Exp}
+$$
+
+```{r, fig.align='center', fig.height=6, fig.width=6}
+par(mfrow = c(2,2))
+plot(lm(formula = Murder ~ . - Income- Illiteracy - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+\clearpage
+
+## Varianzanalyse
+
+### Einfache Varianzanalysen (ANOVA)
+
+Derweil waren y und x werte numerisch ==> man sagt Zahlenwerte vorher.
+Wenn wir als y numerische Variable haben, aber als x kategorische Variablen ==> ANOVA
+
+\tcolorbox
+**Beispiel:**
+
+Acker testen ==> in mehrere Teile teilen und jeder Teil hat jeweils unterschiedliche Bedinungen und wird unterschiedlich behandelt (anderer Dünger). Danach vergleichen, wie gut Ertrag war.
+
+$$ y = \alpha + \beta \cdot x $$
+
+\begin{conditions}
+x & kategroische Variable die Dünger oder Natur kodiert \\
+y & Ertrag \\
+\alpha & Mittlerer Ertrag aller Ackerflächen \\
+\beta & Steigung
+\end{conditions}
+
+x kann 0 oder 1 annehmen ==> natur oder dünger ==> bestimmte Abweichung zum Referenzwert alpha (oben oder unten) ==> im Mittel müssel sie sich ausgleichen. Jetzt müsste man sich fragen, ab was für einen Wert es sich lohnt, in Dünger, bzw. Werbung aber dafür Naturboden zu investieren.
+
+**Im Allgemeinen gilt:**
+
+$$ y_{ij} = Mü + \alpha_i + e_{ij} $$
+
+\begin{conditions}
+Mü & Gesamtmittelwert \\
+\alpha_i & Abstand der Gruppenmittelwerte von µ \\
+e_{ij} & Fehler=Residuen
+\end{conditions}
+\endtcolorbox
+
+ANOVA kann auch als Hypthesentests verwendet werden ==> Ist in allen Gruppen der Mittelwert gleich oder nicht?
+Anderes Beispiel: Vergleich von Körpergrößen von Jahrgängen ==> sollte steigen:
+
+- H0: Im Mittel die selbe Körpergröße 
+- H1: Wenigstens in einem Jahrgang (=Kategorie) ist der Mittelwert unterschiedlich.
+
+Das ist die allgemeine Methode, die Unterschiede der mittleren Werte von bekannten Kategorien zu ermitteln.
+
+\tcolorbox
+**Voraussetzungen für ANOVA:**
+
+(A1) die Daten sind annähernd symmetrisch
+
+(A2) die Daten haben nur einen Modus (unimodal)
+
+(A3) die Daten enthalten keine Ausreißer
+\endtcolorbox
+
+Ab Seite 56 im Skript **statische Modelle**: Beispiele und Plots. Wenn oberes und unteres klaren Abstand haben ==> klare Aussage mit ANOVA ==> mind. 2 Kategorien unterscheiden sich!
+Im Optimalfall keine Überschneidungen ==> klare Aussage!
+
+\includegraphics[width=15cm, center]{Fig8}
+
+Wenn wirs mit freien Auge nicht erkennen können: ANOVA als Hypthesentests sinnvoll.
+Wie funktionieren diese Tests?
+
+\tcolorbox
+**Hypothesentests**
+
+\includegraphics[width=10cm, center]{Fig9}
+
+\begin{conditions}
+RSS1 & Schwankung in den Stichproben \\
+RSS0 & Schwankung zwischen den Stichproben
+\end{conditions}
+
+Zu RSS1: Diese Striche sind ja auch nur mehrere Punkte (Messwerte) an einer x-Koordinate, Strich ist der Mittelwert *in* von diesen Messpunkten ==> Messgenauigkeit von Messungen
+
+Zu RSS0: Mittelwert von beiden Messpunkten
+
+Optimallfall: RSS0 groß und RSS1 klein.
+\endtcolorbox
+
+Die Varianzen werden verglichen mit:
+
+$$ RSS0/RSS1 $$
+
+Um gegen Ausreißer vorzugehen, kann man mit Rängen arbeiten ==> Messwerte durchnummerieren und Median nehmen ==> Median robust gegen Ausreißer.
+
+### Zweiweg Varianzanalyse (ANOVA)
+Wir fügen eine kategoriale Variable hinzu, fragen aber immer noch nach demselben y-Wert:
+
+\includegraphics[width=10cm, center]{Fig10}
+
+wobei:
+
+- Mü=y=Gesamtmittelwert
+- alpha_i=Abstand der Gruppenmittelwerte von x1-Gruppe i vom Gesamtmittelwert
+- Beta_j=Abstand der Gruppenmittelwerte von x2-Gruppe j vom Gruppenmittelwert alpha_i
+
+[Grafik: Zweiweg-Varianzanalyse]
+
+**Was kann nun passieren?**
+
+- y~1: Alles hat den selben Mittelwert - Nur der Mittelwert der gesamten Daten wird als Mittelwert in allen Teilkategorien angenommen
+
+- y ~ X1: Nur X1 ist relevant und führt zu einer Aufteilung der Mittelwerte
+
+- y ~ X2: Nur X2 ist relevant und führt zu einer Aufteilung der Mittelwerte
+
+- X1 + X2:  X1 und X2 führen zu einer Aufteilung der Mittelwerte (Echtes ANOVA-Modell)
+
+- X1 * X2: X1 und X2 führen zu einer Aufteilung der Mittelwerte in den unterschiedlichen Teilkategorien und zusätzlich addieren sich die Effekte nicht (Z.B. Säure Boden und Säure Dünger für Pflanze - gut, aber basischer Boden und basischer Dünger für Pflanze - schlecht).
+
+==>
+
+- links: additiv
+- rechts: interaktiv
+
+Ab Seite 66 ==> Beispiele
+
+Nicht mehr parallel ==> interaktiv
+
+Modellselektion nach Komplexität:
+
+1. Y ~ X1*X2
+2. Y ~ X1+X2
+3. Y ~ X1 und Y ~ X2
+4. Y ~ 1
+
+**Interactionplot in R:**
+
+```{r, eval = FALSE}
+interaction.plot(x.factor*(x1)* = ..., trace.factor*(x2)* = ..., response*(y)* = ...)
+```
+
+**ANOVA models in R:**
+
+\includegraphics[width=10cm, center]{Fig11}
+
+\clearpage
+
+## Klassifikation
+
+Bei der Regression --> numerische Variablen 
+Bei der Klassifikation --> kategoriale Variablen  
+
+D.h. bei der Klassifikation werden numerischen Werten (x-Achse) Kategorien zugewiesen (y-Achse).
+
+## binäre Klassifikation
+
+### binomial:
+2 mögliche Ausgänge, die zufallsbehaftet sind (0 und 1, geschafft und nicht geschafft, ...).
+Die Wahrscheinlichkeit bleibt dabei gleich (Beispiel mit 6 Stiften: bei jedem zufälligen Ziehen eines Stiftes muss die Wahrscheinlichkeit 1/6 sein. Eine Wahrscheinlichkeitsänderung, z.B. durch Ablage eines Stiftes, darf nicht stattfinden!)  
+Es wird mit einer vorgegebenen Anzahl an Experimenten, die unabhängig voneinander sind, gearbeitet. (Ist zum Beispiel nicht der Fall bei Infektionskrankheiten.)
+
+
+### logistische Regression
+
+\includegraphics[width=12cm, center]{Fig5}
+
+Wird auch als verallgemeinerte Regression bezeichnet (engl.: Generalized Linear Model, R: glm(y~x, data, link = binomial("logit"))).
+

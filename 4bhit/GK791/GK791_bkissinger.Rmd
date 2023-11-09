@@ -1,0 +1,162 @@
+---
+title: "DatenExploration"
+abstract: "GK791 Data Science \"Visualisierung\" (POSA)\\clearpage"
+author: "Benjamin Kissinger zusammen mit Andreas Sünder und Yusuf Akalin"
+date: "2022-11-08"
+output: 
+  pdf_document:
+    fig_height: 7
+    number_sections: true
+---
+
+{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(xtable)
+options(xtable.comment=FALSE)
+
+
+# Data Science ``Explorative Datenanalyse und Visualisierung''
+## Lade den Datensatz 'state.x77' in R. Beschreibe die Daten anhand der internen Hilfe.
+Der Datensatz "state.x77" wurde bereits geladen. Der Datensatz "state" beschreibt die "US State Facts and Figures".
+
+state.x77:
+Matrix mit 50 Zeilen und 8 Spalten, die in den jeweiligen Spalten die folgenden Statistiken enthält.
+
+
+Einwohnerzahl:
+
+- Bevölkerungsschätzung zum 1. Juli 1975
+
+Einkommen:
+
+- Pro-Kopf-Einkommen (1974)
+
+Analphabetismus:
+
+- Analphabetismus (1970, Prozent der Bevölkerung)
+
+Lebenserw:
+
+- Lebenserwartung in Jahren (1969-71)
+
+Ermordung:
+
+- Mord und nicht fahrlässige Tötung pro 100.000 Einwohner (1976)
+
+HS Grad:
+
+- Prozent Highschool-Absolventen (1970)
+
+Frost:
+
+- Mittlere Anzahl der Tage mit Mindesttemperaturen unter dem Gefrierpunkt (1931-1960) in der Hauptstadt oder Großstadt
+
+Fläche:
+
+- Landfläche in Quadratmeilen
+
+
+\clearpage
+## Ermittle mithilfe geeigneter Schätzer für die Lage (arithmetischer Mittelwert und Median sollen verglichen werden) und Streuung (Standardabweichung und Interquartilsdistanz sollen verglichen werden) der ersten 5 Variablen: Population, Income, Illiteracy, Life Exp(ectancy) und Murder.
+
+{r, results='asis'}
+tab1<-cbind(apply(state.x77,2,median),apply(state.x77,2,mean),apply(state.x77,2,IQR),apply(state.x77,2,sd))
+colnames(tab1)<- c("Median","Mittelwert","IQR","Standardabweichung")
+xtable(tab1)
+
+
+\clearpage
+## Stelle die Daten der ersten 5 Variablen, Population, Income, Illiteracy, Life Exp(ectancy) und Murder in geeigneter Weise graphisch dar, indem du Boxplot, Histogramm mit Dichteschätzung, ECDF und QQ-Plot verwendest.
+{r, echo = FALSE}
+par(mfrow=c(2,2))
+
+# Population
+
+boxplot(state.x77[,1], outline=FALSE, main = "Population")
+hist(state.x77[,1], freq = F, main = "Population")
+lines(density(state.x77[,1]))
+plot(ecdf(state.x77[,1]), main = "Population")
+qqnorm(state.x77[,1], main = "Population")
+qqline(state.x77[,1])
+
+# Income
+
+boxplot(state.x77[,2], outline=FALSE, main = "Income")
+hist(state.x77[,2], freq = F, main = "Income")
+lines(density(state.x77[,2]))
+plot(ecdf(state.x77[,2]), main = "Income")
+qqnorm(state.x77[,2], main = "Income")
+qqline(state.x77[,2])
+
+# Illiteracy
+
+boxplot(state.x77[,3], outline=FALSE, main = "Iliteracy", ylab="percent of population")
+hist(state.x77[,3], freq = F, main = "Iliteracy")
+lines(density(state.x77[,3]))
+plot(ecdf(state.x77[,3]), main = "Iliteracy")
+qqnorm(state.x77[,3], main = "Iliteracy")
+qqline(state.x77[,3])
+
+# Life Expectancy
+
+boxplot(state.x77[,4], outline=FALSE, main = "Life Expectancy")
+hist(state.x77[,4], freq = F, main = "Life Expectancy")
+lines(density(state.x77[,4]))
+plot(ecdf(state.x77[,4]), main = "Life Expectancy")
+qqnorm(state.x77[,4], main = "Life Expectancy")
+qqline(state.x77[,4])
+
+# Murder
+
+boxplot(state.x77[,5], outline=FALSE, main = "Murder", ylab="rate per 100,000 population")
+hist(state.x77[,5], freq = F, main = "Murder")
+lines(density(state.x77[,5]))
+plot(ecdf(state.x77[,5]), main = "Murder")
+qqnorm(state.x77[,5], main = "Murder")
+qqline(state.x77[,5])
+
+
+
+## Begründe anhand der graphischen Darstellung, ob es sich symmetrische oder schiefe Datenverteilungen handelt. Begründe anhand der graphischen Darstellungen, ob schwere oder leichte Ränder vorliegen (und auf welcher Seite).
+
+Population:  
+
+- Die Darstellung für Population ist eine rechttsschiefe. Es liegen ein schwerer rechter und ein leichter linker Rand vor.
+
+Income: 
+
+- Die Darstellung für Income ist eine hat Linksschiefe. Es liegt ein schwerer linker Rand vor.
+
+Illiteracy:  
+
+- Die Darstellung für Illiteracy ist eine rechtsschiefe. Es liegen ein schwerer rechter und ein leichter linker Rand vor.
+
+Life Expectancy:
+
+- Die Darstellung für Life Expectancy ist bimodal. Der linke Teil hat einen leichten rechten Rand und keine Schiefe. Der rechte Teil hat keine Ränder und ist ziemlich symmetrisch.
+
+Murder:
+
+- Die Darstellung für Murder ist bimodal. Der linke Teil ist symmetrisch. Der rechte Teil ebenso.
+
+## Bestimme anhand graphischen Darstellungen aus Punkt 3. und der Erkenntnisse aus 4., ob Ausreißer vorliegen und welche Punkte dies sind.
+
+Population:  
+
+- Es liegen 2 Ausreißer vor, die größer als die meisten Werte sind.
+
+Income:  
+
+- Es liegt ein Ausreißer vor, der ebenso größer als die meisten Werte ist.
+
+Illiteracy:  
+
+- Es liegen keine Ausreißer vor.
+
+Life Expectancy:  
+
+- Es liegen keine Ausreißer vor.
+
+Murder:  
+
+- Es liegen keine Ausreißer vor.

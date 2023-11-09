@@ -1,0 +1,742 @@
+---
+title: "GK Inhalt Data Science 1.0.1"
+abstract: "Dieses Dokument beinhaltet die wichtigsten Funktionen der Sprache R und seine Anwendungen\\clearpage"
+author: "Andreas Sünder"
+date: "04.10.2022"
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 5
+    number_sections: true
+    
+    highlight: tango
+---
+
+\clearpage
+
+# Einführung in Data Science
+
+## Begriffserklärungen
+
+- **Artificial Intelligenc**: Teilbereich der Informatik mit Automatisierung von Prozessen mit dem Ziel, menschliche Intelligenzleistung wie das Lernen oder das Lösen von Problemen nachzuahmen.
+
+- **Machine Learning**: Teilbereich der AI zum Erkennen von Mustern und Gesetzmäßigkeiten basierend auf Datenbanken und Algorithmen.
+
+- **Data Science**: ist die Verknüpfung von Statistik und Softwareentwicklung Pipelining von Datenbanksystemen und Maschinellem Lernen zur Erkennung von Mustern und und Gesetzmäßigkeiten in großen Datenengen.
+
+# Einführung in R
+
+## Operatoren und Funktionen
+
+### Arithmetische Operatoren
+
+Die Operatoren in R sind folgende:
+
+```{r, eval = FALSE}
++               Addition
+-               Subtraktion
+*               Multiplikation
+/               Division
+^ oder **       Potenz
+
+
+x %*% y         Matrixmultiplikation c(5, 3) %*% c(2, 4) == 22
+x %% y          Modulo (x mod y) 5 %% 2 == 1
+x %/% y         Ganzzahlige Teilung: 5 %/% 2 == 2
+```
+
+### Logische Operatoren und Funktionen
+
+Für logische Operationen stehen einem folgende Operatoren zur Verfügung:
+
+```{r, eval = FALSE}
+<               Kleiner
+<=              Kleiner gleich
+>               Grösser
+>=              Grösser gleich
+==              Gleich (testet auf Äquivalenz)
+!=              Ungleich
+!x              Nicht x (Verneinung)
+x | y           x ODER y
+x & y           x UND y
+```
+
+Außerdem gibt es noch zwei weitere Funktionen:
+
+```{r, eval = FALSE}
+xor(x, y)       Exklusives ODER (entweder in x oder y, aber nicht in beiden)
+isTRUE(x)       testet ob x wahr ist
+```
+
+### Numerische Funktionen
+
+Gewisse numerische Operationen sind in R als Funktionen ausgeführt:
+
+```{r, eval = FALSE}
+abs(x)                Betrag
+sqrt(x)               Quadratwurzel
+ceiling(x)            Aufrunden: ceiling(3.475) ist 4
+floor(x)              Abrunden: floor(3.475) ist 3
+round(x, digits = n)  Runden: round(3.475, digits = 2) ist 3.48
+log(x)                Natürlicher Logarithmus
+log(x, base = n)      Logarithmus zur Basis n
+log2(x)               Logarithmus zur Basis 2
+log10(x)              Logarithmus zur Basis 10
+exp(x)                Exponentialfunktion: e^x
+```
+
+In R ist jeder Operator in Wirklichkeit eine Funktion, nur mit spezieller Notation. Um sie in normaler Notation nützen zu können, können sie mit Backticks umgeben werden:
+
+```{r, eval = FALSE}
+2 + 3
+
+`+`(2, 3)
+```
+
+### R als Taschenrechner
+
+Ähnlich wie in Python kann man mit R ganz einfach rechnen. Kommentarzeilen beginnen mit einem Hashtag (`#`) und werden nicht evaluiert:
+
+```{r, eval = FALSE}
+# Addition
+5 + 5
+
+# Subtraktion
+6 - 5
+
+# Multiplikation
+34 * 54
+
+# Division
+4 / 9
+(5 + 5) / 2
+
+# Klammernregel
+1/2 * (12 + 14 + 10)
+
+# Potenzieren
+3^2
+exp(5) # geht auch mit der Exponentialfunktion
+
+# Ganzzahlige Division
+# 28 ist vier mal durch 6 teilbar, mit Rest 4 
+28 %% 6 # Rest: 4
+28 %/% 6 #  vier mal teilbar
+
+# Logische Operatoren
+3 > 2
+4 > 5
+4 < 4
+4 <= 4
+5 >= 5
+6 != 6
+9 == 5 + 4
+
+!(3 > 2)
+(3 > 2) & (4 > 5) # UND
+(3 > 2) | (4 > 5) # ODER
+xor((3 > 2), (4 > 5))
+```
+
+### Statistische Funktionen
+
+```{r, eval = FALSE}
+mean(x, na.rm = FALSE)  Mittelwert
+sd(x)                   Standardabweichung
+var(x)                  Varianz
+
+median(x)               Median
+
+sum(x)                  Summe
+min(x)                  Minimalwert
+max(x)                  Maximalwert
+range(x)                Gibt Minimum und Maximum von x aus
+```
+
+### Weitere Funktionen
+
+```{r, eval = FALSE}
+c()                     Erstellt einen (leeren) Vektor
+seq(from, to, by)       Generiert eine Sequenz
+
+rep(x, times, each)     Wiederholt x 
+                          times: die Sequenz wird n-mal wiederholt
+                          each: jedes Element wird n-mal wiederholt
+                          
+head(x, n = 6)          Gibt die ersten 6 Elemente von x zurück
+tail(x, n = 6)          Gibt die letzten 6 Elemente von x zurück
+```
+
+## Variablen
+
+### Variablennamen
+
+Beispiele:
+
+```{r, eval = FALSE}
+# Was gehen würde ...
+snake_case_variable
+camelCaseVariable
+
+variable.with.periods
+variable.With_noConventions
+
+x_mean
+x_sd
+
+anzahl_personen
+alter
+
+p                       Nicht gut
+a                       Nicht gut
+
+# und was nicht gehen würde:
+x mittelwert
+sd von x
+```
+
+Man kann in R sowohl `<-` - als auch `=` für die Zuweisung verwenden.`=` ist ausserdem das Symbol für die Zuweisung von Argumenten (für Funktionen), und wenn man `<-` verwendet, ist es klar, dass man eine Variable definiert.
+
+### Ausgeben in die Konsole
+
+```{r}
+# Unsere Variable:
+my_var <- 4
+
+# Ausgeben mit:
+print(my_var)
+
+# oder:
+my_var
+```
+
+### Beispiel
+```{r, eval = FALSE}
+vektor <- c(1, 3, 4, 7, 11, 2)
+summe <- sum(vektor)
+
+mittelwert <- mean(vektor)
+mittelwert
+
+gerundeter_mittelwert <- round(mittelwert, digits = 1)
+gerundeter_mittelwert
+```
+
+## Funktionen
+
+### Beispiel
+
+```{r, eval = FALSE}
+function_name(arg1, arg2 = val2)
+```
+
+### Funktionsaufruf
+
+```{r}
+x <- c(23.192, 21.454, 24.677)
+round(x, digits = 1)
+```
+
+### Default-Werte
+
+Funktionen können Default-Werte haben; diese können beim Aufruf der Funktion weggelassen werden. Zum Beispiel die Funktion `seq()`:
+
+```{r, eval = FALSE}
+seq()
+seq(1, 10)
+seq(1, 10, 2)
+seq(1, 10, 2, 20)
+seq(1, 10, length.out = 20)
+```
+
+## Datentypen
+
+Der grundlegende Datentyp von R ist der Vektor. Alle anderen Datentypen bauen auf diesem auf. Vektoren können in drei Typen geteilt werden:
+
+- **numeric vectors**: Etwa ganze Zahlen `integer` und reelle Zahlen `double`.
+- **character vectors**: ... bestehen aus Zeichen, wie z.B. `"character"` und `'vectors'`.
+- **logical vectors**
+
+Zusätzlich besitzen sie noch 3 Eigenschaften:
+
+- Typ: `typeof()`
+- Länge: `length()`
+- Attribute: `attributes()`, sprich zusätzliche Informationen (Metadaten)
+
+Vektoren können mit den oben gezeigten Methoden wie `c()` oder mit speziellen Methoden wie `seq()` oder `rep()` erzeugt werden.
+
+### Numeric vectors
+
+#### Grundlegendes
+
+Numeric Vectors können entweder aus ganzen Zahlen oder reellen Zahlen gebildet werden:
+
+```{r, eval = FALSE}
+numbers <- c(1, 2.5, 4.5)     Deklaration
+typeof(numbers)               Ausgabe des Typs (-> double)
+length(numbers)               Ausgabe der Länge (-> 3)
+```
+
+#### Zugriff
+
+Wir können die einzelnen Elemente eines Vektor mit [] auswählen:
+
+```{r}
+numbers <- c(1, 2.5, 4.5) 
+
+# Das erste Element:
+numbers[1]
+
+# Das zweite Element:
+numbers[2]
+
+# Index des letzten Elements (von 1 ausgehend)
+length(numbers)
+
+# Zugriff auf das letzte Element
+numbers[length(numbers)]
+
+# Mit - (Minus) können wir ein Element weglassen:
+numbers[-1]
+
+# Bilden einer Teilsequenz aus numbers:
+numbers[1:2]
+
+# Weglassen des ersten und dritten Elements weglassen:
+numbers[-c(1, 3)]
+```
+
+#### Matrizen
+
+Matrizen sind spezielle Vektoren:
+
+```{r}
+x <- 1:8
+
+# Bilden der Matrix durch Zuweisen des dim-Attributes:
+dim(x) <- c(2, 4)
+
+# oder mit:
+m <- matrix(1:8, nrow = 2, ncol = 4, byrow = FALSE)
+m
+
+# byrow ändert, wie die Matrix gefüllt wird (standardmäßig FALSE)
+m2 <- matrix(1:8, nrow = 2, ncol = 4, byrow = TRUE)
+m2
+
+# Transponieren:
+(m_transponiert <- t(m))
+```
+
+Indizieren:
+
+```{r, eval = FALSE}
+m1[1, 1]                Zeile 1, Spalte 1
+m1[1, 2]                Zeile 1, Spalte 2
+m1[2:3, 1]              Zeilen 2 bis 3, Spalte 1
+
+m1[, 1]                 Alle Zeilen, Spalte 1
+m1[2, ]                 Zeile 2, Alle Spalten
+```
+
+#### Vektorisierung
+
+Alle Operatoren wirken elementweise auf Vektoren:
+
+```{r, eval = FALSE}
+x1 <- 1:10
+x2 <- 11:20
+
+x1 + 2
+#> [1] 2 3
+
+x1 + x2
+#> [1] 1 2 3
+
+x1 * x2
+#> x1 x2 
+#>  2 11
+```
+
+Dasselbe gilt für Funktionen:
+
+```{r, eval = FALSE}
+x1 <- 1:10
+
+x1^2
+#>  [1]   1   4   9  16  25  36  49  64  81 100
+
+exp(x1)
+#>  [1]     2.718282     7.389056    20.085537    54.598150   148.413159
+#>  [6]   403.428793  1096.633158  2980.957987  8103.083928 22026.465795
+```
+
+#### Missing Values
+
+Fehlende Werte werden mit `NA` deklariert.
+
+```{r, eval = FALSE}
+zahlen <- c(12, 13, 15, 11, NA, 10)
+zahlen
+#> [1] 12 13 15 11 NA 10
+```
+
+Überprüfen mit `is.na()`:
+
+```{r, eval = FALSE}
+is.na(zahlen)
+#> [1] FALSE FALSE FALSE FALSE  TRUE FALSE
+```
+
+### Character Vectors
+
+#### Grundlegendes
+
+Character vectors (strings) werden benützt, um Text darzustellen.
+
+```{r, eval = FALSE}
+(text <- c("these are", "some strings"))
+
+#> [1] "these are"    "some strings"
+
+typeof(text)
+#> [1] "character"
+
+length(text)
+#> [1] 2
+```
+
+#### Zusammenfügen von Character vectors
+
+```{r, eval = FALSE}
+vorname <- "Andreas"
+nachname <- "Sünder"
+paste("Mein Name ist:", vorname, nachname, sep = " ")
+#> [1] "Mein Name ist: Andreas Sünder"
+```
+
+### Logical vectors
+
+Bei Logical vectors sind drei Werte möglich: `TRUE`, `FALSE` oder `NA`.
+
+```{r, eval = FALSE}
+log_var <- c(TRUE, FALSE, TRUE)
+#> [1]  TRUE FALSE  TRUE
+```
+
+### Factors
+
+Ein factor ist ein Vektor von natürlichen Zahlen (integer vector), der mit zusätzlicher Information (Metadaten) versehen ist. Diese `attributes` sind die Objektklasse `factor` und die Faktorstufen `levels.` Ein Beispiel:
+
+```{r, eval = FALSE}
+geschlecht <- c("male", "female", "male", "male", "female")
+#> [1] "male"   "female" "male"   "male"   "female"
+
+geschlecht <- factor(geschlecht, levels = c("female", "male"))
+
+table(geschlecht)
+#> geschlecht
+#>   male female 
+#>      3      2
+```
+
+### Listen
+
+#### Grundlegendes
+
+Anders als bei Vektoren müssen bei Listen die Elemente nicht denselben Datentyp besitzen:
+
+```{r, eval = FALSE}
+x <- list(1:3, "a", c(TRUE, FALSE, TRUE), c(2.3, 5.9))
+#> [[1]]
+#> [1] 1 2 3
+#> 
+#> [[2]]
+#> [1] "a"
+#> 
+#> [[3]]
+#> [1]  TRUE FALSE  TRUE
+#> 
+#> [[4]]
+#> [1] 2.3 5.9
+
+typeof(x)
+#> [1] "list"
+```
+
+Listen können ebenfalls indiziert werden:
+
+```{r, eval = FALSE}
+x[1]
+#> [[1]]
+#> [1] 1 2 3
+x[2]
+#> [[1]]
+#> [1] "a"
+```
+
+#### Named lists
+
+Viele statistische Funktionen liefern eine `named list` als Output:
+
+```{r, eval = FALSE}
+x <- list(int = 1:3,
+          string = "a",
+          log = c(TRUE, FALSE, TRUE),
+          double = c(2.3, 5.9))
+#> $int
+#> [1] 1 2 3
+#> 
+#> $string
+#> [1] "a"
+#> 
+#> $log
+#> [1]  TRUE FALSE  TRUE
+#> 
+#> $double
+#> [1] 2.3 5.9
+```
+
+Die Elemente können nun mit ihrem Namen über den `$` Operator angesprochen werden:
+
+```{r, eval = FALSE}
+x$string
+#> [1] "a"
+x$double
+#> [1] 2.3 5.9
+```
+
+### Data Frames
+
+#### Grundlegendes
+
+Ein Data Frame besteht aus Zeilen (rows) und Spalten (columns) und entspricht einem Datensatz. Technisch gesehen ist ein Data Frame eine Liste, deren Elemente gleichlange (equal-length) Vektoren sind. Die Vektoren selber können numeric, logical oder character Vektoren sein, oder natürlich Faktoren. Data Frame ist eine 2-dimensionale Struktur, und kann einerseits wie ein Vektor indiziert werden (genauer: wie eine Matrix), andererseits wie eine Liste.
+
+Data Frames werden in R mitels `data.frame()` erstellt. In RStudio bzw. dem `tidyverse`-Package werden Data Frames auch `tibbles` genannt. `tibbles` werden mit der Funktion `tibble()` erstellt, und stellen lediglich eine moderne Variante eines Data Frames dar.
+
+```{r, eval = FALSE}
+library(dplyr)
+
+df <- tibble(geschlecht = factor(c("male", "female",
+                                       "male", "male",
+                                       "female")),
+                 alter = c(22, 45, 33, 27, 30))
+df
+#> # A tibble: 5 × 2
+#>   geschlecht alter
+#>   <fct>      <dbl>
+#> 1 male          22
+#> 2 female        45
+#> 3 male          33
+#> 4 male          27
+#> 5 female        30
+```
+
+Ein Data Frame hat die Attribute `names()` (dasselbe wie `colnames()`) und `rownames()`. Die Länge eines Data Frames ist die Länge der Liste, d.h. sie entspricht der Anzahl der Spalten. Diese kann mit `ncol()` abgefragt werden; `nrow()` gibt die Anzahl der Zeilen.
+
+```{r, eval = FALSE}
+ncol(df)
+#> [1] 2
+nrow(df)
+#> [1] 5
+```
+
+#### Data Frame Subsetting
+
+Ein Data Frame kann wie eine Liste (mittels `$`) oder wie eine Matrix (mittels `[]`) indiziert werden:
+
+```{r, eval = FALSE}
+df$geschlecht
+#> [1] male   female male   male   female
+#> Levels: female male
+
+df["alter"]
+#> # A tibble: 5 × 1
+#>   alter
+#>   <dbl>
+#> 1    22
+#> 2    45
+#> 3    33
+#> 4    27
+#> 5    30
+
+df[1]
+#> # A tibble: 5 × 1
+#>   geschlecht
+#>   <fct>     
+#> 1 male      
+#> 2 female    
+#> 3 male      
+#> 4 male      
+#> 5 female
+
+df[1, 1]
+#> # A tibble: 1 × 1
+#>   geschlecht
+#>   <fct>     
+#> 1 male
+
+df[ , ]
+#> # A tibble: 5 × 2
+#>   geschlecht alter
+#>   <fct>      <dbl>
+#> 1 male          22
+#> 2 female        45
+#> 3 male          33
+#> 4 male          27
+#> 5 female        30
+
+df[1:3, ]
+#> # A tibble: 3 × 2
+#>   geschlecht alter
+#>   <fct>      <dbl>
+#> 1 male          22
+#> 2 female        45
+#> 3 male          33
+```
+
+Da die Spalten ebenfalls Vektoren sind, kann man diese auch indizieren:
+
+```{r, eval = FALSE}
+df$geschlecht[1]
+#> [1] male
+#> Levels: female male
+
+df$alter[2:3]
+#> [1] 45 33
+```
+
+# Datensätze
+
+## Datensätze selber erstellen
+
+### Ohne Messwiederholung
+
+Aufgabe: Erstelle ein Data Frame mit folgenden Variablen:
+
+- Aggressivität: das Ausmass des aggressiven Verhaltens, gemessen über die Stärke eines elektrischen Schocks, den die Versuchspersonen einer anderen (fiktiven) Person applizieren sollten. Dies könnte die abhängige Variable in einer ANOVA sein. 
+
+- Alkoholkonsum: Vier Experimentalgruppen (Faktorstufen), welche die Alkoholbedingung repräsentieren. Die Stufen sind kein Alkohol, Placebo, Anti-Placebo und Alkohol.
+
+Gegeben sind folgende Daten (als Vektoren):
+
+```{r, eval = FALSE}
+kein_alkohol <- c(64, 58, 64)
+placebo <- c(74, 79, 72)
+anti_placebo <- c(71, 69, 67)
+alkohol <- c(69, 73, 74)
+```
+
+Das Ziel ist ein solches Data Frame:
+
+```{r, eval = FALSE}
+alkoholkonsum
+#> # A tibble: 12 × 2
+#>   alkoholbedingung aggressivitaet
+#>   <fct>                     <dbl>
+#> 1 kein_alkohol                 64
+#> 2 placebo                      74
+#> 3 anti_placebo                 71
+#> 4 alkohol                      69
+#> 5 kein_alkohol                 58
+#> 6 placebo                      79
+#> # … with 6 more rows
+```
+
+Um dies zu erreichen, kann man zuerst aus jedem der vier Vektoren einen Data Frame zu erstellen und dann die Alkoholbedingung hinzuzufügen. Dann werden die vier Data Frames zu einem zusammengefügt und die Alkoholbedingung zu einem `factor` konvertiert.
+
+Zunächst wird das benötigte Package geladen:
+
+```{r}
+library(dplyr)
+```
+
+```{r}
+kein_alkohol <- c(64, 58, 64)
+kein_alkohol <- tibble(aggressivitaet = kein_alkohol,
+                           alkoholbedingung = "kein_alkohol")
+
+placebo <- c(74, 79, 72)
+placebo <- tibble(aggressivitaet = placebo,
+                      alkoholbedingung = "placebo")
+
+anti_placebo <- c(71, 69, 67)
+anti_placebo <- tibble(aggressivitaet = anti_placebo,
+                           alkoholbedingung = "anti_placebo")
+
+alkohol <- c(69, 73, 74)
+alkohol <- tibble(aggressivitaet = alkohol,
+                      alkoholbedingung = "alkohol")
+```
+
+Anschließend können alle vier Data Frames zusammengefügt werden:
+
+```{r}
+alk_aggr <- bind_rows(kein_alkohol,
+                      placebo,
+                      anti_placebo,
+                      alkohol)
+#> # A tibble: 12 × 2
+#>   aggressivitaet alkoholbedingung
+#>            <dbl> <chr>           
+#> 1             64 kein_alkohol    
+#> 2             58 kein_alkohol    
+#> 3             64 kein_alkohol    
+#> 4             74 placebo         
+#> 5             79 placebo         
+#> 6             72 placebo         
+#> # … with 6 more rows
+```
+
+Nun wird die Variable `alkoholbedingung` zu einem `factor` konvertiert:
+
+```{r}
+alk_aggr$alkoholbedingung <- factor(alk_aggr$alkoholbedingung)
+
+#> # A tibble: 12 × 2
+#>   aggressivitaet alkoholbedingung
+#>            <dbl> <fct>           
+#> 1             64 kein_alkohol    
+#> 2             58 kein_alkohol    
+#> 3             64 kein_alkohol    
+#> 4             74 placebo         
+#> 5             79 placebo         
+#> 6             72 placebo         
+#> # … with 6 more rows
+```
+
+Der Datensatz kann nun ausgegeben werden:
+
+```{r}
+library(ggplot2)
+alk_aggr %>%
+    ggplot(aes(x = alkoholbedingung,
+               y = aggressivitaet,
+               fill = alkoholbedingung)) +
+    geom_boxplot() +
+    theme_bw()
+```
+
+#### Mit Messwiederholung
+
+Aufgabe: Erstelle ein Data Frame mit den folgenden Variablen:
+
+- Vpn: Die Versuchspersonennummer.
+
+- Zufriedenheit: Ein Zufriedenheitsrating auf einer Skala von 0-100 Punkten.
+
+- Messzeitpunkt: Ein Faktor mit zwei Stufen, welche zwei unterschiedliche Messzeitpunkte repräsentieren.
+
+Dazu wird ein Datensatz im *wide* Format erstellt:
+
+```{r}
+Vpn <- c("VP_1", "VP_2", "VP_3", "VP_4")
+Vpn <- factor(Vpn)
+```
+
+# Daten transformieren
+
+## Tidy Data
+
+Es gibt zwei Formen von Datensätzen:  ein **wide** Datensatz hat mehr Spalten als ein entsprechender **long** Datensatz und umgekehrt hat ein **long** Datensatz mehr Zeilen als ein entsprechender **wide** Datensatz.
+

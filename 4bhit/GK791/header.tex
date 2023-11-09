@@ -1,0 +1,30 @@
+\usepackage{lipsum}  
+\usepackage{nicefrac}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{nonfloat}
+\usepackage{multicol}
+
+\usepackage[most]{tcolorbox}
+
+\definecolor{cbsp}{rgb}{0.0, 0.5, 0.0}
+\definecolor{caufg}{rgb}{0.0, 0.0, 0.5}
+
+\newcommand{\bbbsp}[0]{\tcolorbox[colframe=cbsp, title=Beispiel, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebbsp}{\endtcolorbox}
+
+\newcommand{\bbaufg}[1]{\tcolorbox[colframe=caufg, title={#1}, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebaufg}{\endtcolorbox}
+
+
+\graphicspath{ {./Bilder/} }
+
+\newcommand{\fig}{\begin{figure}}
+\newcommand{\efig}{\end{figure}}
+
+\newcommand{\btwocol}{\begin{multicols}{2}}
+\newcommand{\etwocol}{\end{multicols}}
+
+\newcommand{\bthreecol}{\begin{multicols}{3}}
+\newcommand{\ethreecol}{\end{multicols}}

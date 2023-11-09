@@ -1,0 +1,73 @@
+\clearpage
+
+# Einführung in Machine Learning
+
+## Grundlagen
+
+Unterbereich von Künstlicher Intelligenz. Hauptthemen:
+
+- Algorithmen  
+- Wie lernt eine Maschine?  
+- Wie prüft man nach Qualität?  
+- Was ist gut? Was ist das Ziel eines Algorithmus?  
+
+Im WS haben wir grundsätzlich 2 Ziele Modelle kennengelernt:
+
+- "normale" Regression (Werte + Bereiche)  
+- logistische Regression (0 <-> 1)  
+
+Wichtiger Qualitätsfaktor: Zeit  
+
+Beispiel Auto: Wie lange habe ich, um zu erkennen, ob etwas vor mit ist oder nicht? Muss ich erkennen, was vor mir ist? Wie detailliert?
+
+Unterschiedlich für jedes UseCase
+
+## Fehlerberechnungen
+
+- Konfidenzintervalle
+- Prädiktionsintervalle
+
+Grenzverteilungssatz -> desto mehr Messungen n -> desto kleiner wird der Fehler um den wahren Mittelwert
+
+Bei Simulierungen wird die Anzahl n virtuell vervielfacht. Bringt extreme **genauigkeit**.
+
+### Konfidenzintervalle berechnung in R
+
+\includegraphics[width=12cm, center]{Fig12}
+
+### Besipiel Haribo
+
+### Messfehler
+
+Es gibt verschiedene Messfehler:
+- Stichprobengröße: Lässt sich minimieren
+- Messfehler
+- x Range: Schmaler bereich -> geringerer Fehler
+
+### Klassifikation
+
+- True positive
+- True negative
+- False positive
+- False negative -> Type II Error -> Sehr schlecht und kann nicht so gut in den Griff bekommen werden.
+
+\includegraphics[width=12cm, center]{Fig13}
+
+Accuracy sagt vie wiele Beobachtungen man richtig erwischt erwischt.
+
+Precision wie viele positives man als positive eingestuft hat.
+
+### Anpassung von Modellen
+
+Numerische Optimierungsalgorithmen ändern das Outcome nicht wirklich. Es ändern sich auf der 10-11 nachkommastelle Werte.
+
+Resampling, (**ändern der Daten**) da kann sich schon mehr ändern -> 4-5 nachkommastelle.
+
+- Underfitting: zu ungenaues Modell
+- Overfitting: Man verkomliziert das Modell zu sehr.
+
+Interpolation: Zieh eine Linie durch **alle** Punkte.
+
+\includegraphics[width=12cm, center]{Fig14}
+
+\includegraphics[width=12cm, center]{Fig15}

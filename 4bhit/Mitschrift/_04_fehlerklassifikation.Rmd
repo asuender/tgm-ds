@@ -1,0 +1,21 @@
+\clearpage
+
+# Fehlerklassifikation
+
+Vergleich von Realität und Vorhersage des Modells: 
+
+Falschpositiv: "Signifikanz", kann reguliert werden.
+Falschnegativ: "Schärfe" (engl. "Power"), kann weder reguliert noch exakt vorhergesagt werden.
+
+## Receiver Operating Curve (ROC)
+
+Vergleicht TP mit FN  
+Alles, was unter der Referenzlinie (Diagonale) ist, ist unbrauchbar, da das Modell öfter falsche Ergebnisse liefert.
+
+\includegraphics[width=12cm, center]{Fig6}
+
+### AUC (Area under the curve)
+
+Damit ein Algorithmus sinvoll ist, muss seine AUC > 0.5 sein.
+
+D.h. Die rote Kurve im obigen Bild ist ein besseres Modell als die grüne, da die Fläche unter der Kurve größer ist. Im Idealfall beträgt die Fläche unter der Kurve 1.

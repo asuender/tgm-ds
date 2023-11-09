@@ -1,0 +1,2307 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage{lipsum}  
+\usepackage{nicefrac}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{nonfloat}
+\usepackage{multicol}
+
+\usepackage[most]{tcolorbox}
+
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc}
+
+\definecolor{cnorm}{rgb}{0.25, 0.25, 0.25}
+\definecolor{cdef}{rgb}{0.85, 0.65, 0.15}
+\definecolor{cbsp}{rgb}{0.0, 0.5, 0.0}
+\definecolor{caufg}{rgb}{0.0, 0.0, 0.5}
+\definecolor{cmaxima}{rgb}{0.95, 0.7, 0.5}
+
+\newcommand{\bbdef}[0]{\tcolorbox[colframe=cdef, title=Definition, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebdef}{\endtcolorbox}
+
+\newcommand{\bbzum}[0]{\tcolorbox[colframe=cdef, title=Zusammenhang, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebzum}{\endtcolorbox}
+
+\newcommand{\bbsatz}[0]{\tcolorbox[colframe=cdef, title=Satz, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebsatz}{\endtcolorbox}
+
+\newcommand{\bbgilt}[0]{\tcolorbox[colframe=cdef, title=Es gilt:, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebgilt}{\endtcolorbox}
+
+\newcommand{\bbbsp}[0]{\tcolorbox[colframe=cbsp, title=Beispiel, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebbsp}{\endtcolorbox}
+
+\newcommand{\bbaufg}[1]{\tcolorbox[colframe=caufg, title={#1}, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebaufg}{\endtcolorbox}
+
+\newcommand{\bbmaxima}[0]{\tcolorbox[colframe=cmaxima, title=Maxima, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebmaxima}{\endtcolorbox}
+
+\newcommand{\bbfazit}[0]{\tcolorbox[colframe=cnorm, title=Fazit, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebfazit}{\endtcolorbox}
+
+\newcommand{\fig}{\begin{figure}}
+\newcommand{\efig}{\end{figure}}
+
+\newcommand{\btwocol}{\begin{multicols}{2}}
+\newcommand{\etwocol}{\end{multicols}}
+
+\newcommand{\bthreecol}{\begin{multicols}{3}}
+\newcommand{\ethreecol}{\end{multicols}}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Data Science Mitschrift},
+  pdfauthor={Andreas Sünder, Benjamin Kissinger, Yusuf Akalin},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Data Science Mitschrift}
+\author{Andreas Sünder, Benjamin Kissinger, Yusuf Akalin}
+\date{17.01.2022}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{5}
+\tableofcontents
+}
+\graphicspath{ {./Bilder/} }
+
+\newenvironment{conditions}[1][wobei:]
+  {#1 \begin{tabular}[t]{>{$}l<{$} @{${} \quad ... \quad {}$} l}}
+  {\end{tabular}\\[\belowdisplayskip]}
+
+\clearpage
+
+\hypertarget{einfuxfchrung-in-data-science}{%
+\section{Einführung in Data
+Science}\label{einfuxfchrung-in-data-science}}
+
+\hypertarget{begriffserkluxe4rungen}{%
+\subsection{Begriffserklärungen}\label{begriffserkluxe4rungen}}
+
+\begin{itemize}
+\item
+  \textbf{Artificial Intelligence}: Teilbereich der Informatik mit
+  Automatisierung von Prozessen mit dem Ziel, menschliche
+  Intelligenzleistung wie das Lernen oder das Lösen von Problemen
+  nachzuahmen.
+\item
+  \textbf{Machine Learning}: Teilbereich der AI zum Erkennen von Mustern
+  und Gesetzmäßigkeiten basierend auf Datenbanken und Algorithmen.
+\item
+  \textbf{Deep Learning (DL)}: Optimierung künstlicher neuronaler Netze
+  mit mehreren Zwischenschichten zwischen Eingabe- und Ausgabeschicht.
+\item
+  \textbf{Data Science}: ist die Verknüpfung von Statistik und
+  Softwareentwicklung Pipelining von Datenbanksystemen und Maschinellem
+  Lernen zur Erkennung von Mustern und und Gesetzmäßigkeiten in großen
+  Datenengen.
+\item
+  \textbf{Data Mining (DM):} statistische und ML Algorithmen, die in
+  großen Datenbanken Trends und Vernetzungen suchen.
+\end{itemize}
+
+\hypertarget{arten-und-ziele-der-datenanalyse}{%
+\subsection{Arten und Ziele der
+Datenanalyse}\label{arten-und-ziele-der-datenanalyse}}
+
+Die \textbf{expolorative Datenanalyse} beschäftigt sich mit der
+Organisation, Zusammenfassung und Visualisierung von Daten. Dazu werden
+am häufigsten Grafiken, Tabellen und Schäzer als Hilsmittel verwendet.
+Durch eine weitere Analyse und Modellierung der Daten können
+\textbf{Modelle gebildet} und \textbf{Hypothesen} getestet werden.
+\clearpage
+
+\hypertarget{skalen-und-visualisierung}{%
+\section{Skalen und Visualisierung}\label{skalen-und-visualisierung}}
+
+\hypertarget{messung-und-skalierung-von-variablen}{%
+\subsection{Messung und Skalierung von
+Variablen}\label{messung-und-skalierung-von-variablen}}
+
+Variablen können aufgrund ihrer Eigenschaften in zwei Kategorien geteilt
+werden:
+
+\begin{itemize}
+\tightlist
+\item
+  kategoriale Variablen; diskrete Kategorien
+
+  \begin{itemize}
+  \tightlist
+  \item
+    nominal; ohne Ordnung
+  \item
+    ordinal; geordnet
+  \end{itemize}
+\item
+  metrisch; numerische Zählungen und Messungen
+
+  \begin{itemize}
+  \tightlist
+  \item
+    intervallskaliert; geordnet, Differenzen interpretierbar, aber
+    Quotienten NICHT (\(-\infty\), \(\infty\))
+  \item
+    rational skaliert; geordnet, Differenzen und Quotienten
+    interpretierbar; (\(0\), \(\infty\)), absolute Null
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{huxe4ufigkeiten}{%
+\subsection{Häufigkeiten}\label{huxe4ufigkeiten}}
+
+\tcolorbox
+
+Eine \textbf{Häufigkeitsverteilung} (oder \textbf{Häufigkeitstabelle})
+gibt die Anzahlen oder die Anteils aller bestimmten
+\underline{Kategorien} zugeordneten Beobachtungen wieder.
+
+\vspace{2mm}
+
+Unterschieden werden folgende Unterteilungen:
+
+\begin{itemize}
+\tightlist
+\item
+  absolute Häufigkeiten
+\item
+  relative Häufigkeiten
+\item
+  kummulative (absolute bzw. relative) Häufigkeiten
+\end{itemize}
+
+\endtcolorbox
+
+Ein Beispiel:
+
+\includegraphics[width=12cm, center]{Fig1}
+
+\hypertarget{bar-charts}{%
+\subsubsection{Bar charts}\label{bar-charts}}
+
+Balken- bzw. Säulendiagramme (\textbf{bar charts}) visualisieren
+absolute oder relative kumulative und nichtkumulative Häufigkeiten von
+Kategorien (empfehlenswert in 90\% aller Fälle) das menschliche Auge und
+Gehirn kann kleine Unterschiede bei Längen erkennen und gut
+unterscheiden; Flächen sind nur bis zu 20-25 verschiedenen Balken
+sinnvolle Informationsträger, dann für die Augen zu verwirrend.
+
+Ein Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{barplot}\NormalTok{(VADeaths); }\FunctionTok{barplot}\NormalTok{(VADeaths,}\AttributeTok{beside =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=0.5\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-1-1}
+\includegraphics[width=0.5\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-1-2}
+
+\hypertarget{cleveland-dot-charts}{%
+\subsubsection{Cleveland dot charts}\label{cleveland-dot-charts}}
+
+\textbf{Cleveland dot charts} visualisieren absolute oder relative
+Häufigkeiten. Das menschliche Auge und Gehirn kann kleine Unterschiede
+bei Längen erkennen und gut unterscheiden; wenn viele Häufigkeiten
+dargestellt werden müssen (mehr als 25) und die Flächen von
+Balkendiagrammen nicht geeignet sind, reduziert man die Information auf
+Punkte
+
+Ein Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dotchart}\NormalTok{(VADeaths,}\AttributeTok{main=}\StringTok{"Death Rates in Virginia {-} 1940"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{Mitschrift_files/figure-latex/unnamed-chunk-2-1} \end{center}
+
+\hypertarget{pie-charts}{%
+\subsubsection{Pie charts}\label{pie-charts}}
+
+Tortendigramme (\textbf{pie charts}) visualisieren ausschließlich
+relative Häufigkeiten - absolute Häufigkeiten können damit nicht
+sinnvoll dargestellt werden. Relative Häufigkeiten werden auf die
+entsprechenden Anteile von 360°umgerechnet und als Kreissegmente
+eingezeichnet: das menschliche Auge und Gehirn kann kleine Unterschiede
+bei Winkeln aber schlecht erkennen und unterscheiden.
+
+Ein Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pie.sales }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{0.12}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.26}\NormalTok{, }\FloatTok{0.16}\NormalTok{, }\FloatTok{0.04}\NormalTok{, }\FloatTok{0.12}\NormalTok{)}
+\FunctionTok{pie}\NormalTok{(pie.sales)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{Mitschrift_files/figure-latex/unnamed-chunk-3-1} \end{center}
+
+\hypertarget{charakteristiken-von-metrischen-daten}{%
+\subsection{Charakteristiken von metrischen
+Daten}\label{charakteristiken-von-metrischen-daten}}
+
+\tcolorbox
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Lage (Lokation)}: beschreibt die Mitte/den Durchschnitt der
+  Daten Modalität beschreibt, wieviele Datenzentren es gibt
+\item
+  \textbf{Streuung (Variation)}: misst, wie stark die Daten um den
+  Mittelwert schwanken
+\item
+  \textbf{Symmetrie/Schiefe}: beschreibt, ob die Daten annähernd
+  symmetrisch oder deutlich schief zum oberen oder unteren Rand hin
+  verlaufen
+\item
+  \textbf{Ränder und Ausreißer}: Ränder sind die Werte in der weitesten
+  Entfernung vom Zentrum der Daten. Ausreißer sind Beobachtungen, die
+  ein anderes Verhalten als die übrigen Daten zeigen
+\item
+  \textbf{Zeit}: Prozesse, deren Eigenschaften sich abhängig von der
+  Zeit ändern
+\end{enumerate}
+
+\endtcolorbox
+
+\hypertarget{exkurs-quantile}{%
+\subsubsection{Exkurs: Quantile}\label{exkurs-quantile}}
+
+\tcolorbox
+
+Quantile werden aus der geordneten Stichprobe
+\(x_{(1)} = \text{min}, \, x_{(2)}, \, ... \, , \, x_{(n-1)}, \, = \text{max}\)
+berechnet:
+
+\[\text{Quantil eines Wertes x} \, = \cfrac{\text{Anzahl der Werte} \leq x}{\text{Gesamtazhal der Werte}}\]
+\endtcolorbox
+
+Mittels der Funktion \texttt{quantile()} lassen sich die einzelnen
+Quantile eines Datensatzes anzeigen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}}\NormalTok{ x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{4}\NormalTok{)}
+\FunctionTok{quantile}\NormalTok{(}\AttributeTok{x =}\NormalTok{ x, }\AttributeTok{probs =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\FloatTok{0.4}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.6}\NormalTok{, }\FloatTok{0.8}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 20% 40% 50% 60% 80% 
+## 2.4 3.8 4.5 5.2 7.2
+\end{verbatim}
+
+Wichtige Quantile sind:
+
+\tcolorbox
+
+\textbf{Median} = 50\% Quantil.
+
+\vspace{2mm}
+
+Die \underline{Quartile} sind die 25\% und 75\% Qunatile. Die Daten
+werden durch die Quartile und den Median ``geviertelt''. Ein robustes
+Maß für die Variation ist basiert auf den Quartile, die
+Interquartilsdistanz: \[\text{IQD} = X_{0.75} - X_{0.25}\]
+
+\endtcolorbox
+
+\hypertarget{lageschuxe4tzer-lokation}{%
+\subsubsection{Lageschätzer (Lokation)}\label{lageschuxe4tzer-lokation}}
+
+\tcolorbox
+
+\begin{center}
+$$
+\begin{array}{l|c|l}
+&\text{Formel}&\text{Code}\\
+\hline
+\hline
+&&\\[-0.25cm]
+\text{(Arithmetischer) Mittelwert} & \displaystyle \bar x =  \frac{1}{n}\sum_{i=1}^n x_i & \text{mean(x)}\\
+\hline
+\text{gewichteter Mittelwert} &  \displaystyle \bar x = \sum_{i=1}^n w_i x_i & \\
+& \sum_{i=1}^n{w_i}=1 & \\
+\text{getrimmter Mittelwert} &  \displaystyle \bar x =  \frac{1}{n}\sum_{i=q_{trim}}^{q_{1-trim}} x_{(i)}  & mean(x,trim=p)\\
+\hline
+\text{Geometrischer Mittelwert} &\displaystyle \sqrt[n]{\prod_{i=1}^n x_i} & exp(mean(log(x))) \\
+
+ 
+
+\hline
+&&\\[-0.25cm]
+\text{Harmonischer Mittelwert} & \displaystyle \frac{n}{\sum_{i=1}^n \frac{1}{x_i}} & 1/mean(1/x) \\
+\end{array}  
+$$
+\end{center}
+
+\endtcolorbox
+
+\tcolorbox
+
+\begin{center}
+$$
+\begin{array}{l|c|l}
+&\text{Formel}&\text{Code}\\
+\hline
+\hline
+&&\\[-0.25cm]
+\text{Median} & \text{mittlerer Wert} & \\ & \text{der geordneten Daten}&median\\
+\hline
+\text{Modus} & \text{Wert mit der} & \\ & \text{größten Häufigkeit} & - \\
+\hline
+&&\\[-0.25cm]
+\text{Midrange} & \displaystyle \frac{\max x_i + \min x_i}{2} &-\\
+\end{array} 
+$$
+\end{center}
+
+\endtcolorbox
+
+\tcolorbox
+
+Der \underline{Median} liegt genau in der Mitte der Datenverteilung und
+ist robust, sprich, er wird von Ausreißern nicht beeinflusst.
+
+Bei einer
+
+\begin{itemize}
+\tightlist
+\item
+  ungeraden Anzahl von Werten ist der Median genau der Wert in der Mitte
+\item
+  geraden Anzahl ist der Median der Mittelwert zwischen den beiden
+  Werten in der Mitte
+\end{itemize}
+
+der Daten. \endtcolorbox
+
+\tcolorbox
+
+Der \textbf{Modus} (\textbf{Modalwert}) ist der Wert mit der höchsten
+Wahrscheinlichkeit der zugrundliegenden Verteilung. Bei einer diskreten
+oder kategorialen Stichprobe ist es die am häufigsten vorkommende
+Kategorie.
+
+\vspace{1mm}
+
+Wichtig ist hierbei zu beachten, dass es auch mehrere \underline{Modi}
+geben kann, wodurch zwischen \underline{Unimodalität},
+\underline{Bimodalität} und \underline{Multimodalität} unterschieden
+werden kann:
+
+\vspace{5mm}
+
+\includegraphics[width=0.33\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-5-1}
+\includegraphics[width=0.33\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-5-2}
+\includegraphics[width=0.33\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-5-3}
+\endtcolorbox
+
+\hypertarget{streuungsschuxe4tzer-variation}{%
+\subsubsection{Streuungsschätzer
+(Variation)}\label{streuungsschuxe4tzer-variation}}
+
+\includegraphics[width=12cm, center]{Fig4}
+
+\tcolorbox
+
+Die \textbf{Varianz} entspricht der Abweichung der einzelnen Werte von
+Mittelwert und Quadrat der Standardabweichung wird sehr wohl von
+Ausreißern beeinflusst. \endtcolorbox
+
+\tcolorbox
+
+Die \textbf{Standardabweichung} ist die Streubreite der Werte rund um
+den Mittelwert und Quadratwurzelder Varianz). \endtcolorbox
+
+\tcolorbox
+
+Der \textbf{Interquartilsdistanz} (auch IQR genannt) ist als die
+Differenz zwischen dem oberen (75\%-) und dem unteren (25\%-) Quartil
+definiert. \endtcolorbox
+
+\tcolorbox
+
+Die \textbf{Spannweite} \(x_{max} - x_{min}\) misst den Abstand zwischen
+dem größten und kleinsten Messwert und schätzt damit ab, welche
+Größenordnung von Werten von den Messungen insgesamt ``über-spannt''
+wird. \endtcolorbox
+
+\hypertarget{symmetrieschiefe}{%
+\subsubsection{Symmetrie/Schiefe}\label{symmetrieschiefe}}
+
+\tcolorbox
+
+Eine Funktion wird als \textbf{symmetrisch} bezeichnet, wenn sie durch
+Spiegelung eines Teilverlaufs an einer Achse oder einem Punkt zustande
+kommt. Dabei kann wieder unterschieden werden:
+
+\includegraphics[width=0.5\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-6-1}
+\includegraphics[width=0.5\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-6-2}
+\endtcolorbox
+
+\tcolorbox
+
+Wenn die Verteilung der Daten in einer Richtung \underline{steiler} und
+der anderen Richtung \underline{schief auslaufend} verläuft, so spricht
+man dann von einer \textbf{schiefen Verteilung}. Je nachdem, in welche
+Richtung der lange Rand schief ausläuft, wird diese dann entweder
+\underline{rechtschief} oder \underline{linksschief} bezeichnet:
+
+\includegraphics[width=0.5\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-7-1}
+\includegraphics[width=0.5\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-7-2}
+\endtcolorbox
+
+\hypertarget{beispiel-kuxf6rpergruxf6uxdfen}{%
+\subsubsection{Beispiel:
+Körpergrößen}\label{beispiel-kuxf6rpergruxf6uxdfen}}
+
+Um die einzelnen Maße der Lokation und Streuung noch besser zu
+verstehen, soll das Beispiel ``Körpergößen'' näher betrachtet werden.
+Definieren wir nun die Werte:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Körpergrößen & 1.82, 1.75, 1.89, 176, 1.65, 1.71 \\
+\end{longtable}
+
+Entsprechender R-Code:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{kg}\OtherTok{\textless{}{-}}\FunctionTok{c}\NormalTok{(}\FloatTok{1.82}\NormalTok{, }\FloatTok{1.75}\NormalTok{, }\FloatTok{1.89}\NormalTok{, }\DecValTok{176}\NormalTok{, }\FloatTok{1.65}\NormalTok{, }\FloatTok{1.71}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Schnell wird klar, dass ein Ausreißer, der Wert \(176\), vorhanden ist.
+Nun soll das Verhalten der einzelnen Maße näher betrachtet werden.
+
+\textbf{Mittelwert:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mean}\NormalTok{(kg) }\CommentTok{\# 30.80333}
+\end{Highlighting}
+\end{Shaded}
+
+Man sieht hier deutlich, dass der arithmetische Mittelwert sehr sensitiv
+gegenüber Ausreißern ist. Des Weiteren wird dieser auch durch Asymmetrie
+und Rändern zerstört bzw. verzerrt. Schaut man sich das Bild des Medians
+an, so sieht man hier einen klaren Unterschied:
+
+\textbf{Median:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{median}\NormalTok{(kg) }\CommentTok{\# 1.785}
+\end{Highlighting}
+\end{Shaded}
+
+Der eine Ausreißer tut dem Median offenbar nicht wirklich weh, er ist
+also \underline{robust}. Selbst ein Anteil von 50\% an fehlerhaften
+Werten beeinflussen den Median nur geringfügig.
+
+\textbf{Varianz:}
+
+In diesem Fall besitzt die Varianz einen sehr hohen Wert, da der eine
+Ausreißer (gemäß der zu anwendenden Formel) insgesamt sechs Mal
+quadriert wird:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{var}\NormalTok{(kg) }\CommentTok{\# 5059.704}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Standardabweichung:}
+
+\ldots{} dementsprechend ist die Standardabweichung auch nicht robust:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sd}\NormalTok{(kg) }\CommentTok{\# 71.1316}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Interquartilsdistanz:}
+
+Durch seine Eigenschaften ist die IQR nicht robust:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{IQR}\NormalTok{(kg) }\CommentTok{\# 0.1525}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{darstellung-von-metrischen-daten}{%
+\subsection{Darstellung von metrischen
+Daten}\label{darstellung-von-metrischen-daten}}
+
+\hypertarget{boxplot}{%
+\subsubsection{Boxplot}\label{boxplot}}
+
+\tcolorbox
+
+Der \textbf{Boxplot} stellt den Median als Mitte der Box, die Quartile
+als die beiden Enden der Box dar, was die mittleren 50 \% der Daten klar
+kennzeichnet. Darüber hinaus werden durch die Whiskers, die maximal das
+1,5-fache des Quartilsabstands umfassen, die zentralen 95 \% der Daten
+abgesteckt, wenn die Daten normalverteilt wären. Daher werden die Werte
+außerhalb der Whiskers als potentielle Ausreißer bezeichnet. Wenn die
+Verteilung der Daten aber inherent schief oder von schweren Rändern
+geprägt ist, ist diese Ausreißereinteilung jedenfalls falsch.
+
+Ein Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{boxplot}\NormalTok{(airquality}\SpecialCharTok{$}\NormalTok{Ozone,}
+  \AttributeTok{main =} \StringTok{"Mean ozone in parts per billion at Roosevelt Island"}\NormalTok{,}
+  \AttributeTok{xlab =} \StringTok{"Parts Per Billion"}\NormalTok{,}
+  \AttributeTok{ylab =} \StringTok{"Ozone"}\NormalTok{,}
+  \AttributeTok{horizontal =} \ConstantTok{TRUE}\NormalTok{,}
+  \AttributeTok{cex.main =} \FloatTok{1.1}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{Mitschrift_files/figure-latex/unnamed-chunk-14-1} \end{center}
+\endtcolorbox
+
+\hypertarget{histogramme-und-stetige-dichteschuxe4tzer}{%
+\subsubsection{Histogramme und stetige
+Dichteschätzer}\label{histogramme-und-stetige-dichteschuxe4tzer}}
+
+\tcolorbox
+
+Ein \textbf{Histogramm} ist ein Graph, der sich aus Balken
+zusammensetzt, deren Höhe die Anzahl der Anteil der Daten innerhalb von
+Teilintervallen ist.
+
+\vspace{2mm}
+
+Ein \textbf{Kerndichteschätzer} ist ein Graph, der die Verteilung der
+Daten durch eine Approximation mithilfe von Näherungsfunktionen (Kernen)
+stetig verlaufend wiedergibt.
+
+Ein Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{daten }\OtherTok{\textless{}{-}}\NormalTok{ airquality}\SpecialCharTok{$}\NormalTok{Temp}
+\FunctionTok{hist}\NormalTok{(daten, }\AttributeTok{main=}\StringTok{"Histogramm"}\NormalTok{, }\AttributeTok{xlab=}\StringTok{"Beobachtungen"}\NormalTok{, }\AttributeTok{ylab=}\StringTok{"Häufigkeit"}\NormalTok{, }\AttributeTok{freq =} \ConstantTok{FALSE}\NormalTok{);}
+\FunctionTok{lines}\NormalTok{(}\FunctionTok{density}\NormalTok{(daten))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics[width=0.6\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-15-1} \end{center}
+
+Mit Histogrammen können Eigenschaften wie Modalität oder Symmetrie der
+Daten klar dargestellt werden. \endtcolorbox
+
+\hypertarget{vergleich-histogramm-und-boxplot}{%
+\subsubsection{Vergleich Histogramm und
+Boxplot}\label{vergleich-histogramm-und-boxplot}}
+
+Mit dem eigenen Datensatz \texttt{oscars} soll hier gezeigt werden, dass
+es durchaus sinnvoll ist, ein Histogramm und ein Boxplot kombiniert
+darzustellen:
+
+\begin{center}\includegraphics[width=0.7\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-16-1} \end{center}
+
+\begin{center}\includegraphics[width=0.7\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-17-1} \end{center}
+
+\hypertarget{quantil-quantil-plot-qq-plot}{%
+\subsubsection{Quantil-Quantil-Plot
+(QQ-Plot)}\label{quantil-quantil-plot-qq-plot}}
+
+\tcolorbox
+
+Ein \textbf{Quantil-Quantil-Plot (QQ-Plot)} ist ein Graph, der die
+Verteilung der Daten einer Stichprobe mit der Verteilung der Daten einer
+anderen Stichprobe oder einer theoretischen Verteilung der Datenwerte
+(z. B. Standardnormalverteilung) vergleicht. \endtcolorbox
+
+Ein Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{qqnorm}\NormalTok{(normaleDaten); }\FunctionTok{qqline}\NormalTok{(normaleDaten,}\AttributeTok{col=}\DecValTok{2}\NormalTok{)}
+\FunctionTok{qqnorm}\NormalTok{(gammaDaten); }\FunctionTok{qqline}\NormalTok{(gammaDaten,}\AttributeTok{col=}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics[width=0.5\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-19-1}
+\includegraphics[width=0.5\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-19-2}
+
+\clearpage
+
+\# Abhängigkeit von 2 oder mehr Variablen
+
+\hypertarget{zusammenhuxe4nge-zwischen-2-metrischen-variablen}{%
+\subsection{Zusammenhänge zwischen 2 metrischen
+Variablen}\label{zusammenhuxe4nge-zwischen-2-metrischen-variablen}}
+
+\tcolorbox
+
+Wenn man von Regression spricht, versucht man zu analysieren, eine
+beobachtete \textbf{abhängige} Variable durch eine (oder mehrere, siehe
+unten) \textbf{unabhängige} Variablen zu erklären. Bei linearer
+Regression geht man hierbei von einem linearen Modell aus:
+
+\[y = \alpha \; + \beta \; \cdot \; x\]
+
+\vspace{3mm}
+
+\includegraphics[width=10cm, center]{Fig7} \vspace{3mm}
+
+Allgemein legt man einer solchen Anpassung, welche Modellierung mittels
+linearer Regression genannt wird, eine \textbf{Regressionsgleichung}
+zugrunde:
+
+\[y_i = \alpha \; + \; \beta \; \cdot \; x_i \; + \; \epsilon_i\]
+
+\bgroup wobei: \begin{tabular}[t]{>{$}l<{$} @{${} \quad ... \quad {}$} l}
+\alpha  &   Achsenabschnitt (y-Wert, wenn x den Wert 0 annimmt) \\
+\beta   &   Steigung der Gerade (y steigt um $\beta$ Einheiten, wenn x um 1 vergrößert wird) \\
+\epsilon_i & Residuenfehler der Punkte (vertikale Entferung der Gerade vom tatsächlichen Punkt)
+\end{tabular}\\[\belowdisplayskip]\egroup
+
+Diese Parameter haben auch eine mathematische Bedeutung:
+
+\vspace{2mm}
+
+\bgroup wobei: \begin{tabular}[t]{>{$}l<{$} @{${} \quad ... \quad {}$} l}
+\alpha  &   Wert auf der y-Achse, an dem die Gerade die y-Achse schneidet, bzw. Startwert für x=0 \\
+\beta > 0   &   ist die Gerade steigend \\
+\beta < 0   &   ist die Gerade fallend
+\end{tabular}\\[\belowdisplayskip]\egroup
+
+\endtcolorbox
+
+\tcolorbox
+
+\textbf{Korrelation}
+
+Als standardisiertes Maß fürr die lineare Abhängigkeit wird der
+\textbf{Pearson Korrelationskoeffizient} definiert:
+
+\[r = r(X,Y) = \cfrac{\widehat{cov}(X, Y)}{s(X) \, \cdot \, s(Y)}\]
+
+Bei diesem Koeffizient wird die Achsenskalierung herausgerechnet und
+dadurch nimmt er ausschließlich Wert zwischen -1 und 1 an:
+
+\includegraphics[width=0.33\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-20-1}
+\includegraphics[width=0.33\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-20-2}
+\includegraphics[width=0.33\linewidth]{Mitschrift_files/figure-latex/unnamed-chunk-20-3}
+
+\bgroup wobei: \begin{tabular}[t]{>{$}l<{$} @{${} \quad ... \quad {}$} l}
+negatives Vorzeichen & fallender Zusammenhang \\
+positives Vorzeichen & steigender Zusammenhang
+\end{tabular}\\[\belowdisplayskip]\egroup
+
+Faustregel zur Interpreation des Korrelationskoeffizienten:
+
+\vspace{2mm}
+
+\bgroup wobei: \begin{tabular}[t]{>{$}l<{$} @{${} \quad ... \quad {}$} l}
+r_{(s)} = 0   &     keine Korrelation \\
+0 \le |r_{(s)}| \leq 0.5 & schwache Korrelation \\
+0.5 \le |r_{(s)}| \leq 0.75 & mittlere Korrelation \\
+0.75 \le |r_{(s)}| \le 1 & starke Korrelation \\
+r_{(s)} = 1   &     vollständige Korrelation
+\end{tabular}\\[\belowdisplayskip]\egroup
+
+\endtcolorbox
+
+\clearpage
+
+\hypertarget{multiple-regresion}{%
+\subsection{Multiple Regresion}\label{multiple-regresion}}
+
+\tcolorbox
+
+Wenn wir anstatt nur einer unabhängigen erklärenden Variablen mehrere
+benutzen, gehen wir von simplen linearen Regressionsmodell zum multiplen
+linearen Regressionsmodell über:
+
+\[y_i = \alpha \, + \, \beta_1x_{1,i} \, + \, \beta_2x_{2,i} \, + \; ... \, + \beta_kx_{k,i} \, + \, \epsilon_i\]
+
+\endtcolorbox
+
+\tcolorbox
+
+\textbf{Annahmen und Voraussetzungen für multiple Regression:}
+
+(A1) Das Modell hat keinen systematischen Fehler.
+
+(A2) Die Fehlervarianz ist fur alle Beobachtungen gleich groß
+(homoskedastisch).
+
+(A3) Die Komponenten des Fehlerterms sind nicht korreliert.
+
+(A4) Der Modellfehler sei normalverteilt.
+
+(A5) Es gibt keine linearen Abhängigkeiten zwischen den Regressoren.
+\endtcolorbox
+
+\hypertarget{beispiel-mit-dem-datensatz-state.x77}{%
+\subsubsection{\texorpdfstring{Beispiel mit dem Datensatz
+\texttt{state.x77}:}{Beispiel mit dem Datensatz state.x77:}}\label{beispiel-mit-dem-datensatz-state.x77}}
+
+Die ersten vier Annahmen können mit einem \texttt{pairs}-Plot analysiert
+werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pairs}\NormalTok{(state.x77[,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{5}\NormalTok{], }\AttributeTok{lower.panel =}\NormalTok{ panel.smooth, }\AttributeTok{upper.panel =}\NormalTok{ panel.cor,}
+\AttributeTok{diag.panel =}\NormalTok{ panel.hist, }\AttributeTok{las=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Mitschrift_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+Man sieht hier deutlich, dass Life Expectancy und Illiteracy linear
+zusammenhängen, mit einem Korrelationskoeffizienten von 0.59. Bleiben
+beide Variablen im Modell drinnen, so würden diese unser Modell
+vollkommen zerstören. Daher muss eines von beiden raus.
+
+Murder und Life Expectancy bzw. Murder und Illiteracy dürfen
+korrelieren, da Murder die abhängige Variable darstellt.
+
+Entfernen wir nun Life Expectancy, schaut das so aus:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pairs}\NormalTok{(state.x77[, }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{5}\NormalTok{)], }\AttributeTok{lower.panel =}\NormalTok{ panel.smooth, }\AttributeTok{upper.panel =}\NormalTok{ panel.cor,}
+\AttributeTok{diag.panel =}\NormalTok{ panel.hist, }\AttributeTok{las=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Mitschrift_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\clearpage
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{lm}\NormalTok{(}\AttributeTok{formula =}\NormalTok{ Murder }\SpecialCharTok{\textasciitilde{}}\NormalTok{ .  }\SpecialCharTok{{-}} \StringTok{\textasciigrave{}}\AttributeTok{Life Exp}\StringTok{\textasciigrave{}} \SpecialCharTok{{-}} \StringTok{\textasciigrave{}}\AttributeTok{HS Grad}\StringTok{\textasciigrave{}} \SpecialCharTok{{-}}\NormalTok{ Frost }\SpecialCharTok{{-}}\NormalTok{ Area,}
+           \AttributeTok{data =} \FunctionTok{as.data.frame}\NormalTok{(state.x77)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Murder ~ . - `Life Exp` - `HS Grad` - Frost - Area, 
+##     data = as.data.frame(state.x77))
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.7846 -1.6768 -0.0839  1.4783  7.6417 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 1.3402721  3.3694210   0.398   0.6926    
+## Population  0.0002219  0.0000842   2.635   0.0114 *  
+## Income      0.0000644  0.0006762   0.095   0.9245    
+## Illiteracy  4.1109188  0.6706786   6.129 1.85e-07 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.507 on 46 degrees of freedom
+## Multiple R-squared:  0.5669, Adjusted R-squared:  0.5387 
+## F-statistic: 20.07 on 3 and 46 DF,  p-value: 1.84e-08
+\end{verbatim}
+
+Dieses Modell ist für uns sehr schlecht, da bei drei Variablen die
+Irrtumswahrscheinlichkeit sehr hoch ist (bis 92 \%!). Außerdem ist bei
+der Variable Income der Standard-Error größer als das Estimate selbst
+ist. Zusammen mit der extrem hohen Irrtumswahrscheinlichkeit kann diese
+Variable sehr schnell negativ werden.
+
+\tcolorbox
+
+\textbf{Fazit:} Dieses Modell ist für uns nicht geeignet! \endtcolorbox
+
+Schmeißen wir nun Illiteracy statt Life Expectancy raus:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pairs}\NormalTok{(state.x77[, }\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{)], }\AttributeTok{lower.panel =}\NormalTok{ panel.smooth, }\AttributeTok{upper.panel =}\NormalTok{ panel.cor,}
+\AttributeTok{diag.panel =}\NormalTok{ panel.hist, }\AttributeTok{las=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Mitschrift_files/figure-latex/unnamed-chunk-24-1.pdf}
+
+\clearpage
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{lm}\NormalTok{(}\AttributeTok{formula =}\NormalTok{ Murder }\SpecialCharTok{\textasciitilde{}}\NormalTok{ .  }\SpecialCharTok{{-}}\NormalTok{ Illiteracy }\SpecialCharTok{{-}} \StringTok{\textasciigrave{}}\AttributeTok{HS Grad}\StringTok{\textasciigrave{}} \SpecialCharTok{{-}}\NormalTok{ Frost }\SpecialCharTok{{-}}\NormalTok{ Area,}
+           \AttributeTok{data =} \FunctionTok{as.data.frame}\NormalTok{(state.x77)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Murder ~ . - Illiteracy - `HS Grad` - Frost - Area, 
+##     data = as.data.frame(state.x77))
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.0604 -1.2165 -0.1001  1.4489  5.3766 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  1.530e+02  1.638e+01   9.340 3.41e-12 ***
+## Population   2.487e-04  6.955e-05   3.576 0.000834 ***
+## Income      -2.309e-04  5.362e-04  -0.431 0.668697    
+## `Life Exp`  -2.055e+00  2.406e-01  -8.541 4.77e-11 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.102 on 46 degrees of freedom
+## Multiple R-squared:  0.6957, Adjusted R-squared:  0.6759 
+## F-statistic: 35.06 on 3 and 46 DF,  p-value: 6.03e-12
+\end{verbatim}
+
+Dieses Modell ist nun viel besser als vorher (mit einem R-squared von
+0.68 statt 0.54 vorher). Jedoch passt die Variable Income nach wie vor
+nicht. Mit einer Irrtumswahrscheinlichkeit von 68\% ist diese nicht
+akzeptabel. Diese gehört also auch weg:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(}\FunctionTok{lm}\NormalTok{(}\AttributeTok{formula =}\NormalTok{ Murder }\SpecialCharTok{\textasciitilde{}}\NormalTok{ . }\SpecialCharTok{{-}}\NormalTok{ Income}\SpecialCharTok{{-}}\NormalTok{ Illiteracy }\SpecialCharTok{{-}} \StringTok{\textasciigrave{}}\AttributeTok{HS Grad}\StringTok{\textasciigrave{}} \SpecialCharTok{{-}}\NormalTok{ Frost }\SpecialCharTok{{-}}\NormalTok{ Area,}
+           \AttributeTok{data =} \FunctionTok{as.data.frame}\NormalTok{(state.x77)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Murder ~ . - Income - Illiteracy - `HS Grad` - Frost - 
+##     Area, data = as.data.frame(state.x77))
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.9310 -1.2066 -0.1546  1.4868  5.3323 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  1.547e+02  1.578e+01   9.805 6.02e-13 ***
+## Population   2.413e-04  6.682e-05   3.612 0.000737 ***
+## `Life Exp`  -2.093e+00  2.222e-01  -9.417 2.15e-12 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.083 on 47 degrees of freedom
+## Multiple R-squared:  0.6945, Adjusted R-squared:  0.6815 
+## F-statistic: 53.42 on 2 and 47 DF,  p-value: 7.899e-13
+\end{verbatim}
+
+Dieses Modell ist nun das beste. Die Modellgleichung ist nun folgende:
+
+\[
+\text{Murder} = 154.7 + 2.413 \cdot 10^{-4} \cdot \text{Population} - 2.093 \cdot \text{Life Exp}
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{par}\NormalTok{(}\AttributeTok{mfrow =} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{lm}\NormalTok{(}\AttributeTok{formula =}\NormalTok{ Murder }\SpecialCharTok{\textasciitilde{}}\NormalTok{ . }\SpecialCharTok{{-}}\NormalTok{ Income}\SpecialCharTok{{-}}\NormalTok{ Illiteracy }\SpecialCharTok{{-}} \StringTok{\textasciigrave{}}\AttributeTok{HS Grad}\StringTok{\textasciigrave{}} \SpecialCharTok{{-}}\NormalTok{ Frost }\SpecialCharTok{{-}}\NormalTok{ Area,}
+           \AttributeTok{data =} \FunctionTok{as.data.frame}\NormalTok{(state.x77)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{Mitschrift_files/figure-latex/unnamed-chunk-27-1} \end{center}
+
+\clearpage
+
+\hypertarget{varianzanalyse}{%
+\subsection{Varianzanalyse}\label{varianzanalyse}}
+
+\hypertarget{einfache-varianzanalysen-anova}{%
+\subsubsection{Einfache Varianzanalysen
+(ANOVA)}\label{einfache-varianzanalysen-anova}}
+
+Derweil waren y und x werte numerisch ==\textgreater{} man sagt
+Zahlenwerte vorher. Wenn wir als y numerische Variable haben, aber als x
+kategorische Variablen ==\textgreater{} ANOVA
+
+\tcolorbox
+
+\textbf{Beispiel:}
+
+Acker testen ==\textgreater{} in mehrere Teile teilen und jeder Teil hat
+jeweils unterschiedliche Bedinungen und wird unterschiedlich behandelt
+(anderer Dünger). Danach vergleichen, wie gut Ertrag war.
+
+\[ y = \alpha + \beta \cdot x \]
+
+\bgroup wobei: \begin{tabular}[t]{>{$}l<{$} @{${} \quad ... \quad {}$} l}
+x & kategroische Variable die Dünger oder Natur kodiert \\
+y & Ertrag \\
+\alpha & Mittlerer Ertrag aller Ackerflächen \\
+\beta & Steigung
+\end{tabular}\\[\belowdisplayskip]\egroup
+
+x kann 0 oder 1 annehmen ==\textgreater{} natur oder dünger
+==\textgreater{} bestimmte Abweichung zum Referenzwert alpha (oben oder
+unten) ==\textgreater{} im Mittel müssel sie sich ausgleichen. Jetzt
+müsste man sich fragen, ab was für einen Wert es sich lohnt, in Dünger,
+bzw. Werbung aber dafür Naturboden zu investieren.
+
+\textbf{Im Allgemeinen gilt:}
+
+\[ y_{ij} = Mü + \alpha_i + e_{ij} \]
+
+\bgroup wobei: \begin{tabular}[t]{>{$}l<{$} @{${} \quad ... \quad {}$} l}
+Mü & Gesamtmittelwert \\
+\alpha_i & Abstand der Gruppenmittelwerte von µ \\
+e_{ij} & Fehler=Residuen
+\end{tabular}\\[\belowdisplayskip]\egroup 
+\endtcolorbox
+
+ANOVA kann auch als Hypthesentests verwendet werden ==\textgreater{} Ist
+in allen Gruppen der Mittelwert gleich oder nicht? Anderes Beispiel:
+Vergleich von Körpergrößen von Jahrgängen ==\textgreater{} sollte
+steigen:
+
+\begin{itemize}
+\tightlist
+\item
+  H0: Im Mittel die selbe Körpergröße
+\item
+  H1: Wenigstens in einem Jahrgang (=Kategorie) ist der Mittelwert
+  unterschiedlich.
+\end{itemize}
+
+Das ist die allgemeine Methode, die Unterschiede der mittleren Werte von
+bekannten Kategorien zu ermitteln.
+
+\tcolorbox
+
+\textbf{Voraussetzungen für ANOVA:}
+
+(A1) die Daten sind annähernd symmetrisch
+
+(A2) die Daten haben nur einen Modus (unimodal)
+
+(A3) die Daten enthalten keine Ausreißer \endtcolorbox
+
+Ab Seite 56 im Skript \textbf{statische Modelle}: Beispiele und Plots.
+Wenn oberes und unteres klaren Abstand haben ==\textgreater{} klare
+Aussage mit ANOVA ==\textgreater{} mind. 2 Kategorien unterscheiden
+sich! Im Optimalfall keine Überschneidungen ==\textgreater{} klare
+Aussage!
+
+\includegraphics[width=15cm, center]{Fig8}
+
+Wenn wirs mit freien Auge nicht erkennen können: ANOVA als
+Hypthesentests sinnvoll. Wie funktionieren diese Tests?
+
+\tcolorbox
+
+\textbf{Hypothesentests}
+
+\includegraphics[width=10cm, center]{Fig9}
+
+\bgroup wobei: \begin{tabular}[t]{>{$}l<{$} @{${} \quad ... \quad {}$} l}
+RSS1 & Schwankung in den Stichproben \\
+RSS0 & Schwankung zwischen den Stichproben
+\end{tabular}\\[\belowdisplayskip]\egroup
+
+Zu RSS1: Diese Striche sind ja auch nur mehrere Punkte (Messwerte) an
+einer x-Koordinate, Strich ist der Mittelwert \emph{in} von diesen
+Messpunkten ==\textgreater{} Messgenauigkeit von Messungen
+
+Zu RSS0: Mittelwert von beiden Messpunkten
+
+Optimallfall: RSS0 groß und RSS1 klein. \endtcolorbox
+
+Die Varianzen werden verglichen mit:
+
+\[ RSS0/RSS1 \]
+
+Um gegen Ausreißer vorzugehen, kann man mit Rängen arbeiten
+==\textgreater{} Messwerte durchnummerieren und Median nehmen
+==\textgreater{} Median robust gegen Ausreißer.
+
+\hypertarget{zweiweg-varianzanalyse-anova}{%
+\subsubsection{Zweiweg Varianzanalyse
+(ANOVA)}\label{zweiweg-varianzanalyse-anova}}
+
+Wir fügen eine kategoriale Variable hinzu, fragen aber immer noch nach
+demselben y-Wert:
+
+\includegraphics[width=10cm, center]{Fig10}
+
+wobei:
+
+\begin{itemize}
+\tightlist
+\item
+  Mü=y=Gesamtmittelwert
+\item
+  alpha\_i=Abstand der Gruppenmittelwerte von x1-Gruppe i vom
+  Gesamtmittelwert
+\item
+  Beta\_j=Abstand der Gruppenmittelwerte von x2-Gruppe j vom
+  Gruppenmittelwert alpha\_i
+\end{itemize}
+
+{[}Grafik: Zweiweg-Varianzanalyse{]}
+
+\textbf{Was kann nun passieren?}
+
+\begin{itemize}
+\item
+  y\textasciitilde1: Alles hat den selben Mittelwert - Nur der
+  Mittelwert der gesamten Daten wird als Mittelwert in allen
+  Teilkategorien angenommen
+\item
+  y \textasciitilde{} X1: Nur X1 ist relevant und führt zu einer
+  Aufteilung der Mittelwerte
+\item
+  y \textasciitilde{} X2: Nur X2 ist relevant und führt zu einer
+  Aufteilung der Mittelwerte
+\item
+  X1 + X2: X1 und X2 führen zu einer Aufteilung der Mittelwerte (Echtes
+  ANOVA-Modell)
+\item
+  X1 * X2: X1 und X2 führen zu einer Aufteilung der Mittelwerte in den
+  unterschiedlichen Teilkategorien und zusätzlich addieren sich die
+  Effekte nicht (Z.B. Säure Boden und Säure Dünger für Pflanze - gut,
+  aber basischer Boden und basischer Dünger für Pflanze - schlecht).
+\end{itemize}
+
+==\textgreater{}
+
+\begin{itemize}
+\tightlist
+\item
+  links: additiv
+\item
+  rechts: interaktiv
+\end{itemize}
+
+Ab Seite 66 ==\textgreater{} Beispiele
+
+Nicht mehr parallel ==\textgreater{} interaktiv
+
+Modellselektion nach Komplexität:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Y \textasciitilde{} X1*X2
+\item
+  Y \textasciitilde{} X1+X2
+\item
+  Y \textasciitilde{} X1 und Y \textasciitilde{} X2
+\item
+  Y \textasciitilde{} 1
+\end{enumerate}
+
+\textbf{Interactionplot in R:}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{interaction.plot}\NormalTok{(x.factor}\SpecialCharTok{*}\NormalTok{(x1)}\SpecialCharTok{*} \ErrorTok{=}\NormalTok{ ..., trace.factor}\SpecialCharTok{*}\NormalTok{(x2)}\SpecialCharTok{*} \ErrorTok{=}\NormalTok{ ..., response}\SpecialCharTok{*}\NormalTok{(y)}\SpecialCharTok{*} \ErrorTok{=}\NormalTok{ ...)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{ANOVA models in R:}
+
+\includegraphics[width=10cm, center]{Fig11}
+
+\clearpage
+
+\hypertarget{klassifikation}{%
+\subsection{Klassifikation}\label{klassifikation}}
+
+Bei der Regression --\textgreater{} numerische Variablen Bei der
+Klassifikation --\textgreater{} kategoriale Variablen
+
+D.h. bei der Klassifikation werden numerischen Werten (x-Achse)
+Kategorien zugewiesen (y-Achse).
+
+\hypertarget{binuxe4re-klassifikation}{%
+\subsection{binäre Klassifikation}\label{binuxe4re-klassifikation}}
+
+\hypertarget{binomial}{%
+\subsubsection{binomial:}\label{binomial}}
+
+2 mögliche Ausgänge, die zufallsbehaftet sind (0 und 1, geschafft und
+nicht geschafft, \ldots). Die Wahrscheinlichkeit bleibt dabei gleich
+(Beispiel mit 6 Stiften: bei jedem zufälligen Ziehen eines Stiftes muss
+die Wahrscheinlichkeit 1/6 sein. Eine Wahrscheinlichkeitsänderung, z.B.
+durch Ablage eines Stiftes, darf nicht stattfinden!)\\
+Es wird mit einer vorgegebenen Anzahl an Experimenten, die unabhängig
+voneinander sind, gearbeitet. (Ist zum Beispiel nicht der Fall bei
+Infektionskrankheiten.)
+
+\hypertarget{logistische-regression}{%
+\subsubsection{logistische Regression}\label{logistische-regression}}
+
+\includegraphics[width=12cm, center]{Fig5}
+
+Wird auch als verallgemeinerte Regression bezeichnet (engl.: Generalized
+Linear Model, R: glm(y\textasciitilde x, data, link =
+binomial(``logit''))).
+
+\clearpage
+
+\hypertarget{wahrscheinlichkeit-chancen}{%
+\section{Wahrscheinlichkeit \&
+Chancen}\label{wahrscheinlichkeit-chancen}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.2903}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.7097}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Wahrscheinlichkeit
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Chancen
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+90\%, 5\%, 0.75, \ldots{} & 3:5 (3/8 : 5/8), 1:3 (1/4 : 3/4),
+\ldots{} \\
+\(0 \leq |x| \leq 1\) & Wahrscheinlichkeit : Gegenwahrscheinlichkeit \\
+\end{longtable}
+
+\hypertarget{chancenverhuxe4ltnis}{%
+\subsection{Chancenverhältnis}\label{chancenverhuxe4ltnis}}
+
+engl. Odds Ratio, OR
+
+\[
+\frac{\frac{3}{5}}{\frac{1}{3}} = \frac{9}{5} = 1.8
+\]
+
+Die Chance 3:5 ist 1.8 mal so groß wie die Chance 1:3.
+
+\[
+logit(y) = \color{red} \alpha + \color{blue} \beta_1 \cdot x_1 + \color{blue} \beta_2 \cdot x_2 + ... + \epsilon_i
+\] {\(\beta\)} : log-Odds-Ratio (e{\(\beta\)1})\\
+{\(\alpha\)} : Chance 1 vs 0 (e{\(\alpha\)})
+
+OR \textgreater{} 1 \ldots{} erhöhtes Risiko\\
+OR = 1 \ldots{} gleichbleibendes Risiko\\
+OR \textless{} 1 \ldots{} geringeres Risiko\\
+\clearpage
+
+\hypertarget{fehlerklassifikation}{%
+\section{Fehlerklassifikation}\label{fehlerklassifikation}}
+
+Vergleich von Realität und Vorhersage des Modells:
+
+Falschpositiv: ``Signifikanz'', kann reguliert werden. Falschnegativ:
+``Schärfe'' (engl. ``Power''), kann weder reguliert noch exakt
+vorhergesagt werden.
+
+\hypertarget{receiver-operating-curve-roc}{%
+\subsection{Receiver Operating Curve
+(ROC)}\label{receiver-operating-curve-roc}}
+
+Vergleicht TP mit FN\\
+Alles, was unter der Referenzlinie (Diagonale) ist, ist unbrauchbar, da
+das Modell öfter falsche Ergebnisse liefert.
+
+\includegraphics[width=12cm, center]{Fig6}
+
+\hypertarget{auc-area-under-the-curve}{%
+\subsubsection{AUC (Area under the
+curve)}\label{auc-area-under-the-curve}}
+
+Damit ein Algorithmus sinvoll ist, muss seine AUC \textgreater{} 0.5
+sein.
+
+D.h. Die rote Kurve im obigen Bild ist ein besseres Modell als die
+grüne, da die Fläche unter der Kurve größer ist. Im Idealfall beträgt
+die Fläche unter der Kurve 1.\clearpage
+
+\hypertarget{einfuxfchrung-in-machine-learning}{%
+\section{Einführung in Machine
+Learning}\label{einfuxfchrung-in-machine-learning}}
+
+\hypertarget{grundlagen}{%
+\subsection{Grundlagen}\label{grundlagen}}
+
+Unterbereich von Künstlicher Intelligenz. Hauptthemen:
+
+\begin{itemize}
+\tightlist
+\item
+  Algorithmen\\
+\item
+  Wie lernt eine Maschine?\\
+\item
+  Wie prüft man nach Qualität?\\
+\item
+  Was ist gut? Was ist das Ziel eines Algorithmus?
+\end{itemize}
+
+Im WS haben wir grundsätzlich 2 Ziele Modelle kennengelernt:
+
+\begin{itemize}
+\tightlist
+\item
+  ``normale'' Regression (Werte + Bereiche)\\
+\item
+  logistische Regression (0 \textless-\textgreater{} 1)
+\end{itemize}
+
+Wichtiger Qualitätsfaktor: Zeit
+
+Beispiel Auto: Wie lange habe ich, um zu erkennen, ob etwas vor mit ist
+oder nicht? Muss ich erkennen, was vor mir ist? Wie detailliert?
+
+Unterschiedlich für jedes UseCase
+
+\hypertarget{fehlerberechnungen}{%
+\subsection{Fehlerberechnungen}\label{fehlerberechnungen}}
+
+\begin{itemize}
+\tightlist
+\item
+  Konfidenzintervalle
+\item
+  Prädiktionsintervalle
+\end{itemize}
+
+Grenzverteilungssatz -\textgreater{} desto mehr Messungen n
+-\textgreater{} desto kleiner wird der Fehler um den wahren Mittelwert
+
+Bei Simulierungen wird die Anzahl n virtuell vervielfacht. Bringt
+extreme \textbf{genauigkeit}.
+
+\hypertarget{konfidenzintervalle-berechnung-in-r}{%
+\subsubsection{Konfidenzintervalle berechnung in
+R}\label{konfidenzintervalle-berechnung-in-r}}
+
+\includegraphics[width=12cm, center]{Fig12}
+
+\hypertarget{besipiel-haribo}{%
+\subsubsection{Besipiel Haribo}\label{besipiel-haribo}}
+
+\hypertarget{messfehler}{%
+\subsubsection{Messfehler}\label{messfehler}}
+
+Es gibt verschiedene Messfehler: - Stichprobengröße: Lässt sich
+minimieren - Messfehler - x Range: Schmaler bereich -\textgreater{}
+geringerer Fehler
+
+\hypertarget{klassifikation-1}{%
+\subsubsection{Klassifikation}\label{klassifikation-1}}
+
+\begin{itemize}
+\tightlist
+\item
+  True positive
+\item
+  True negative
+\item
+  False positive
+\item
+  False negative -\textgreater{} Type II Error -\textgreater{} Sehr
+  schlecht und kann nicht so gut in den Griff bekommen werden.
+\end{itemize}
+
+\includegraphics[width=12cm, center]{Fig13}
+
+Accuracy sagt vie wiele Beobachtungen man richtig erwischt erwischt.
+
+Precision wie viele positives man als positive eingestuft hat.
+
+\hypertarget{anpassung-von-modellen}{%
+\subsubsection{Anpassung von Modellen}\label{anpassung-von-modellen}}
+
+Numerische Optimierungsalgorithmen ändern das Outcome nicht wirklich. Es
+ändern sich auf der 10-11 nachkommastelle Werte.
+
+Resampling, (\textbf{ändern der Daten}) da kann sich schon mehr ändern
+-\textgreater{} 4-5 nachkommastelle.
+
+\begin{itemize}
+\tightlist
+\item
+  Underfitting: zu ungenaues Modell
+\item
+  Overfitting: Man verkomliziert das Modell zu sehr.
+\end{itemize}
+
+Interpolation: Zieh eine Linie durch \textbf{alle} Punkte.
+
+\includegraphics[width=12cm, center]{Fig14}
+
+\includegraphics[width=12cm, center]{Fig15}\clearpage \clearpage
+
+\appendix
+
+\hypertarget{einfuxfchrung-in-r}{%
+\section{Einführung in R}\label{einfuxfchrung-in-r}}
+
+\hypertarget{operatoren-und-funktionen}{%
+\subsection{Operatoren und Funktionen}\label{operatoren-und-funktionen}}
+
+\hypertarget{arithmetische-operatoren}{%
+\subsubsection{Arithmetische
+Operatoren}\label{arithmetische-operatoren}}
+
+Die Operatoren in R sind folgende:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\SpecialCharTok{+}\NormalTok{               Addition}
+\SpecialCharTok{{-}}\NormalTok{               Subtraktion}
+\SpecialCharTok{*}\NormalTok{               Multiplikation}
+\SpecialCharTok{/}\NormalTok{               Division}
+\SpecialCharTok{\^{}}\NormalTok{ oder }\SpecialCharTok{**}\NormalTok{       Potenz}
+
+
+\NormalTok{x }\SpecialCharTok{\%*\%}\NormalTok{ y         Matrixmultiplikation }\FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{, }\DecValTok{3}\NormalTok{) }\SpecialCharTok{\%*\%} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{) }\SpecialCharTok{==} \DecValTok{22}
+\NormalTok{x }\SpecialCharTok{\%\%}\NormalTok{ y          }\FunctionTok{Modulo}\NormalTok{ (x mod y) }\DecValTok{5} \SpecialCharTok{\%\%} \DecValTok{2} \SpecialCharTok{==} \DecValTok{1}
+\NormalTok{x }\SpecialCharTok{\%/\%}\NormalTok{ y         Ganzzahlige Teilung}\SpecialCharTok{:} \DecValTok{5} \SpecialCharTok{\%/\%} \DecValTok{2} \SpecialCharTok{==} \DecValTok{2}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{logische-operatoren-und-funktionen}{%
+\subsubsection{Logische Operatoren und
+Funktionen}\label{logische-operatoren-und-funktionen}}
+
+Für logische Operationen stehen einem folgende Operatoren zur Verfügung:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\SpecialCharTok{\textless{}}\NormalTok{               Kleiner}
+\SpecialCharTok{\textless{}=}\NormalTok{              Kleiner gleich}
+\SpecialCharTok{\textgreater{}}\NormalTok{               Grösser}
+\SpecialCharTok{\textgreater{}=}\NormalTok{              Grösser gleich}
+\SpecialCharTok{==}              \FunctionTok{Gleich}\NormalTok{ (testet auf Äquivalenz)}
+\SpecialCharTok{!=}\NormalTok{              Ungleich}
+\SpecialCharTok{!}\NormalTok{x              Nicht }\FunctionTok{x}\NormalTok{ (Verneinung)}
+\NormalTok{x }\SpecialCharTok{|}\NormalTok{ y           x ODER y}
+\NormalTok{x }\SpecialCharTok{\&}\NormalTok{ y           x UND y}
+\end{Highlighting}
+\end{Shaded}
+
+Außerdem gibt es noch zwei weitere Funktionen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{xor}\NormalTok{(x, y)       Exklusives }\FunctionTok{ODER}\NormalTok{ (entweder }\ControlFlowTok{in}\NormalTok{ x oder y, aber nicht }\ControlFlowTok{in}\NormalTok{ beiden)}
+\FunctionTok{isTRUE}\NormalTok{(x)       testet ob x wahr ist}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{numerische-funktionen}{%
+\subsubsection{Numerische Funktionen}\label{numerische-funktionen}}
+
+Gewisse numerische Operationen sind in R als Funktionen ausgeführt:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{abs}\NormalTok{(x)                Betrag}
+\FunctionTok{sqrt}\NormalTok{(x)               Quadratwurzel}
+\FunctionTok{ceiling}\NormalTok{(x)            Aufrunden}\SpecialCharTok{:} \FunctionTok{ceiling}\NormalTok{(}\FloatTok{3.475}\NormalTok{) ist }\DecValTok{4}
+\FunctionTok{floor}\NormalTok{(x)              Abrunden}\SpecialCharTok{:} \FunctionTok{floor}\NormalTok{(}\FloatTok{3.475}\NormalTok{) ist }\DecValTok{3}
+\FunctionTok{round}\NormalTok{(x, }\AttributeTok{digits =}\NormalTok{ n)  Runden}\SpecialCharTok{:} \FunctionTok{round}\NormalTok{(}\FloatTok{3.475}\NormalTok{, }\AttributeTok{digits =} \DecValTok{2}\NormalTok{) ist }\FloatTok{3.48}
+\FunctionTok{log}\NormalTok{(x)                Natürlicher Logarithmus}
+\FunctionTok{log}\NormalTok{(x, }\AttributeTok{base =}\NormalTok{ n)      Logarithmus zur Basis n}
+\FunctionTok{log2}\NormalTok{(x)               Logarithmus zur Basis }\DecValTok{2}
+\FunctionTok{log10}\NormalTok{(x)              Logarithmus zur Basis }\DecValTok{10}
+\FunctionTok{exp}\NormalTok{(x)                Exponentialfunktion}\SpecialCharTok{:}\NormalTok{ e}\SpecialCharTok{\^{}}\NormalTok{x}
+\end{Highlighting}
+\end{Shaded}
+
+In R ist jeder Operator in Wirklichkeit eine Funktion, nur mit
+spezieller Notation. Um sie in normaler Notation nützen zu können,
+können sie mit Backticks umgeben werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DecValTok{2} \SpecialCharTok{+} \DecValTok{3}
+
+\StringTok{\textasciigrave{}}\AttributeTok{+}\StringTok{\textasciigrave{}}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{r-als-taschenrechner}{%
+\subsubsection{R als Taschenrechner}\label{r-als-taschenrechner}}
+
+Ähnlich wie in Python kann man mit R ganz einfach rechnen.
+Kommentarzeilen beginnen mit einem Hashtag (\texttt{\#}) und werden
+nicht evaluiert:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Addition}
+\DecValTok{5} \SpecialCharTok{+} \DecValTok{5}
+
+\CommentTok{\# Subtraktion}
+\DecValTok{6} \SpecialCharTok{{-}} \DecValTok{5}
+
+\CommentTok{\# Multiplikation}
+\DecValTok{34} \SpecialCharTok{*} \DecValTok{54}
+
+\CommentTok{\# Division}
+\DecValTok{4} \SpecialCharTok{/} \DecValTok{9}
+\NormalTok{(}\DecValTok{5} \SpecialCharTok{+} \DecValTok{5}\NormalTok{) }\SpecialCharTok{/} \DecValTok{2}
+
+\CommentTok{\# Klammernregel}
+\DecValTok{1}\SpecialCharTok{/}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ (}\DecValTok{12} \SpecialCharTok{+} \DecValTok{14} \SpecialCharTok{+} \DecValTok{10}\NormalTok{)}
+
+\CommentTok{\# Potenzieren}
+\DecValTok{3}\SpecialCharTok{\^{}}\DecValTok{2}
+\FunctionTok{exp}\NormalTok{(}\DecValTok{5}\NormalTok{) }\CommentTok{\# geht auch mit der Exponentialfunktion}
+
+\CommentTok{\# Ganzzahlige Division}
+\CommentTok{\# 28 ist vier mal durch 6 teilbar, mit Rest 4 }
+\DecValTok{28} \SpecialCharTok{\%\%} \DecValTok{6} \CommentTok{\# Rest: 4}
+\DecValTok{28} \SpecialCharTok{\%/\%} \DecValTok{6} \CommentTok{\#  vier mal teilbar}
+
+\CommentTok{\# Logische Operatoren}
+\DecValTok{3} \SpecialCharTok{\textgreater{}} \DecValTok{2}
+\DecValTok{4} \SpecialCharTok{\textgreater{}} \DecValTok{5}
+\DecValTok{4} \SpecialCharTok{\textless{}} \DecValTok{4}
+\DecValTok{4} \SpecialCharTok{\textless{}=} \DecValTok{4}
+\DecValTok{5} \SpecialCharTok{\textgreater{}=} \DecValTok{5}
+\DecValTok{6} \SpecialCharTok{!=} \DecValTok{6}
+\DecValTok{9} \SpecialCharTok{==} \DecValTok{5} \SpecialCharTok{+} \DecValTok{4}
+
+\SpecialCharTok{!}\NormalTok{(}\DecValTok{3} \SpecialCharTok{\textgreater{}} \DecValTok{2}\NormalTok{)}
+\NormalTok{(}\DecValTok{3} \SpecialCharTok{\textgreater{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\&}\NormalTok{ (}\DecValTok{4} \SpecialCharTok{\textgreater{}} \DecValTok{5}\NormalTok{) }\CommentTok{\# UND}
+\NormalTok{(}\DecValTok{3} \SpecialCharTok{\textgreater{}} \DecValTok{2}\NormalTok{) }\SpecialCharTok{|}\NormalTok{ (}\DecValTok{4} \SpecialCharTok{\textgreater{}} \DecValTok{5}\NormalTok{) }\CommentTok{\# ODER}
+\FunctionTok{xor}\NormalTok{((}\DecValTok{3} \SpecialCharTok{\textgreater{}} \DecValTok{2}\NormalTok{), (}\DecValTok{4} \SpecialCharTok{\textgreater{}} \DecValTok{5}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{statistische-funktionen}{%
+\subsubsection{Statistische Funktionen}\label{statistische-funktionen}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{mean}\NormalTok{(x, }\AttributeTok{na.rm =} \ConstantTok{FALSE}\NormalTok{)  Mittelwert}
+\FunctionTok{sd}\NormalTok{(x)                   Standardabweichung}
+\FunctionTok{var}\NormalTok{(x)                  Varianz}
+
+\FunctionTok{median}\NormalTok{(x)               Median}
+
+\FunctionTok{sum}\NormalTok{(x)                  Summe}
+\FunctionTok{min}\NormalTok{(x)                  Minimalwert}
+\FunctionTok{max}\NormalTok{(x)                  Maximalwert}
+\FunctionTok{range}\NormalTok{(x)                Gibt Minimum und Maximum von x aus}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{weitere-funktionen}{%
+\subsubsection{Weitere Funktionen}\label{weitere-funktionen}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{c}\NormalTok{()                     Erstellt }\FunctionTok{einen}\NormalTok{ (leeren) Vektor}
+\FunctionTok{seq}\NormalTok{(from, to, by)       Generiert eine Sequenz}
+
+\FunctionTok{rep}\NormalTok{(x, times, each)     Wiederholt x }
+\NormalTok{                          times}\SpecialCharTok{:}\NormalTok{ die Sequenz wird n}\SpecialCharTok{{-}}\NormalTok{mal wiederholt}
+\NormalTok{                          each}\SpecialCharTok{:}\NormalTok{ jedes Element wird n}\SpecialCharTok{{-}}\NormalTok{mal wiederholt}
+                          
+\FunctionTok{head}\NormalTok{(x, }\AttributeTok{n =} \DecValTok{6}\NormalTok{)          Gibt die ersten }\DecValTok{6}\NormalTok{ Elemente von x zurück}
+\FunctionTok{tail}\NormalTok{(x, }\AttributeTok{n =} \DecValTok{6}\NormalTok{)          Gibt die letzten }\DecValTok{6}\NormalTok{ Elemente von x zurück}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{variablen}{%
+\subsection{Variablen}\label{variablen}}
+
+\hypertarget{variablennamen}{%
+\subsubsection{Variablennamen}\label{variablennamen}}
+
+Beispiele:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Was gehen würde ...}
+\NormalTok{snake\_case\_variable}
+\NormalTok{camelCaseVariable}
+
+\NormalTok{variable.with.periods}
+\NormalTok{variable.With\_noConventions}
+
+\NormalTok{x\_mean}
+\NormalTok{x\_sd}
+
+\NormalTok{anzahl\_personen}
+\NormalTok{alter}
+
+\NormalTok{p                       Nicht gut}
+\NormalTok{a                       Nicht gut}
+
+\CommentTok{\# und was nicht gehen würde:}
+\NormalTok{x mittelwert}
+\NormalTok{sd von x}
+\end{Highlighting}
+\end{Shaded}
+
+Man kann in R sowohl \texttt{\textless{}-} - als auch \texttt{=} für die
+Zuweisung verwenden.\texttt{=} ist ausserdem das Symbol für die
+Zuweisung von Argumenten (für Funktionen), und wenn man
+\texttt{\textless{}-} verwendet, ist es klar, dass man eine Variable
+definiert.
+
+\hypertarget{ausgeben-in-die-konsole}{%
+\subsubsection{Ausgeben in die Konsole}\label{ausgeben-in-die-konsole}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Unsere Variable:}
+\NormalTok{my\_var }\OtherTok{\textless{}{-}} \DecValTok{4}
+
+\CommentTok{\# Ausgeben mit:}
+\FunctionTok{print}\NormalTok{(my\_var)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# oder:}
+\NormalTok{my\_var}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+
+\hypertarget{beispiel}{%
+\subsubsection{Beispiel}\label{beispiel}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vektor }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{11}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\NormalTok{summe }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(vektor)}
+
+\NormalTok{mittelwert }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(vektor)}
+\NormalTok{mittelwert}
+
+\NormalTok{gerundeter\_mittelwert }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(mittelwert, }\AttributeTok{digits =} \DecValTok{1}\NormalTok{)}
+\NormalTok{gerundeter\_mittelwert}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{funktionen}{%
+\subsection{Funktionen}\label{funktionen}}
+
+\hypertarget{beispiel-1}{%
+\subsubsection{Beispiel}\label{beispiel-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{function\_name}\NormalTok{(arg1, }\AttributeTok{arg2 =}\NormalTok{ val2)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{funktionsaufruf}{%
+\subsubsection{Funktionsaufruf}\label{funktionsaufruf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FloatTok{23.192}\NormalTok{, }\FloatTok{21.454}\NormalTok{, }\FloatTok{24.677}\NormalTok{)}
+\FunctionTok{round}\NormalTok{(x, }\AttributeTok{digits =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 23.2 21.5 24.7
+\end{verbatim}
+
+\hypertarget{default-werte}{%
+\subsubsection{Default-Werte}\label{default-werte}}
+
+Funktionen können Default-Werte haben; diese können beim Aufruf der
+Funktion weggelassen werden. Zum Beispiel die Funktion \texttt{seq()}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{seq}\NormalTok{()}
+\FunctionTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\FunctionTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\FunctionTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{20}\NormalTok{)}
+\FunctionTok{seq}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{10}\NormalTok{, }\AttributeTok{length.out =} \DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{datentypen}{%
+\subsection{Datentypen}\label{datentypen}}
+
+Der grundlegende Datentyp von R ist der Vektor. Alle anderen Datentypen
+bauen auf diesem auf. Vektoren können in drei Typen geteilt werden:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{numeric vectors}: Etwa ganze Zahlen \texttt{integer} und
+  reelle Zahlen \texttt{double}.
+\item
+  \textbf{character vectors}: \ldots{} bestehen aus Zeichen, wie z.B.
+  \texttt{"character"} und
+  \texttt{\textquotesingle{}vectors\textquotesingle{}}.
+\item
+  \textbf{logical vectors}
+\end{itemize}
+
+Zusätzlich besitzen sie noch 3 Eigenschaften:
+
+\begin{itemize}
+\tightlist
+\item
+  Typ: \texttt{typeof()}
+\item
+  Länge: \texttt{length()}
+\item
+  Attribute: \texttt{attributes()}, sprich zusätzliche Informationen
+  (Metadaten)
+\end{itemize}
+
+Vektoren können mit den oben gezeigten Methoden wie \texttt{c()} oder
+mit speziellen Methoden wie \texttt{seq()} oder \texttt{rep()} erzeugt
+werden.
+
+\hypertarget{numeric-vectors}{%
+\subsubsection{Numeric vectors}\label{numeric-vectors}}
+
+\hypertarget{grundlegendes}{%
+\paragraph{Grundlegendes}\label{grundlegendes}}
+
+Numeric Vectors können entweder aus ganzen Zahlen oder reellen Zahlen
+gebildet werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FloatTok{2.5}\NormalTok{, }\FloatTok{4.5}\NormalTok{)     Deklaration}
+\FunctionTok{typeof}\NormalTok{(numbers)               Ausgabe des }\FunctionTok{Typs}\NormalTok{ (}\OtherTok{{-}\textgreater{}}\NormalTok{ double)}
+\FunctionTok{length}\NormalTok{(numbers)               Ausgabe der Länge (}\OtherTok{{-}\textgreater{}} \DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{zugriff}{%
+\paragraph{Zugriff}\label{zugriff}}
+
+Wir können die einzelnen Elemente eines Vektor mit {[}{]} auswählen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{numbers }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FloatTok{2.5}\NormalTok{, }\FloatTok{4.5}\NormalTok{) }
+
+\CommentTok{\# Das erste Element:}
+\NormalTok{numbers[}\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Das zweite Element:}
+\NormalTok{numbers[}\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Index des letzten Elements (von 1 ausgehend)}
+\FunctionTok{length}\NormalTok{(numbers)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Zugriff auf das letzte Element}
+\NormalTok{numbers[}\FunctionTok{length}\NormalTok{(numbers)]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Mit {-} (Minus) können wir ein Element weglassen:}
+\NormalTok{numbers[}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.5 4.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Bilden einer Teilsequenz aus numbers:}
+\NormalTok{numbers[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.0 2.5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Weglassen des ersten und dritten Elements weglassen:}
+\NormalTok{numbers[}\SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{3}\NormalTok{)]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2.5
+\end{verbatim}
+
+\hypertarget{matrizen}{%
+\paragraph{Matrizen}\label{matrizen}}
+
+Matrizen sind spezielle Vektoren:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{:}\DecValTok{8}
+
+\CommentTok{\# Bilden der Matrix durch Zuweisen des dim{-}Attributes:}
+\FunctionTok{dim}\NormalTok{(x) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{2}\NormalTok{, }\DecValTok{4}\NormalTok{)}
+
+\CommentTok{\# oder mit:}
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{8}\NormalTok{, }\AttributeTok{nrow =} \DecValTok{2}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{4}\NormalTok{, }\AttributeTok{byrow =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{m}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    3    5    7
+## [2,]    2    4    6    8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# byrow ändert, wie die Matrix gefüllt wird (standardmäßig FALSE)}
+\NormalTok{m2 }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{8}\NormalTok{, }\AttributeTok{nrow =} \DecValTok{2}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{4}\NormalTok{, }\AttributeTok{byrow =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{m2}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    4
+## [2,]    5    6    7    8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Transponieren:}
+\NormalTok{(m\_transponiert }\OtherTok{\textless{}{-}} \FunctionTok{t}\NormalTok{(m))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1] [,2]
+## [1,]    1    2
+## [2,]    3    4
+## [3,]    5    6
+## [4,]    7    8
+\end{verbatim}
+
+Indizieren:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m1[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{]                Zeile }\DecValTok{1}\NormalTok{, Spalte }\DecValTok{1}
+\NormalTok{m1[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{]                Zeile }\DecValTok{1}\NormalTok{, Spalte }\DecValTok{2}
+\NormalTok{m1[}\DecValTok{2}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\DecValTok{1}\NormalTok{]              Zeilen }\DecValTok{2}\NormalTok{ bis }\DecValTok{3}\NormalTok{, Spalte }\DecValTok{1}
+
+\NormalTok{m1[, }\DecValTok{1}\NormalTok{]                 Alle Zeilen, Spalte }\DecValTok{1}
+\NormalTok{m1[}\DecValTok{2}\NormalTok{, ]                 Zeile }\DecValTok{2}\NormalTok{, Alle Spalten}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{vektorisierung}{%
+\paragraph{Vektorisierung}\label{vektorisierung}}
+
+Alle Operatoren wirken elementweise auf Vektoren:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x1 }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}
+\NormalTok{x2 }\OtherTok{\textless{}{-}} \DecValTok{11}\SpecialCharTok{:}\DecValTok{20}
+
+\NormalTok{x1 }\SpecialCharTok{+} \DecValTok{2}
+\CommentTok{\#\textgreater{} [1] 2 3}
+
+\NormalTok{x1 }\SpecialCharTok{+}\NormalTok{ x2}
+\CommentTok{\#\textgreater{} [1] 1 2 3}
+
+\NormalTok{x1 }\SpecialCharTok{*}\NormalTok{ x2}
+\CommentTok{\#\textgreater{} x1 x2 }
+\CommentTok{\#\textgreater{}  2 11}
+\end{Highlighting}
+\end{Shaded}
+
+Dasselbe gilt für Funktionen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x1 }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}
+
+\NormalTok{x1}\SpecialCharTok{\^{}}\DecValTok{2}
+\CommentTok{\#\textgreater{}  [1]   1   4   9  16  25  36  49  64  81 100}
+
+\FunctionTok{exp}\NormalTok{(x1)}
+\CommentTok{\#\textgreater{}  [1]     2.718282     7.389056    20.085537    54.598150   148.413159}
+\CommentTok{\#\textgreater{}  [6]   403.428793  1096.633158  2980.957987  8103.083928 22026.465795}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{missing-values}{%
+\paragraph{Missing Values}\label{missing-values}}
+
+Fehlende Werte werden mit \texttt{NA} deklariert.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{zahlen }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{12}\NormalTok{, }\DecValTok{13}\NormalTok{, }\DecValTok{15}\NormalTok{, }\DecValTok{11}\NormalTok{, }\ConstantTok{NA}\NormalTok{, }\DecValTok{10}\NormalTok{)}
+\NormalTok{zahlen}
+\CommentTok{\#\textgreater{} [1] 12 13 15 11 NA 10}
+\end{Highlighting}
+\end{Shaded}
+
+Überprüfen mit \texttt{is.na()}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{is.na}\NormalTok{(zahlen)}
+\CommentTok{\#\textgreater{} [1] FALSE FALSE FALSE FALSE  TRUE FALSE}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{character-vectors}{%
+\subsubsection{Character Vectors}\label{character-vectors}}
+
+\hypertarget{grundlegendes-1}{%
+\paragraph{Grundlegendes}\label{grundlegendes-1}}
+
+Character vectors (strings) werden benützt, um Text darzustellen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{(text }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"these are"}\NormalTok{, }\StringTok{"some strings"}\NormalTok{))}
+
+\CommentTok{\#\textgreater{} [1] "these are"    "some strings"}
+
+\FunctionTok{typeof}\NormalTok{(text)}
+\CommentTok{\#\textgreater{} [1] "character"}
+
+\FunctionTok{length}\NormalTok{(text)}
+\CommentTok{\#\textgreater{} [1] 2}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{zusammenfuxfcgen-von-character-vectors}{%
+\paragraph{Zusammenfügen von Character
+vectors}\label{zusammenfuxfcgen-von-character-vectors}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vorname }\OtherTok{\textless{}{-}} \StringTok{"Andreas"}
+\NormalTok{nachname }\OtherTok{\textless{}{-}} \StringTok{"Sünder"}
+\FunctionTok{paste}\NormalTok{(}\StringTok{"Mein Name ist:"}\NormalTok{, vorname, nachname, }\AttributeTok{sep =} \StringTok{" "}\NormalTok{)}
+\CommentTok{\#\textgreater{} [1] "Mein Name ist: Andreas Sünder"}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{logical-vectors}{%
+\subsubsection{Logical vectors}\label{logical-vectors}}
+
+Bei Logical vectors sind drei Werte möglich: \texttt{TRUE},
+\texttt{FALSE} oder \texttt{NA}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{log\_var }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\ConstantTok{TRUE}\NormalTok{, }\ConstantTok{FALSE}\NormalTok{, }\ConstantTok{TRUE}\NormalTok{)}
+\CommentTok{\#\textgreater{} [1]  TRUE FALSE  TRUE}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{factors}{%
+\subsubsection{Factors}\label{factors}}
+
+Ein factor ist ein Vektor von natürlichen Zahlen (integer vector), der
+mit zusätzlicher Information (Metadaten) versehen ist. Diese
+\texttt{attributes} sind die Objektklasse \texttt{factor} und die
+Faktorstufen \texttt{levels.} Ein Beispiel:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{geschlecht }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"male"}\NormalTok{, }\StringTok{"female"}\NormalTok{, }\StringTok{"male"}\NormalTok{, }\StringTok{"male"}\NormalTok{, }\StringTok{"female"}\NormalTok{)}
+\CommentTok{\#\textgreater{} [1] "male"   "female" "male"   "male"   "female"}
+
+\NormalTok{geschlecht }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(geschlecht, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{"female"}\NormalTok{, }\StringTok{"male"}\NormalTok{))}
+
+\FunctionTok{table}\NormalTok{(geschlecht)}
+\CommentTok{\#\textgreater{} geschlecht}
+\CommentTok{\#\textgreater{}   male female }
+\CommentTok{\#\textgreater{}      3      2}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{listen}{%
+\subsubsection{Listen}\label{listen}}
+
+\hypertarget{grundlegendes-2}{%
+\paragraph{Grundlegendes}\label{grundlegendes-2}}
+
+Anders als bei Vektoren müssen bei Listen die Elemente nicht denselben
+Datentyp besitzen:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, }\StringTok{"a"}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\ConstantTok{TRUE}\NormalTok{, }\ConstantTok{FALSE}\NormalTok{, }\ConstantTok{TRUE}\NormalTok{), }\FunctionTok{c}\NormalTok{(}\FloatTok{2.3}\NormalTok{, }\FloatTok{5.9}\NormalTok{))}
+\CommentTok{\#\textgreater{} [[1]]}
+\CommentTok{\#\textgreater{} [1] 1 2 3}
+\CommentTok{\#\textgreater{} }
+\CommentTok{\#\textgreater{} [[2]]}
+\CommentTok{\#\textgreater{} [1] "a"}
+\CommentTok{\#\textgreater{} }
+\CommentTok{\#\textgreater{} [[3]]}
+\CommentTok{\#\textgreater{} [1]  TRUE FALSE  TRUE}
+\CommentTok{\#\textgreater{} }
+\CommentTok{\#\textgreater{} [[4]]}
+\CommentTok{\#\textgreater{} [1] 2.3 5.9}
+
+\FunctionTok{typeof}\NormalTok{(x)}
+\CommentTok{\#\textgreater{} [1] "list"}
+\end{Highlighting}
+\end{Shaded}
+
+Listen können ebenfalls indiziert werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x[}\DecValTok{1}\NormalTok{]}
+\CommentTok{\#\textgreater{} [[1]]}
+\CommentTok{\#\textgreater{} [1] 1 2 3}
+\NormalTok{x[}\DecValTok{2}\NormalTok{]}
+\CommentTok{\#\textgreater{} [[1]]}
+\CommentTok{\#\textgreater{} [1] "a"}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{named-lists}{%
+\paragraph{Named lists}\label{named-lists}}
+
+Viele statistische Funktionen liefern eine \texttt{named\ list} als
+Output:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\AttributeTok{int =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{,}
+          \AttributeTok{string =} \StringTok{"a"}\NormalTok{,}
+          \AttributeTok{log =} \FunctionTok{c}\NormalTok{(}\ConstantTok{TRUE}\NormalTok{, }\ConstantTok{FALSE}\NormalTok{, }\ConstantTok{TRUE}\NormalTok{),}
+          \AttributeTok{double =} \FunctionTok{c}\NormalTok{(}\FloatTok{2.3}\NormalTok{, }\FloatTok{5.9}\NormalTok{))}
+\CommentTok{\#\textgreater{} $int}
+\CommentTok{\#\textgreater{} [1] 1 2 3}
+\CommentTok{\#\textgreater{} }
+\CommentTok{\#\textgreater{} $string}
+\CommentTok{\#\textgreater{} [1] "a"}
+\CommentTok{\#\textgreater{} }
+\CommentTok{\#\textgreater{} $log}
+\CommentTok{\#\textgreater{} [1]  TRUE FALSE  TRUE}
+\CommentTok{\#\textgreater{} }
+\CommentTok{\#\textgreater{} $double}
+\CommentTok{\#\textgreater{} [1] 2.3 5.9}
+\end{Highlighting}
+\end{Shaded}
+
+Die Elemente können nun mit ihrem Namen über den \texttt{\$} Operator
+angesprochen werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x}\SpecialCharTok{$}\NormalTok{string}
+\CommentTok{\#\textgreater{} [1] "a"}
+\NormalTok{x}\SpecialCharTok{$}\NormalTok{double}
+\CommentTok{\#\textgreater{} [1] 2.3 5.9}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data-frames}{%
+\subsubsection{Data Frames}\label{data-frames}}
+
+\hypertarget{grundlegendes-3}{%
+\paragraph{Grundlegendes}\label{grundlegendes-3}}
+
+Ein Data Frame besteht aus Zeilen (rows) und Spalten (columns) und
+entspricht einem Datensatz. Technisch gesehen ist ein Data Frame eine
+Liste, deren Elemente gleichlange (equal-length) Vektoren sind. Die
+Vektoren selber können numeric, logical oder character Vektoren sein,
+oder natürlich Faktoren. Data Frame ist eine 2-dimensionale Struktur,
+und kann einerseits wie ein Vektor indiziert werden (genauer: wie eine
+Matrix), andererseits wie eine Liste.
+
+Data Frames werden in R mitels \texttt{data.frame()} erstellt. In
+RStudio bzw. dem \texttt{tidyverse}-Package werden Data Frames auch
+\texttt{tibbles} genannt. \texttt{tibbles} werden mit der Funktion
+\texttt{tibble()} erstellt, und stellen lediglich eine moderne Variante
+eines Data Frames dar.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{tibble}\NormalTok{(}\AttributeTok{geschlecht =} \FunctionTok{factor}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"male"}\NormalTok{, }\StringTok{"female"}\NormalTok{,}
+                                       \StringTok{"male"}\NormalTok{, }\StringTok{"male"}\NormalTok{,}
+                                       \StringTok{"female"}\NormalTok{)),}
+                 \AttributeTok{alter =} \FunctionTok{c}\NormalTok{(}\DecValTok{22}\NormalTok{, }\DecValTok{45}\NormalTok{, }\DecValTok{33}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{30}\NormalTok{))}
+\NormalTok{df}
+\CommentTok{\#\textgreater{} \# A tibble: 5 × 2}
+\CommentTok{\#\textgreater{}   geschlecht alter}
+\CommentTok{\#\textgreater{}   \textless{}fct\textgreater{}      \textless{}dbl\textgreater{}}
+\CommentTok{\#\textgreater{} 1 male          22}
+\CommentTok{\#\textgreater{} 2 female        45}
+\CommentTok{\#\textgreater{} 3 male          33}
+\CommentTok{\#\textgreater{} 4 male          27}
+\CommentTok{\#\textgreater{} 5 female        30}
+\end{Highlighting}
+\end{Shaded}
+
+Ein Data Frame hat die Attribute \texttt{names()} (dasselbe wie
+\texttt{colnames()}) und \texttt{rownames()}. Die Länge eines Data
+Frames ist die Länge der Liste, d.h. sie entspricht der Anzahl der
+Spalten. Diese kann mit \texttt{ncol()} abgefragt werden;
+\texttt{nrow()} gibt die Anzahl der Zeilen.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ncol}\NormalTok{(df)}
+\CommentTok{\#\textgreater{} [1] 2}
+\FunctionTok{nrow}\NormalTok{(df)}
+\CommentTok{\#\textgreater{} [1] 5}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data-frame-subsetting}{%
+\paragraph{Data Frame Subsetting}\label{data-frame-subsetting}}
+
+Ein Data Frame kann wie eine Liste (mittels \texttt{\$}) oder wie eine
+Matrix (mittels \texttt{{[}{]}}) indiziert werden:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{geschlecht}
+\CommentTok{\#\textgreater{} [1] male   female male   male   female}
+\CommentTok{\#\textgreater{} Levels: female male}
+
+\NormalTok{df[}\StringTok{"alter"}\NormalTok{]}
+\CommentTok{\#\textgreater{} \# A tibble: 5 × 1}
+\CommentTok{\#\textgreater{}   alter}
+\CommentTok{\#\textgreater{}   \textless{}dbl\textgreater{}}
+\CommentTok{\#\textgreater{} 1    22}
+\CommentTok{\#\textgreater{} 2    45}
+\CommentTok{\#\textgreater{} 3    33}
+\CommentTok{\#\textgreater{} 4    27}
+\CommentTok{\#\textgreater{} 5    30}
+
+\NormalTok{df[}\DecValTok{1}\NormalTok{]}
+\CommentTok{\#\textgreater{} \# A tibble: 5 × 1}
+\CommentTok{\#\textgreater{}   geschlecht}
+\CommentTok{\#\textgreater{}   \textless{}fct\textgreater{}     }
+\CommentTok{\#\textgreater{} 1 male      }
+\CommentTok{\#\textgreater{} 2 female    }
+\CommentTok{\#\textgreater{} 3 male      }
+\CommentTok{\#\textgreater{} 4 male      }
+\CommentTok{\#\textgreater{} 5 female}
+
+\NormalTok{df[}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{]}
+\CommentTok{\#\textgreater{} \# A tibble: 1 × 1}
+\CommentTok{\#\textgreater{}   geschlecht}
+\CommentTok{\#\textgreater{}   \textless{}fct\textgreater{}     }
+\CommentTok{\#\textgreater{} 1 male}
+
+\NormalTok{df[ , ]}
+\CommentTok{\#\textgreater{} \# A tibble: 5 × 2}
+\CommentTok{\#\textgreater{}   geschlecht alter}
+\CommentTok{\#\textgreater{}   \textless{}fct\textgreater{}      \textless{}dbl\textgreater{}}
+\CommentTok{\#\textgreater{} 1 male          22}
+\CommentTok{\#\textgreater{} 2 female        45}
+\CommentTok{\#\textgreater{} 3 male          33}
+\CommentTok{\#\textgreater{} 4 male          27}
+\CommentTok{\#\textgreater{} 5 female        30}
+
+\NormalTok{df[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{, ]}
+\CommentTok{\#\textgreater{} \# A tibble: 3 × 2}
+\CommentTok{\#\textgreater{}   geschlecht alter}
+\CommentTok{\#\textgreater{}   \textless{}fct\textgreater{}      \textless{}dbl\textgreater{}}
+\CommentTok{\#\textgreater{} 1 male          22}
+\CommentTok{\#\textgreater{} 2 female        45}
+\CommentTok{\#\textgreater{} 3 male          33}
+\end{Highlighting}
+\end{Shaded}
+
+Da die Spalten ebenfalls Vektoren sind, kann man diese auch indizieren:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{geschlecht[}\DecValTok{1}\NormalTok{]}
+\CommentTok{\#\textgreater{} [1] male}
+\CommentTok{\#\textgreater{} Levels: female male}
+
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{alter[}\DecValTok{2}\SpecialCharTok{:}\DecValTok{3}\NormalTok{]}
+\CommentTok{\#\textgreater{} [1] 45 33}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

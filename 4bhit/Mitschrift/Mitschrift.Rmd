@@ -1,0 +1,1471 @@
+---
+title: "Data Science Mitschrift"
+author: "Andreas Sünder, Benjamin Kissinger, Yusuf Akalin"
+date: "17.01.2022"
+output:
+  pdf_document:
+    includes:
+      in_header: ../header.tex
+    keep_tex:  true
+      
+    toc: true
+    toc_depth: 5
+
+    number_sections: true
+---
+
+\graphicspath{ {./Bilder/} }
+
+\newenvironment{conditions}[1][wobei:]
+  {#1 \begin{tabular}[t]{>{$}l<{$} @{${} \quad ... \quad {}$} l}}
+  {\end{tabular}\\[\belowdisplayskip]}
+
+```{r setup, echo = FALSE, message=FALSE}
+knitr::opts_chunk$set(warning = FALSE)
+
+panel.hist <- function(x, ...)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(usr[1:2], 0, 1.5) )
+  h <- hist(x, plot = FALSE)
+  breaks <- h$breaks; nB <- length(breaks)
+  y <- h$counts; y <- y/max(y)
+  rect(breaks[-nB], 0, breaks[-1], y, col = "lightblue", ...)
+}
+
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r <- abs(cor(x, y))
+  txt <- format(c(r, 0.123456789), digits = digits)[1]
+  txt <- paste0(prefix, txt)
+  if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+  text(0.5, 0.5, txt, cex = cex.cor * r,col=ifelse(r>=0.5,"red","black"))
+}
+```
+  
+\clearpage
+
+# Einführung in Data Science
+
+## Begriffserklärungen
+
+- **Artificial Intelligence**: Teilbereich der Informatik mit Automatisierung von Prozessen mit dem Ziel, menschliche Intelligenzleistung wie das Lernen oder das Lösen von Problemen nachzuahmen.
+
+- **Machine Learning**: Teilbereich der AI zum Erkennen von Mustern und Gesetzmäßigkeiten basierend auf Datenbanken und Algorithmen.
+
+- **Deep Learning (DL)**: Optimierung künstlicher neuronaler Netze mit mehreren Zwischenschichten zwischen Eingabe- und Ausgabeschicht.
+
+- **Data Science**: ist die Verknüpfung von Statistik und Softwareentwicklung Pipelining von Datenbanksystemen und Maschinellem Lernen zur Erkennung von Mustern und und Gesetzmäßigkeiten in großen Datenengen.
+
+- **Data Mining (DM):** statistische und ML Algorithmen, die in großen Datenbanken Trends und Vernetzungen suchen.
+
+## Arten und Ziele der Datenanalyse
+
+Die **expolorative Datenanalyse** beschäftigt sich mit der Organisation, Zusammenfassung und Visualisierung von Daten. Dazu werden am häufigsten Grafiken, Tabellen und Schäzer als Hilsmittel verwendet. Durch eine weitere Analyse und Modellierung der Daten können **Modelle gebildet** und **Hypothesen** getestet werden.
+\clearpage
+
+# Skalen und Visualisierung
+
+## Messung und Skalierung von Variablen
+
+Variablen können aufgrund ihrer Eigenschaften in zwei Kategorien geteilt werden:
+
+- kategoriale Variablen; diskrete Kategorien
+  + nominal; ohne Ordnung
+  + ordinal; geordnet
+  
+- metrisch; numerische Zählungen und Messungen
+  + intervallskaliert; geordnet, Differenzen interpretierbar, aber Quotienten NICHT ($-\infty$, $\infty$)
+  + rational skaliert; geordnet, Differenzen und Quotienten interpretierbar; ($0$, $\infty$), absolute Null
+  
+## Häufigkeiten
+
+\tcolorbox
+Eine **Häufigkeitsverteilung** (oder **Häufigkeitstabelle**) gibt die Anzahlen oder die Anteils aller bestimmten \underline{Kategorien} zugeordneten Beobachtungen wieder.
+
+\vspace{2mm}
+
+Unterschieden werden folgende Unterteilungen:
+
+- absolute Häufigkeiten
+- relative Häufigkeiten
+- kummulative (absolute bzw. relative) Häufigkeiten
+
+\endtcolorbox
+
+Ein Beispiel:
+
+\includegraphics[width=12cm, center]{Fig1}
+
+### Bar charts
+
+Balken- bzw. Säulendiagramme (**bar charts**) visualisieren absolute oder relative kumulative und nichtkumulative Häufigkeiten von Kategorien (empfehlenswert in 90% aller Fälle) das menschliche Auge und Gehirn kann kleine Unterschiede bei Längen erkennen und gut unterscheiden; Flächen sind nur bis zu 20-25 verschiedenen Balken sinnvolle Informationsträger, dann für die Augen zu verwirrend.
+
+Ein Beispiel:
+
+```{r, fig.show="hold", out.width="50%"}
+barplot(VADeaths); barplot(VADeaths,beside = TRUE)
+```
+
+### Cleveland dot charts
+
+**Cleveland dot charts** visualisieren absolute oder relative Häufigkeiten. Das menschliche Auge und Gehirn kann kleine Unterschiede bei Längen erkennen und gut unterscheiden; wenn viele Häufigkeiten dargestellt werden müssen (mehr als 25) und die Flächen von Balkendiagrammen nicht geeignet sind, reduziert man die Information auf Punkte
+
+Ein Beispiel:
+
+```{r, fig.align = 'center', fig.height=8}
+dotchart(VADeaths,main="Death Rates in Virginia - 1940")
+```
+
+### Pie charts
+
+Tortendigramme (**pie charts**) visualisieren ausschließlich relative Häufigkeiten - absolute Häufigkeiten können damit nicht sinnvoll dargestellt werden. Relative Häufigkeiten werden auf die entsprechenden Anteile von 360°umgerechnet und als Kreissegmente eingezeichnet: das menschliche Auge und Gehirn kann kleine Unterschiede bei Winkeln aber schlecht erkennen und unterscheiden.
+
+Ein Beispiel:
+
+```{r, fig.align = 'center', fig.height=4}
+pie.sales <- c(0.12, 0.3, 0.26, 0.16, 0.04, 0.12)
+pie(pie.sales)
+```
+
+## Charakteristiken von metrischen Daten
+
+\tcolorbox
+
+1. **Lage (Lokation)**: beschreibt die Mitte/den Durchschnitt der Daten Modalität beschreibt, wieviele Datenzentren es gibt
+
+2. **Streuung (Variation)**: misst, wie stark die Daten um den Mittelwert schwanken
+
+3. **Symmetrie/Schiefe**: beschreibt, ob die Daten annähernd symmetrisch oder deutlich schief zum oberen oder unteren Rand hin verlaufen
+
+4. **Ränder und Ausreißer**: Ränder sind die Werte in der weitesten Entfernung vom Zentrum der Daten. Ausreißer sind Beobachtungen, die ein anderes Verhalten als die übrigen Daten zeigen
+
+5. **Zeit**: Prozesse, deren Eigenschaften sich abhängig von der Zeit ändern
+
+\endtcolorbox
+
+### Exkurs: Quantile
+
+\tcolorbox
+Quantile werden aus der geordneten Stichprobe $x_{(1)} = \text{min}, \, x_{(2)}, \, ... \, , \, x_{(n-1)}, \, = \text{max}$ berechnet:
+
+$$\text{Quantil eines Wertes x} \, = \cfrac{\text{Anzahl der Werte} \leq x}{\text{Gesamtazhal der Werte}}$$
+\endtcolorbox
+
+Mittels der Funktion `quantile()` lassen sich die einzelnen Quantile eines Datensatzes anzeigen:
+
+```{r}
+x <- x <- c(5, 3, 8, 2, 6, 1, 9, 4)
+quantile(x = x, probs = c(0.2, 0.4, 0.5, 0.6, 0.8))
+```
+
+Wichtige Quantile sind:
+
+\tcolorbox
+
+**Median** = 50% Quantil.
+
+\vspace{2mm}
+
+Die \underline{Quartile} sind die 25% und 75% Qunatile. Die Daten werden durch die Quartile und den Median "geviertelt". Ein robustes Maß für die Variation ist basiert auf den Quartile, die Interquartilsdistanz:
+$$\text{IQD} = X_{0.75} - X_{0.25}$$
+
+\endtcolorbox
+
+### Lageschätzer (Lokation)
+
+\tcolorbox
+
+\begin{center}
+$$
+\begin{array}{l|c|l}
+&\text{Formel}&\text{Code}\\
+\hline
+\hline
+&&\\[-0.25cm]
+\text{(Arithmetischer) Mittelwert} & \displaystyle \bar x =  \frac{1}{n}\sum_{i=1}^n x_i & \text{mean(x)}\\
+\hline
+\text{gewichteter Mittelwert} &  \displaystyle \bar x = \sum_{i=1}^n w_i x_i & \\
+& \sum_{i=1}^n{w_i}=1 & \\
+\text{getrimmter Mittelwert} &  \displaystyle \bar x =  \frac{1}{n}\sum_{i=q_{trim}}^{q_{1-trim}} x_{(i)}  & mean(x,trim=p)\\
+\hline
+\text{Geometrischer Mittelwert} &\displaystyle \sqrt[n]{\prod_{i=1}^n x_i} & exp(mean(log(x))) \\
+
+ 
+
+\hline
+&&\\[-0.25cm]
+\text{Harmonischer Mittelwert} & \displaystyle \frac{n}{\sum_{i=1}^n \frac{1}{x_i}} & 1/mean(1/x) \\
+\end{array}  
+$$
+\end{center}
+
+\endtcolorbox
+
+\tcolorbox
+
+\begin{center}
+$$
+\begin{array}{l|c|l}
+&\text{Formel}&\text{Code}\\
+\hline
+\hline
+&&\\[-0.25cm]
+\text{Median} & \text{mittlerer Wert} & \\ & \text{der geordneten Daten}&median\\
+\hline
+\text{Modus} & \text{Wert mit der} & \\ & \text{größten Häufigkeit} & - \\
+\hline
+&&\\[-0.25cm]
+\text{Midrange} & \displaystyle \frac{\max x_i + \min x_i}{2} &-\\
+\end{array} 
+$$
+\end{center}
+
+\endtcolorbox
+
+\tcolorbox
+Der \underline{Median} liegt genau in der Mitte der Datenverteilung und ist robust, sprich, er wird von Ausreißern nicht beeinflusst.
+
+Bei einer
+
+  - ungeraden Anzahl von Werten ist der Median genau der Wert in der Mitte
+  - geraden Anzahl ist der Median der Mittelwert zwischen den beiden Werten in der Mitte
+
+der Daten.
+\endtcolorbox
+
+\tcolorbox
+Der **Modus** (**Modalwert**) ist der Wert mit der höchsten Wahrscheinlichkeit der zugrundliegenden Verteilung. Bei einer diskreten oder kategorialen Stichprobe ist es die am häufigsten vorkommende Kategorie.
+
+\vspace{1mm}
+
+Wichtig ist hierbei zu beachten, dass es auch mehrere \underline{Modi} geben kann, wodurch zwischen \underline{Unimodalität}, \underline{Bimodalität} und \underline{Multimodalität} unterschieden werden kann:
+
+\vspace{5mm}
+
+```{r, fig.show='hold', fig.height=7, out.width='33%', echo=FALSE}
+umod <- c(1, 2, 3, 3, 3, 4, 5, 6, 6, 6, 6, 8, 8, 8, 9, 10)
+bmod <- c(1, 2, 3, 3, 3, 4, 5, 6, 7, 7, 7, 8, 8, 8, 9, 10)
+mmod <-c (1, 2, 2, 2, 3, 4, 5, 5, 5, 5, 5, 6, 7, 8, 9, 9, 9, 9, 9, 10, 11)
+hist(umod, main = 'Unimodalität', cex.main = 2.25)
+hist(bmod, main = 'Bimodalität', cex.main = 2.25)
+hist(mmod, main = 'Multimodalität', cex.main = 2.25)
+```
+\endtcolorbox
+
+### Streuungsschätzer (Variation)
+
+\includegraphics[width=12cm, center]{Fig4}
+
+\tcolorbox
+Die **Varianz** entspricht der Abweichung der einzelnen Werte von Mittelwert und Quadrat der Standardabweichung wird sehr wohl von Ausreißern beeinflusst.
+\endtcolorbox
+
+\tcolorbox
+Die **Standardabweichung** ist die Streubreite der Werte rund um den Mittelwert und Quadratwurzelder Varianz).
+\endtcolorbox
+
+\tcolorbox
+Der **Interquartilsdistanz** (auch IQR genannt) ist als die Differenz zwischen dem oberen (75%-) und dem unteren (25%-) Quartil definiert.
+\endtcolorbox
+
+\tcolorbox
+Die **Spannweite** $x_{max} - x_{min}$ misst den Abstand zwischen dem größten und kleinsten Messwert und schätzt damit ab, welche Größenordnung von Werten von den Messungen insgesamt "über-spannt" wird.
+\endtcolorbox
+
+### Symmetrie/Schiefe
+
+\tcolorbox
+Eine Funktion wird als **symmetrisch** bezeichnet, wenn sie durch Spiegelung eines Teilverlaufs an einer Achse oder einem Punkt zustande kommt. Dabei kann wieder unterschieden werden:
+
+```{r, fig.show='hold', fig.width=4, out.width='50%', echo=FALSE}
+x <- seq(-4, 4, length=100)
+y <- dnorm(x)
+
+plot(x, y, type='l', main="normal verteilt symmetrisch", xlab="Beobachtungen", ylab="Dichte")
+plot(c(x, x+8), c(y, y), type='l', main="bimodal symmetrisch", xlab="Beobachtungen", ylab="Dichte")
+```
+\endtcolorbox
+
+\tcolorbox
+Wenn die Verteilung der Daten in einer Richtung \underline{steiler} und der anderen Richtung \underline{schief auslaufend} verläuft, so spricht man dann von einer **schiefen Verteilung**. Je nachdem, in welche Richtung der lange Rand schief ausläuft, wird diese dann entweder \underline{rechtschief} oder \underline{linksschief} bezeichnet:
+
+```{r, fig.show='hold', fig.width=4, out.width='50%', echo = FALSE}
+rechtsSchief <- dbeta(seq(0, 1, by=0.02), 2, 5)
+linksSchief <- dbeta(seq(0, 1, by=0.02), 5, 2)
+plot(rechtsSchief, type="l", main="rechtsschief", xlab = "Beobachtungen", ylab = "Dichte")
+plot(linksSchief, type="l", main="linksschief", xlab = "Beobachtungen", ylab = "Dichte")
+```
+\endtcolorbox
+
+### Beispiel: Körpergrößen
+
+Um die einzelnen Maße der Lokation und Streuung noch besser zu verstehen, soll das Beispiel "Körpergößen" näher betrachtet werden. Definieren wir nun die Werte:
+
+ |
+--- | ---
+Körpergrößen | 1.82, 1.75, 1.89, 176, 1.65, 1.71
+
+Entsprechender R-Code:
+
+```{r}
+kg<-c(1.82, 1.75, 1.89, 176, 1.65, 1.71)
+```
+
+Schnell wird klar, dass ein Ausreißer, der Wert $176$, vorhanden ist. Nun soll das Verhalten der einzelnen Maße näher betrachtet werden.
+
+**Mittelwert:**
+
+```{r, eval = FALSE}
+mean(kg) # 30.80333
+```
+
+Man sieht hier deutlich, dass der arithmetische Mittelwert sehr sensitiv gegenüber Ausreißern ist. Des Weiteren wird dieser auch durch Asymmetrie und Rändern zerstört bzw. verzerrt. Schaut man sich das Bild des Medians an, so sieht man hier einen klaren Unterschied:
+
+**Median:**
+
+```{r, eval = FALSE}
+median(kg) # 1.785
+```
+
+Der eine Ausreißer tut dem Median offenbar nicht wirklich weh, er ist also \underline{robust}. Selbst ein Anteil von 50% an fehlerhaften Werten beeinflussen den Median nur geringfügig.
+
+**Varianz:**
+
+In diesem Fall besitzt die Varianz einen sehr hohen Wert, da der eine Ausreißer (gemäß der zu anwendenden Formel) insgesamt sechs Mal quadriert wird:
+
+```{r, eval = FALSE}
+var(kg) # 5059.704
+```
+
+**Standardabweichung:**
+
+... dementsprechend ist die Standardabweichung auch nicht robust:
+
+```{r, eval = FALSE}
+sd(kg) # 71.1316
+```
+
+**Interquartilsdistanz:**
+
+Durch seine Eigenschaften ist die IQR nicht robust:
+
+```{r, eval = FALSE}
+IQR(kg) # 0.1525
+```
+
+## Darstellung von metrischen Daten
+
+### Boxplot
+
+\tcolorbox
+Der **Boxplot** stellt den Median als Mitte der Box, die Quartile als die beiden Enden der Box dar, was die mittleren 50 % der Daten klar kennzeichnet. Darüber hinaus werden durch die Whiskers, die maximal das 1,5-fache des Quartilsabstands umfassen, die zentralen 95 % der Daten abgesteckt, wenn die Daten normalverteilt wären. Daher werden die Werte außerhalb der Whiskers als potentielle Ausreißer bezeichnet. Wenn die Verteilung der Daten aber inherent schief oder von schweren Rändern geprägt ist, ist diese Ausreißereinteilung jedenfalls falsch.
+
+Ein Beispiel:
+
+```{r, fig.align='center', fig.width=5, fig.height=3}
+boxplot(airquality$Ozone,
+  main = "Mean ozone in parts per billion at Roosevelt Island",
+  xlab = "Parts Per Billion",
+  ylab = "Ozone",
+  horizontal = TRUE,
+  cex.main = 1.1
+)
+```
+\endtcolorbox
+
+### Histogramme und stetige Dichteschätzer
+
+\tcolorbox
+Ein **Histogramm** ist ein Graph, der sich aus Balken zusammensetzt, deren Höhe die Anzahl der Anteil der Daten innerhalb von Teilintervallen ist.
+
+\vspace{2mm}
+
+Ein **Kerndichteschätzer** ist ein Graph, der die Verteilung der Daten durch eine Approximation mithilfe von Näherungsfunktionen (Kernen) stetig verlaufend wiedergibt.
+
+Ein Beispiel:
+
+```{r, fig.align='center', out.width="60%"}
+daten <- airquality$Temp
+hist(daten, main="Histogramm", xlab="Beobachtungen", ylab="Häufigkeit", freq = FALSE);
+lines(density(daten))
+```
+
+Mit Histogrammen können Eigenschaften wie Modalität oder Symmetrie der Daten klar dargestellt werden.
+\endtcolorbox
+
+### Vergleich Histogramm und Boxplot
+
+Mit dem eigenen Datensatz `oscars` soll hier gezeigt werden, dass es durchaus sinnvoll ist, ein Histogramm und ein Boxplot kombiniert darzustellen:
+
+```{r, fig.align='center', fig.show='hold', out.width='70%', echo=FALSE}
+oscars <- read.csv2("Daten/oscars.csv", sep=",")
+oscars2 <- oscars$Age [oscars$Age>=0 & oscars$Age <=70]
+hist(oscars2, breaks=9, main="Oscars", xlab="Alter der Gewinner/in", ylab="Häufigkeit")
+```
+
+```{r, fig.align='center', fig.show='hold', fig.height=3, out.width='70%', echo=FALSE}
+boxplot(oscars2, main="Oscars", xlab="Alter der Gewinner/in", horizontal = TRUE)
+```
+
+### Quantil-Quantil-Plot (QQ-Plot)
+
+\tcolorbox
+Ein **Quantil-Quantil-Plot (QQ-Plot)** ist ein Graph, der die Verteilung der Daten einer Stichprobe mit der Verteilung der Daten einer anderen Stichprobe oder einer theoretischen Verteilung der Datenwerte (z. B. Standardnormalverteilung) vergleicht.
+\endtcolorbox
+
+Ein Beispiel:
+
+```{r, include=FALSE, results='hide'}
+set.seed(14522)
+normaleDaten<-rnorm(200)
+gammaDaten<-rgamma(200,shape=5,rate=10)
+```
+
+```{r, fig.show="hold", out.width="50%"}
+qqnorm(normaleDaten); qqline(normaleDaten,col=2)
+qqnorm(gammaDaten); qqline(gammaDaten,col=2)
+```
+
+\clearpage
+
+ # Abhängigkeit von 2 oder mehr Variablen
+
+## Zusammenhänge zwischen 2 metrischen Variablen
+
+\tcolorbox
+Wenn man von Regression spricht, versucht man zu analysieren, eine beobachtete **abhängige** Variable durch eine (oder mehrere, siehe unten) **unabhängige** Variablen zu erklären. Bei linearer Regression geht man hierbei von einem linearen Modell aus:
+
+$$y = \alpha \; + \beta \; \cdot \; x$$
+
+\vspace{3mm}
+\includegraphics[width=10cm, center]{Fig7}
+\vspace{3mm}
+
+Allgemein legt man einer solchen Anpassung, welche Modellierung mittels linearer Regression genannt wird, eine **Regressionsgleichung** zugrunde:
+
+$$y_i = \alpha \; + \; \beta \; \cdot \; x_i \; + \; \epsilon_i$$
+
+\begin{conditions}
+\alpha  &   Achsenabschnitt (y-Wert, wenn x den Wert 0 annimmt) \\
+\beta   &   Steigung der Gerade (y steigt um $\beta$ Einheiten, wenn x um 1 vergrößert wird) \\
+\epsilon_i & Residuenfehler der Punkte (vertikale Entferung der Gerade vom tatsächlichen Punkt)
+\end{conditions}
+
+Diese Parameter haben auch eine mathematische Bedeutung:
+
+\vspace{2mm}
+
+\begin{conditions}
+\alpha  &   Wert auf der y-Achse, an dem die Gerade die y-Achse schneidet, bzw. Startwert für x=0 \\
+\beta > 0   &   ist die Gerade steigend \\
+\beta < 0   &   ist die Gerade fallend
+\end{conditions}
+
+\endtcolorbox
+
+\tcolorbox
+**Korrelation**
+
+Als standardisiertes Maß fürr die lineare Abhängigkeit wird der **Pearson Korrelationskoeffizient** definiert:
+
+$$r = r(X,Y) = \cfrac{\widehat{cov}(X, Y)}{s(X) \, \cdot \, s(Y)}$$
+
+Bei diesem Koeffizient wird die Achsenskalierung herausgerechnet und dadurch nimmt er ausschließlich
+Wert zwischen -1 und 1 an:
+
+```{r, fig.show='hold', fig.width=4, out.width='33%', echo=FALSE}
+library(ggplot2)
+library(patchwork)
+
+set.seed(20200616)
+
+n_pts <- 20
+x <- round(runif(n_pts) * 10, 1)
+
+low_pos <- data.frame(x = x, y = x)
+high_pos <- data.frame(x = x, y = x + runif(n_pts, 0, 4))
+perf_pos <- data.frame(x = x, y = x + runif(n_pts, 0, 10))
+
+plot(low_pos, main = "r = 0.5", lwd=2.0)
+plot(perf_pos, main = "r = 0.9", lwd=2.0)
+plot(high_pos, main = "r = 1.0", lwd=2.0)
+```
+
+\begin{conditions}
+negatives Vorzeichen & fallender Zusammenhang \\
+positives Vorzeichen & steigender Zusammenhang
+\end{conditions}
+
+Faustregel zur Interpreation des Korrelationskoeffizienten:
+
+\vspace{2mm}
+
+\begin{conditions}
+r_{(s)} = 0   &     keine Korrelation \\
+0 \le |r_{(s)}| \leq 0.5 & schwache Korrelation \\
+0.5 \le |r_{(s)}| \leq 0.75 & mittlere Korrelation \\
+0.75 \le |r_{(s)}| \le 1 & starke Korrelation \\
+r_{(s)} = 1   &     vollständige Korrelation
+\end{conditions}
+
+\endtcolorbox
+
+\clearpage
+
+## Multiple Regresion
+
+\tcolorbox
+Wenn wir anstatt nur einer unabhängigen erklärenden Variablen mehrere benutzen, gehen wir von
+simplen linearen Regressionsmodell zum multiplen linearen Regressionsmodell über:
+
+$$y_i = \alpha \, + \, \beta_1x_{1,i} \, + \, \beta_2x_{2,i} \, + \; ... \, + \beta_kx_{k,i} \, + \, \epsilon_i$$
+
+\endtcolorbox
+
+\tcolorbox
+**Annahmen und Voraussetzungen für multiple Regression:**
+
+(A1) Das Modell hat keinen systematischen Fehler.
+
+(A2) Die Fehlervarianz ist fur alle Beobachtungen gleich groß (homoskedastisch).
+
+(A3) Die Komponenten des Fehlerterms sind nicht korreliert.
+
+(A4) Der Modellfehler sei normalverteilt.
+
+(A5) Es gibt keine linearen Abhängigkeiten zwischen den Regressoren.
+\endtcolorbox
+
+### Beispiel mit dem Datensatz `state.x77`:
+
+Die ersten vier Annahmen können mit einem `pairs`-Plot analysiert werden:
+
+```{r}
+pairs(state.x77[,1:5], lower.panel = panel.smooth, upper.panel = panel.cor,
+diag.panel = panel.hist, las=1)
+```
+
+Man sieht hier deutlich, dass Life Expectancy und Illiteracy linear zusammenhängen, mit einem Korrelationskoeffizienten von 0.59. Bleiben beide Variablen im Modell drinnen, so würden diese unser Modell vollkommen zerstören. Daher muss eines von beiden raus.
+
+Murder und Life Expectancy bzw. Murder und Illiteracy dürfen korrelieren, da Murder die abhängige Variable darstellt.
+
+Entfernen wir nun Life Expectancy, schaut das so aus:
+
+```{r}
+pairs(state.x77[, c(1, 2, 3, 5)], lower.panel = panel.smooth, upper.panel = panel.cor,
+diag.panel = panel.hist, las=1)
+```
+
+\clearpage
+
+```{r}
+summary(lm(formula = Murder ~ .  - `Life Exp` - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+Dieses Modell ist für uns sehr schlecht, da bei drei Variablen die Irrtumswahrscheinlichkeit sehr hoch ist (bis 92 %!). Außerdem ist bei der Variable Income der Standard-Error größer als das Estimate selbst ist. Zusammen mit der extrem hohen Irrtumswahrscheinlichkeit kann diese Variable sehr schnell negativ werden.
+
+\tcolorbox
+**Fazit:** Dieses Modell ist für uns nicht geeignet!
+\endtcolorbox
+
+Schmeißen wir nun Illiteracy statt Life Expectancy raus:
+
+```{r}
+pairs(state.x77[, c(1, 2, 4, 5)], lower.panel = panel.smooth, upper.panel = panel.cor,
+diag.panel = panel.hist, las=1)
+```
+
+\clearpage
+
+```{r}
+summary(lm(formula = Murder ~ .  - Illiteracy - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+Dieses Modell ist nun viel besser als vorher (mit einem R-squared von 0.68 statt 0.54 vorher). Jedoch passt die Variable Income nach wie vor nicht. Mit einer Irrtumswahrscheinlichkeit von 68% ist diese nicht akzeptabel. Diese gehört also auch weg:
+
+```{r}
+summary(lm(formula = Murder ~ . - Income- Illiteracy - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+Dieses Modell ist nun das beste. Die Modellgleichung ist nun folgende:
+
+$$
+\text{Murder} = 154.7 + 2.413 \cdot 10^{-4} \cdot \text{Population} - 2.093 \cdot \text{Life Exp}
+$$
+
+```{r, fig.align='center', fig.height=6, fig.width=6}
+par(mfrow = c(2,2))
+plot(lm(formula = Murder ~ . - Income- Illiteracy - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+\clearpage
+
+## Varianzanalyse
+
+### Einfache Varianzanalysen (ANOVA)
+
+Derweil waren y und x werte numerisch ==> man sagt Zahlenwerte vorher.
+Wenn wir als y numerische Variable haben, aber als x kategorische Variablen ==> ANOVA
+
+\tcolorbox
+**Beispiel:**
+
+Acker testen ==> in mehrere Teile teilen und jeder Teil hat jeweils unterschiedliche Bedinungen und wird unterschiedlich behandelt (anderer Dünger). Danach vergleichen, wie gut Ertrag war.
+
+$$ y = \alpha + \beta \cdot x $$
+
+\begin{conditions}
+x & kategroische Variable die Dünger oder Natur kodiert \\
+y & Ertrag \\
+\alpha & Mittlerer Ertrag aller Ackerflächen \\
+\beta & Steigung
+\end{conditions}
+
+x kann 0 oder 1 annehmen ==> natur oder dünger ==> bestimmte Abweichung zum Referenzwert alpha (oben oder unten) ==> im Mittel müssel sie sich ausgleichen. Jetzt müsste man sich fragen, ab was für einen Wert es sich lohnt, in Dünger, bzw. Werbung aber dafür Naturboden zu investieren.
+
+**Im Allgemeinen gilt:**
+
+$$ y_{ij} = Mü + \alpha_i + e_{ij} $$
+
+\begin{conditions}
+Mü & Gesamtmittelwert \\
+\alpha_i & Abstand der Gruppenmittelwerte von µ \\
+e_{ij} & Fehler=Residuen
+\end{conditions}
+\endtcolorbox
+
+ANOVA kann auch als Hypthesentests verwendet werden ==> Ist in allen Gruppen der Mittelwert gleich oder nicht?
+Anderes Beispiel: Vergleich von Körpergrößen von Jahrgängen ==> sollte steigen:
+
+- H0: Im Mittel die selbe Körpergröße 
+- H1: Wenigstens in einem Jahrgang (=Kategorie) ist der Mittelwert unterschiedlich.
+
+Das ist die allgemeine Methode, die Unterschiede der mittleren Werte von bekannten Kategorien zu ermitteln.
+
+\tcolorbox
+**Voraussetzungen für ANOVA:**
+
+(A1) die Daten sind annähernd symmetrisch
+
+(A2) die Daten haben nur einen Modus (unimodal)
+
+(A3) die Daten enthalten keine Ausreißer
+\endtcolorbox
+
+Ab Seite 56 im Skript **statische Modelle**: Beispiele und Plots. Wenn oberes und unteres klaren Abstand haben ==> klare Aussage mit ANOVA ==> mind. 2 Kategorien unterscheiden sich!
+Im Optimalfall keine Überschneidungen ==> klare Aussage!
+
+\includegraphics[width=15cm, center]{Fig8}
+
+Wenn wirs mit freien Auge nicht erkennen können: ANOVA als Hypthesentests sinnvoll.
+Wie funktionieren diese Tests?
+
+\tcolorbox
+**Hypothesentests**
+
+\includegraphics[width=10cm, center]{Fig9}
+
+\begin{conditions}
+RSS1 & Schwankung in den Stichproben \\
+RSS0 & Schwankung zwischen den Stichproben
+\end{conditions}
+
+Zu RSS1: Diese Striche sind ja auch nur mehrere Punkte (Messwerte) an einer x-Koordinate, Strich ist der Mittelwert *in* von diesen Messpunkten ==> Messgenauigkeit von Messungen
+
+Zu RSS0: Mittelwert von beiden Messpunkten
+
+Optimallfall: RSS0 groß und RSS1 klein.
+\endtcolorbox
+
+Die Varianzen werden verglichen mit:
+
+$$ RSS0/RSS1 $$
+
+Um gegen Ausreißer vorzugehen, kann man mit Rängen arbeiten ==> Messwerte durchnummerieren und Median nehmen ==> Median robust gegen Ausreißer.
+
+### Zweiweg Varianzanalyse (ANOVA)
+Wir fügen eine kategoriale Variable hinzu, fragen aber immer noch nach demselben y-Wert:
+
+\includegraphics[width=10cm, center]{Fig10}
+
+wobei:
+
+- Mü=y=Gesamtmittelwert
+- alpha_i=Abstand der Gruppenmittelwerte von x1-Gruppe i vom Gesamtmittelwert
+- Beta_j=Abstand der Gruppenmittelwerte von x2-Gruppe j vom Gruppenmittelwert alpha_i
+
+[Grafik: Zweiweg-Varianzanalyse]
+
+**Was kann nun passieren?**
+
+- y~1: Alles hat den selben Mittelwert - Nur der Mittelwert der gesamten Daten wird als Mittelwert in allen Teilkategorien angenommen
+
+- y ~ X1: Nur X1 ist relevant und führt zu einer Aufteilung der Mittelwerte
+
+- y ~ X2: Nur X2 ist relevant und führt zu einer Aufteilung der Mittelwerte
+
+- X1 + X2:  X1 und X2 führen zu einer Aufteilung der Mittelwerte (Echtes ANOVA-Modell)
+
+- X1 * X2: X1 und X2 führen zu einer Aufteilung der Mittelwerte in den unterschiedlichen Teilkategorien und zusätzlich addieren sich die Effekte nicht (Z.B. Säure Boden und Säure Dünger für Pflanze - gut, aber basischer Boden und basischer Dünger für Pflanze - schlecht).
+
+==>
+
+- links: additiv
+- rechts: interaktiv
+
+Ab Seite 66 ==> Beispiele
+
+Nicht mehr parallel ==> interaktiv
+
+Modellselektion nach Komplexität:
+
+1. Y ~ X1*X2
+2. Y ~ X1+X2
+3. Y ~ X1 und Y ~ X2
+4. Y ~ 1
+
+**Interactionplot in R:**
+
+```{r, eval = FALSE}
+interaction.plot(x.factor*(x1)* = ..., trace.factor*(x2)* = ..., response*(y)* = ...)
+```
+
+**ANOVA models in R:**
+
+\includegraphics[width=10cm, center]{Fig11}
+
+\clearpage
+
+## Klassifikation
+
+Bei der Regression --> numerische Variablen 
+Bei der Klassifikation --> kategoriale Variablen  
+
+D.h. bei der Klassifikation werden numerischen Werten (x-Achse) Kategorien zugewiesen (y-Achse).
+
+## binäre Klassifikation
+
+### binomial:
+2 mögliche Ausgänge, die zufallsbehaftet sind (0 und 1, geschafft und nicht geschafft, ...).
+Die Wahrscheinlichkeit bleibt dabei gleich (Beispiel mit 6 Stiften: bei jedem zufälligen Ziehen eines Stiftes muss die Wahrscheinlichkeit 1/6 sein. Eine Wahrscheinlichkeitsänderung, z.B. durch Ablage eines Stiftes, darf nicht stattfinden!)  
+Es wird mit einer vorgegebenen Anzahl an Experimenten, die unabhängig voneinander sind, gearbeitet. (Ist zum Beispiel nicht der Fall bei Infektionskrankheiten.)
+
+
+### logistische Regression
+
+\includegraphics[width=12cm, center]{Fig5}
+
+Wird auch als verallgemeinerte Regression bezeichnet (engl.: Generalized Linear Model, R: glm(y~x, data, link = binomial("logit"))).
+
+\clearpage
+
+# Wahrscheinlichkeit & Chancen
+
+| Wahrscheinlichkeit | Chancen                                      |
+| ------------------ | -------------------------------------------- |
+| 90%, 5%, 0.75, ... | 3:5 (3/8 : 5/8), 1:3 (1/4 : 3/4), ...        |
+|  $0 \leq |x| \leq 1$       | Wahrscheinlichkeit : Gegenwahrscheinlichkeit |
+
+## Chancenverhältnis
+engl. Odds Ratio, OR
+
+$$
+\frac{\frac{3}{5}}{\frac{1}{3}} = \frac{9}{5} = 1.8
+$$
+
+Die Chance 3:5 ist 1.8 mal so groß wie die Chance 1:3.
+
+$$
+logit(y) = \color{red} \alpha + \color{blue} \beta_1 \cdot x_1 + \color{blue} \beta_2 \cdot x_2 + ... + \epsilon_i
+$$
+<span style="color:blue">$\beta$</span> : log-Odds-Ratio (e<span style="color:blue"><sup>$\beta$<sub>1</sub></sup></span>)  
+<span style="color:red">$\alpha$</span> : Chance 1 vs 0 (e<span style="color:red"><sup>$\alpha$</sup></span>)
+
+OR > 1 ... erhöhtes Risiko  
+OR = 1 ... gleichbleibendes Risiko  
+OR < 1 ... geringeres Risiko  
+\clearpage
+
+# Fehlerklassifikation
+
+Vergleich von Realität und Vorhersage des Modells: 
+
+Falschpositiv: "Signifikanz", kann reguliert werden.
+Falschnegativ: "Schärfe" (engl. "Power"), kann weder reguliert noch exakt vorhergesagt werden.
+
+## Receiver Operating Curve (ROC)
+
+Vergleicht TP mit FN  
+Alles, was unter der Referenzlinie (Diagonale) ist, ist unbrauchbar, da das Modell öfter falsche Ergebnisse liefert.
+
+\includegraphics[width=12cm, center]{Fig6}
+
+### AUC (Area under the curve)
+
+Damit ein Algorithmus sinvoll ist, muss seine AUC > 0.5 sein.
+
+D.h. Die rote Kurve im obigen Bild ist ein besseres Modell als die grüne, da die Fläche unter der Kurve größer ist. Im Idealfall beträgt die Fläche unter der Kurve 1.\clearpage
+
+# Einführung in Machine Learning
+
+## Grundlagen
+
+Unterbereich von Künstlicher Intelligenz. Hauptthemen:
+
+- Algorithmen  
+- Wie lernt eine Maschine?  
+- Wie prüft man nach Qualität?  
+- Was ist gut? Was ist das Ziel eines Algorithmus?  
+
+Im WS haben wir grundsätzlich 2 Ziele Modelle kennengelernt:
+
+- "normale" Regression (Werte + Bereiche)  
+- logistische Regression (0 <-> 1)  
+
+Wichtiger Qualitätsfaktor: Zeit  
+
+Beispiel Auto: Wie lange habe ich, um zu erkennen, ob etwas vor mit ist oder nicht? Muss ich erkennen, was vor mir ist? Wie detailliert?
+
+Unterschiedlich für jedes UseCase
+
+## Fehlerberechnungen
+
+- Konfidenzintervalle
+- Prädiktionsintervalle
+
+Grenzverteilungssatz -> desto mehr Messungen n -> desto kleiner wird der Fehler um den wahren Mittelwert
+
+Bei Simulierungen wird die Anzahl n virtuell vervielfacht. Bringt extreme **genauigkeit**.
+
+### Konfidenzintervalle berechnung in R
+
+\includegraphics[width=12cm, center]{Fig12}
+
+### Besipiel Haribo
+
+### Messfehler
+
+Es gibt verschiedene Messfehler:
+- Stichprobengröße: Lässt sich minimieren
+- Messfehler
+- x Range: Schmaler bereich -> geringerer Fehler
+
+### Klassifikation
+
+- True positive
+- True negative
+- False positive
+- False negative -> Type II Error -> Sehr schlecht und kann nicht so gut in den Griff bekommen werden.
+
+\includegraphics[width=12cm, center]{Fig13}
+
+Accuracy sagt vie wiele Beobachtungen man richtig erwischt erwischt.
+
+Precision wie viele positives man als positive eingestuft hat.
+
+### Anpassung von Modellen
+
+Numerische Optimierungsalgorithmen ändern das Outcome nicht wirklich. Es ändern sich auf der 10-11 nachkommastelle Werte.
+
+Resampling, (**ändern der Daten**) da kann sich schon mehr ändern -> 4-5 nachkommastelle.
+
+- Underfitting: zu ungenaues Modell
+- Overfitting: Man verkomliziert das Modell zu sehr.
+
+Interpolation: Zieh eine Linie durch **alle** Punkte.
+
+\includegraphics[width=12cm, center]{Fig14}
+
+\includegraphics[width=12cm, center]{Fig15}\clearpage
+\clearpage
+
+\appendix
+
+# Einführung in R
+
+## Operatoren und Funktionen
+
+### Arithmetische Operatoren
+
+Die Operatoren in R sind folgende:
+
+```{r, eval = FALSE}
++               Addition
+-               Subtraktion
+*               Multiplikation
+/               Division
+^ oder **       Potenz
+
+
+x %*% y         Matrixmultiplikation c(5, 3) %*% c(2, 4) == 22
+x %% y          Modulo (x mod y) 5 %% 2 == 1
+x %/% y         Ganzzahlige Teilung: 5 %/% 2 == 2
+```
+
+### Logische Operatoren und Funktionen
+
+Für logische Operationen stehen einem folgende Operatoren zur Verfügung:
+
+```{r, eval = FALSE}
+<               Kleiner
+<=              Kleiner gleich
+>               Grösser
+>=              Grösser gleich
+==              Gleich (testet auf Äquivalenz)
+!=              Ungleich
+!x              Nicht x (Verneinung)
+x | y           x ODER y
+x & y           x UND y
+```
+
+Außerdem gibt es noch zwei weitere Funktionen:
+
+```{r, eval = FALSE}
+xor(x, y)       Exklusives ODER (entweder in x oder y, aber nicht in beiden)
+isTRUE(x)       testet ob x wahr ist
+```
+
+### Numerische Funktionen
+
+Gewisse numerische Operationen sind in R als Funktionen ausgeführt:
+
+```{r, eval = FALSE}
+abs(x)                Betrag
+sqrt(x)               Quadratwurzel
+ceiling(x)            Aufrunden: ceiling(3.475) ist 4
+floor(x)              Abrunden: floor(3.475) ist 3
+round(x, digits = n)  Runden: round(3.475, digits = 2) ist 3.48
+log(x)                Natürlicher Logarithmus
+log(x, base = n)      Logarithmus zur Basis n
+log2(x)               Logarithmus zur Basis 2
+log10(x)              Logarithmus zur Basis 10
+exp(x)                Exponentialfunktion: e^x
+```
+
+In R ist jeder Operator in Wirklichkeit eine Funktion, nur mit spezieller Notation. Um sie in normaler Notation nützen zu können, können sie mit Backticks umgeben werden:
+
+```{r, eval = FALSE}
+2 + 3
+
+`+`(2, 3)
+```
+
+### R als Taschenrechner
+
+Ähnlich wie in Python kann man mit R ganz einfach rechnen. Kommentarzeilen beginnen mit einem Hashtag (`#`) und werden nicht evaluiert:
+
+```{r, eval = FALSE}
+# Addition
+5 + 5
+
+# Subtraktion
+6 - 5
+
+# Multiplikation
+34 * 54
+
+# Division
+4 / 9
+(5 + 5) / 2
+
+# Klammernregel
+1/2 * (12 + 14 + 10)
+
+# Potenzieren
+3^2
+exp(5) # geht auch mit der Exponentialfunktion
+
+# Ganzzahlige Division
+# 28 ist vier mal durch 6 teilbar, mit Rest 4 
+28 %% 6 # Rest: 4
+28 %/% 6 #  vier mal teilbar
+
+# Logische Operatoren
+3 > 2
+4 > 5
+4 < 4
+4 <= 4
+5 >= 5
+6 != 6
+9 == 5 + 4
+
+!(3 > 2)
+(3 > 2) & (4 > 5) # UND
+(3 > 2) | (4 > 5) # ODER
+xor((3 > 2), (4 > 5))
+```
+
+### Statistische Funktionen
+
+```{r, eval = FALSE}
+mean(x, na.rm = FALSE)  Mittelwert
+sd(x)                   Standardabweichung
+var(x)                  Varianz
+
+median(x)               Median
+
+sum(x)                  Summe
+min(x)                  Minimalwert
+max(x)                  Maximalwert
+range(x)                Gibt Minimum und Maximum von x aus
+```
+
+### Weitere Funktionen
+
+```{r, eval = FALSE}
+c()                     Erstellt einen (leeren) Vektor
+seq(from, to, by)       Generiert eine Sequenz
+
+rep(x, times, each)     Wiederholt x 
+                          times: die Sequenz wird n-mal wiederholt
+                          each: jedes Element wird n-mal wiederholt
+                          
+head(x, n = 6)          Gibt die ersten 6 Elemente von x zurück
+tail(x, n = 6)          Gibt die letzten 6 Elemente von x zurück
+```
+
+## Variablen
+
+### Variablennamen
+
+Beispiele:
+
+```{r, eval = FALSE}
+# Was gehen würde ...
+snake_case_variable
+camelCaseVariable
+
+variable.with.periods
+variable.With_noConventions
+
+x_mean
+x_sd
+
+anzahl_personen
+alter
+
+p                       Nicht gut
+a                       Nicht gut
+
+# und was nicht gehen würde:
+x mittelwert
+sd von x
+```
+
+Man kann in R sowohl `<-` - als auch `=` für die Zuweisung verwenden.`=` ist ausserdem das Symbol für die Zuweisung von Argumenten (für Funktionen), und wenn man `<-` verwendet, ist es klar, dass man eine Variable definiert.
+
+### Ausgeben in die Konsole
+
+```{r}
+# Unsere Variable:
+my_var <- 4
+
+# Ausgeben mit:
+print(my_var)
+
+# oder:
+my_var
+```
+
+### Beispiel
+```{r, eval = FALSE}
+vektor <- c(1, 3, 4, 7, 11, 2)
+summe <- sum(vektor)
+
+mittelwert <- mean(vektor)
+mittelwert
+
+gerundeter_mittelwert <- round(mittelwert, digits = 1)
+gerundeter_mittelwert
+```
+
+## Funktionen
+
+### Beispiel
+
+```{r, eval = FALSE}
+function_name(arg1, arg2 = val2)
+```
+
+### Funktionsaufruf
+
+```{r}
+x <- c(23.192, 21.454, 24.677)
+round(x, digits = 1)
+```
+
+### Default-Werte
+
+Funktionen können Default-Werte haben; diese können beim Aufruf der Funktion weggelassen werden. Zum Beispiel die Funktion `seq()`:
+
+```{r, eval = FALSE}
+seq()
+seq(1, 10)
+seq(1, 10, 2)
+seq(1, 10, 2, 20)
+seq(1, 10, length.out = 20)
+```
+
+## Datentypen
+
+Der grundlegende Datentyp von R ist der Vektor. Alle anderen Datentypen bauen auf diesem auf. Vektoren können in drei Typen geteilt werden:
+
+- **numeric vectors**: Etwa ganze Zahlen `integer` und reelle Zahlen `double`.
+- **character vectors**: ... bestehen aus Zeichen, wie z.B. `"character"` und `'vectors'`.
+- **logical vectors**
+
+Zusätzlich besitzen sie noch 3 Eigenschaften:
+
+- Typ: `typeof()`
+- Länge: `length()`
+- Attribute: `attributes()`, sprich zusätzliche Informationen (Metadaten)
+
+Vektoren können mit den oben gezeigten Methoden wie `c()` oder mit speziellen Methoden wie `seq()` oder `rep()` erzeugt werden.
+
+### Numeric vectors
+
+#### Grundlegendes
+
+Numeric Vectors können entweder aus ganzen Zahlen oder reellen Zahlen gebildet werden:
+
+```{r, eval = FALSE}
+numbers <- c(1, 2.5, 4.5)     Deklaration
+typeof(numbers)               Ausgabe des Typs (-> double)
+length(numbers)               Ausgabe der Länge (-> 3)
+```
+
+#### Zugriff
+
+Wir können die einzelnen Elemente eines Vektor mit [] auswählen:
+
+```{r}
+numbers <- c(1, 2.5, 4.5) 
+
+# Das erste Element:
+numbers[1]
+
+# Das zweite Element:
+numbers[2]
+
+# Index des letzten Elements (von 1 ausgehend)
+length(numbers)
+
+# Zugriff auf das letzte Element
+numbers[length(numbers)]
+
+# Mit - (Minus) können wir ein Element weglassen:
+numbers[-1]
+
+# Bilden einer Teilsequenz aus numbers:
+numbers[1:2]
+
+# Weglassen des ersten und dritten Elements weglassen:
+numbers[-c(1, 3)]
+```
+
+#### Matrizen
+
+Matrizen sind spezielle Vektoren:
+
+```{r}
+x <- 1:8
+
+# Bilden der Matrix durch Zuweisen des dim-Attributes:
+dim(x) <- c(2, 4)
+
+# oder mit:
+m <- matrix(1:8, nrow = 2, ncol = 4, byrow = FALSE)
+m
+
+# byrow ändert, wie die Matrix gefüllt wird (standardmäßig FALSE)
+m2 <- matrix(1:8, nrow = 2, ncol = 4, byrow = TRUE)
+m2
+
+# Transponieren:
+(m_transponiert <- t(m))
+```
+
+Indizieren:
+
+```{r, eval = FALSE}
+m1[1, 1]                Zeile 1, Spalte 1
+m1[1, 2]                Zeile 1, Spalte 2
+m1[2:3, 1]              Zeilen 2 bis 3, Spalte 1
+
+m1[, 1]                 Alle Zeilen, Spalte 1
+m1[2, ]                 Zeile 2, Alle Spalten
+```
+
+#### Vektorisierung
+
+Alle Operatoren wirken elementweise auf Vektoren:
+
+```{r, eval = FALSE}
+x1 <- 1:10
+x2 <- 11:20
+
+x1 + 2
+#> [1] 2 3
+
+x1 + x2
+#> [1] 1 2 3
+
+x1 * x2
+#> x1 x2 
+#>  2 11
+```
+
+Dasselbe gilt für Funktionen:
+
+```{r, eval = FALSE}
+x1 <- 1:10
+
+x1^2
+#>  [1]   1   4   9  16  25  36  49  64  81 100
+
+exp(x1)
+#>  [1]     2.718282     7.389056    20.085537    54.598150   148.413159
+#>  [6]   403.428793  1096.633158  2980.957987  8103.083928 22026.465795
+```
+
+#### Missing Values
+
+Fehlende Werte werden mit `NA` deklariert.
+
+```{r, eval = FALSE}
+zahlen <- c(12, 13, 15, 11, NA, 10)
+zahlen
+#> [1] 12 13 15 11 NA 10
+```
+
+Überprüfen mit `is.na()`:
+
+```{r, eval = FALSE}
+is.na(zahlen)
+#> [1] FALSE FALSE FALSE FALSE  TRUE FALSE
+```
+
+### Character Vectors
+
+#### Grundlegendes
+
+Character vectors (strings) werden benützt, um Text darzustellen.
+
+```{r, eval = FALSE}
+(text <- c("these are", "some strings"))
+
+#> [1] "these are"    "some strings"
+
+typeof(text)
+#> [1] "character"
+
+length(text)
+#> [1] 2
+```
+
+#### Zusammenfügen von Character vectors
+
+```{r, eval = FALSE}
+vorname <- "Andreas"
+nachname <- "Sünder"
+paste("Mein Name ist:", vorname, nachname, sep = " ")
+#> [1] "Mein Name ist: Andreas Sünder"
+```
+
+### Logical vectors
+
+Bei Logical vectors sind drei Werte möglich: `TRUE`, `FALSE` oder `NA`.
+
+```{r, eval = FALSE}
+log_var <- c(TRUE, FALSE, TRUE)
+#> [1]  TRUE FALSE  TRUE
+```
+
+### Factors
+
+Ein factor ist ein Vektor von natürlichen Zahlen (integer vector), der mit zusätzlicher Information (Metadaten) versehen ist. Diese `attributes` sind die Objektklasse `factor` und die Faktorstufen `levels.` Ein Beispiel:
+
+```{r, eval = FALSE}
+geschlecht <- c("male", "female", "male", "male", "female")
+#> [1] "male"   "female" "male"   "male"   "female"
+
+geschlecht <- factor(geschlecht, levels = c("female", "male"))
+
+table(geschlecht)
+#> geschlecht
+#>   male female 
+#>      3      2
+```
+
+### Listen
+
+#### Grundlegendes
+
+Anders als bei Vektoren müssen bei Listen die Elemente nicht denselben Datentyp besitzen:
+
+```{r, eval = FALSE}
+x <- list(1:3, "a", c(TRUE, FALSE, TRUE), c(2.3, 5.9))
+#> [[1]]
+#> [1] 1 2 3
+#> 
+#> [[2]]
+#> [1] "a"
+#> 
+#> [[3]]
+#> [1]  TRUE FALSE  TRUE
+#> 
+#> [[4]]
+#> [1] 2.3 5.9
+
+typeof(x)
+#> [1] "list"
+```
+
+Listen können ebenfalls indiziert werden:
+
+```{r, eval = FALSE}
+x[1]
+#> [[1]]
+#> [1] 1 2 3
+x[2]
+#> [[1]]
+#> [1] "a"
+```
+
+#### Named lists
+
+Viele statistische Funktionen liefern eine `named list` als Output:
+
+```{r, eval = FALSE}
+x <- list(int = 1:3,
+          string = "a",
+          log = c(TRUE, FALSE, TRUE),
+          double = c(2.3, 5.9))
+#> $int
+#> [1] 1 2 3
+#> 
+#> $string
+#> [1] "a"
+#> 
+#> $log
+#> [1]  TRUE FALSE  TRUE
+#> 
+#> $double
+#> [1] 2.3 5.9
+```
+
+Die Elemente können nun mit ihrem Namen über den `$` Operator angesprochen werden:
+
+```{r, eval = FALSE}
+x$string
+#> [1] "a"
+x$double
+#> [1] 2.3 5.9
+```
+
+### Data Frames
+
+#### Grundlegendes
+
+Ein Data Frame besteht aus Zeilen (rows) und Spalten (columns) und entspricht einem Datensatz. Technisch gesehen ist ein Data Frame eine Liste, deren Elemente gleichlange (equal-length) Vektoren sind. Die Vektoren selber können numeric, logical oder character Vektoren sein, oder natürlich Faktoren. Data Frame ist eine 2-dimensionale Struktur, und kann einerseits wie ein Vektor indiziert werden (genauer: wie eine Matrix), andererseits wie eine Liste.
+
+Data Frames werden in R mitels `data.frame()` erstellt. In RStudio bzw. dem `tidyverse`-Package werden Data Frames auch `tibbles` genannt. `tibbles` werden mit der Funktion `tibble()` erstellt, und stellen lediglich eine moderne Variante eines Data Frames dar.
+
+```{r, eval = FALSE}
+library(dplyr)
+
+df <- tibble(geschlecht = factor(c("male", "female",
+                                       "male", "male",
+                                       "female")),
+                 alter = c(22, 45, 33, 27, 30))
+df
+#> # A tibble: 5 × 2
+#>   geschlecht alter
+#>   <fct>      <dbl>
+#> 1 male          22
+#> 2 female        45
+#> 3 male          33
+#> 4 male          27
+#> 5 female        30
+```
+
+Ein Data Frame hat die Attribute `names()` (dasselbe wie `colnames()`) und `rownames()`. Die Länge eines Data Frames ist die Länge der Liste, d.h. sie entspricht der Anzahl der Spalten. Diese kann mit `ncol()` abgefragt werden; `nrow()` gibt die Anzahl der Zeilen.
+
+```{r, eval = FALSE}
+ncol(df)
+#> [1] 2
+nrow(df)
+#> [1] 5
+```
+
+#### Data Frame Subsetting
+
+Ein Data Frame kann wie eine Liste (mittels `$`) oder wie eine Matrix (mittels `[]`) indiziert werden:
+
+```{r, eval = FALSE}
+df$geschlecht
+#> [1] male   female male   male   female
+#> Levels: female male
+
+df["alter"]
+#> # A tibble: 5 × 1
+#>   alter
+#>   <dbl>
+#> 1    22
+#> 2    45
+#> 3    33
+#> 4    27
+#> 5    30
+
+df[1]
+#> # A tibble: 5 × 1
+#>   geschlecht
+#>   <fct>     
+#> 1 male      
+#> 2 female    
+#> 3 male      
+#> 4 male      
+#> 5 female
+
+df[1, 1]
+#> # A tibble: 1 × 1
+#>   geschlecht
+#>   <fct>     
+#> 1 male
+
+df[ , ]
+#> # A tibble: 5 × 2
+#>   geschlecht alter
+#>   <fct>      <dbl>
+#> 1 male          22
+#> 2 female        45
+#> 3 male          33
+#> 4 male          27
+#> 5 female        30
+
+df[1:3, ]
+#> # A tibble: 3 × 2
+#>   geschlecht alter
+#>   <fct>      <dbl>
+#> 1 male          22
+#> 2 female        45
+#> 3 male          33
+```
+
+Da die Spalten ebenfalls Vektoren sind, kann man diese auch indizieren:
+
+```{r, eval = FALSE}
+df$geschlecht[1]
+#> [1] male
+#> Levels: female male
+
+df$alter[2:3]
+#> [1] 45 33
+```

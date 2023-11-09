@@ -1,0 +1,51 @@
+\usepackage{lipsum}  
+\usepackage{nicefrac}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{nonfloat}
+\usepackage{multicol}
+
+\usepackage[most]{tcolorbox}
+
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc}
+
+\definecolor{cnorm}{rgb}{0.25, 0.25, 0.25}
+\definecolor{cdef}{rgb}{0.85, 0.65, 0.15}
+\definecolor{cbsp}{rgb}{0.0, 0.5, 0.0}
+\definecolor{caufg}{rgb}{0.0, 0.0, 0.5}
+\definecolor{cmaxima}{rgb}{0.95, 0.7, 0.5}
+
+\newcommand{\bbdef}[0]{\tcolorbox[colframe=cdef, title=Definition, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebdef}{\endtcolorbox}
+
+\newcommand{\bbzum}[0]{\tcolorbox[colframe=cdef, title=Zusammenhang, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebzum}{\endtcolorbox}
+
+\newcommand{\bbsatz}[0]{\tcolorbox[colframe=cdef, title=Satz, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebsatz}{\endtcolorbox}
+
+\newcommand{\bbgilt}[0]{\tcolorbox[colframe=cdef, title=Es gilt:, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebgilt}{\endtcolorbox}
+
+\newcommand{\bbbsp}[0]{\tcolorbox[colframe=cbsp, title=Beispiel, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebbsp}{\endtcolorbox}
+
+\newcommand{\bbaufg}[1]{\tcolorbox[colframe=caufg, title={#1}, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebaufg}{\endtcolorbox}
+
+\newcommand{\bbmaxima}[0]{\tcolorbox[colframe=cmaxima, title=Maxima, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebmaxima}{\endtcolorbox}
+
+\newcommand{\bbfazit}[0]{\tcolorbox[colframe=cnorm, title=Fazit, breakable, enhanced, beforeafter skip=0.5cm]}
+\newcommand{\ebfazit}{\endtcolorbox}
+
+\newcommand{\fig}{\begin{figure}}
+\newcommand{\efig}{\end{figure}}
+
+\newcommand{\btwocol}{\begin{multicols}{2}}
+\newcommand{\etwocol}{\end{multicols}}
+
+\newcommand{\bthreecol}{\begin{multicols}{3}}
+\newcommand{\ethreecol}{\end{multicols}}

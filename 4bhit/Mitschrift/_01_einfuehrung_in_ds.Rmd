@@ -1,0 +1,19 @@
+\clearpage
+
+# Einführung in Data Science
+
+## Begriffserklärungen
+
+- **Artificial Intelligence**: Teilbereich der Informatik mit Automatisierung von Prozessen mit dem Ziel, menschliche Intelligenzleistung wie das Lernen oder das Lösen von Problemen nachzuahmen.
+
+- **Machine Learning**: Teilbereich der AI zum Erkennen von Mustern und Gesetzmäßigkeiten basierend auf Datenbanken und Algorithmen.
+
+- **Deep Learning (DL)**: Optimierung künstlicher neuronaler Netze mit mehreren Zwischenschichten zwischen Eingabe- und Ausgabeschicht.
+
+- **Data Science**: ist die Verknüpfung von Statistik und Softwareentwicklung Pipelining von Datenbanksystemen und Maschinellem Lernen zur Erkennung von Mustern und und Gesetzmäßigkeiten in großen Datenengen.
+
+- **Data Mining (DM):** statistische und ML Algorithmen, die in großen Datenbanken Trends und Vernetzungen suchen.
+
+## Arten und Ziele der Datenanalyse
+
+Die **expolorative Datenanalyse** beschäftigt sich mit der Organisation, Zusammenfassung und Visualisierung von Daten. Dazu werden am häufigsten Grafiken, Tabellen und Schäzer als Hilsmittel verwendet. Durch eine weitere Analyse und Modellierung der Daten können **Modelle gebildet** und **Hypothesen** getestet werden.

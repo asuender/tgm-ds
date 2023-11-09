@@ -1,0 +1,98 @@
+---
+title: "EK793 Data Science Angewandte Visualisierung von Datensätzen"
+author: "Andreas Sünder"
+date: "10.01.2023"
+output:
+  pdf_document:
+    includes:
+      in_header: ../header.tex
+      
+    fig_height: 7
+    
+    number_sections: true
+---
+
+\clearpage
+
+```{r setup, echo = FALSE, message = FALSE}
+library(tibble)
+library(xtable)
+options(xtable.comment = FALSE)
+
+knitr::opts_chunk$set(warning = FALSE)
+
+```
+
+# Datensatz 2 - Exploration kategorialer Daten (Überlebende der Titanic)
+
+\bbaufg{Aufgabe 1.1}
+Lade den Datensatz 'Titanic', welche im R base Paket inkludiert ist. Beschreibe die Daten anhand der internen Hilfe. (empfohlen sind dafür R Befehle: ?, help() )
+\ebaufg
+
+Dieser Datensatz enthält Informationen über das Schicksal der Passagiere auf der tödlichen Jungfernfahrt des Ozeandampfers "Titanic", zusammengefasst nach wirtschaftlichem Status (Klasse), Geschlecht, Alter und Überleben.
+
+Format: Ein 4-dimensionales Array, das sich aus der Kreuztabellierung von 2201 Beobachtungen zu 4 Variablen ergibt. Die Variablen und ihre Niveaus sind wie folgt:
+
+| No | Name     | Levels              |
+|----|----------|---------------------|
+| 1  | Class    | 1st, 2nd, 3rd, Crew |
+| 2  | Sex      | Male, Female        |
+| 3  | Age      | Child, Adult        |
+| 4  | Survived | No, Yes             |
+
+\bbaufg{Aufgabe 1.2}
+Untersuche den "Titanic" Datensatz mithilfe von Tabellen von absoluten und relativen Häufigkeiten der Ränder heruntergebrochen auf je 2 oder 3 Dimensionen von Variablen: Stelle dabei die Überlebendenden aufgeteilt nach dem Geschlecht, nach dem Alter und nach der Klasse als zweidimensionale Tabelle dar. Gib die Aufteilung der Überlebenden nach Geschlecht und Klasse zugleich, nach Alter und Klasse zugleich wieder.
+\ebaufg
+
+```{r}
+abs1 <- apply(Titanic, c(1, 4), sum)
+abs2 <- apply(Titanic, c(2, 4), sum)
+abs3 <- apply(Titanic, c(3, 4), sum)
+
+abs1
+abs2
+abs3
+```
+
+\bbaufg{Aufgabe 1.3}
+Stelle die Daten in geeigneter Weise mithilfe von barplots und mosaicplots graphisch dar.
+\ebaufg
+
+```{r, echo = FALSE, fig.width=10, fig.height=10}
+par(mfrow = c(2,2))
+mosaicplot(~ Sex + Survived, data = Titanic, shade = TRUE, main = "Sex + Survived")
+mosaicplot(~ Age + Class, data = Titanic, shade = TRUE, main = "Age + Survived")
+mosaicplot(~ Class + Survived, data = Titanic, shade = TRUE, main = "Class + Survived")
+```
+
+\clearpage
+
+```{r, echo = FALSE}
+coul <- c("#eb8060", "#b9e38d", "#a1e9f0", "#d9b1f0")
+rel1 <- abs1/rowSums(abs1)
+rel2 <- abs2/rowSums(abs2)
+rel3 <- abs3/rowSums(abs3)
+```
+
+```{r, echo = FALSE, fig.width=8, fig.height=8}
+par(mfrow = c(2,2))
+barplot(t(rel1), xlab="Class", ylab = "Percentage", legend.text = TRUE, col = coul)
+barplot(t(rel2), xlab="Sex", ylab = "Percentage", legend.text = TRUE, col = coul)
+barplot(t(rel3), xlab="Age", ylab = "Percentage", legend.text = TRUE, col = coul)
+```
+
+\clearpage
+
+\bbaufg{Aufgabe 1.4}
+Interpretiere die Tabellen und ihre dazugehörenden Grafiken. Begründe anhand der quantitativen Ergebnisse, ob Frauen und Kinder zuerst bei der Seenotrettung berücksichtigt wurde.
+\ebaufg
+
+Prozentuell her ist der Anteil der Überlebenden bei den Frauen weitaus größer als bei den Männern. Ebenso ist der Anteil der Überlebenden unter den Minderjährigen sichtbar größer als bei den Erwachsenen. Anhand dieser Daten lässt sich also sagen, dass das Prinzip "Frauen und Kinder zuerst" offenbar bei der Rettung der Passagiere angewendet worden ist.
+
+Des Weiteren findet man große Unterschiede unter den einzelnen Klassen. Beispielsweise haben in der ersten und dritten Klasse ähnlich viele überlebt (mit einer Differenz von ~ 25), aber dafür haben in der dritten Klasse mehr als vier mal (!) so viele Passagiere im Gegensatz nur ersten Klasse nicht überlebt. Dasselbe gilt auch für die Mitglieder der Crew im Zusammenhang mit dem Passagieren der ersten Klasse. Die erste Klasse wurde hier offenbar über alle anderen gestellt.
+
+\bbaufg{Aufgabe 1.5}
+Erkläre, wo sich Anzeichen für Simpson's Paradoxon finden lassen.
+\ebaufg
+
+Wenn man die Klassen und das Geschlecht mit dem Überleben gegenüberstellt, so sieht man, dass in der Crew anteilsmäßig viel mehr Frauen überlebt, obwohl die Crew insgesamt geringere Überlebenschancen als die dritte Klasse hatte.

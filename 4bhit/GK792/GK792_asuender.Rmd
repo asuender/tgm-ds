@@ -1,0 +1,216 @@
+---
+title: "GK792 Data Science Statistische Modellierung"
+author: "Andreas Sünder"
+date: "22.11.2022"
+output:
+  pdf_document:
+    includes:
+      in_header: ../header.tex
+      
+    fig_height: 7
+    
+    number_sections: true
+---
+
+\clearpage
+
+```{r setup, echo = FALSE, message = FALSE}
+library(tibble)
+library(xtable)
+options(xtable.comment = FALSE)
+
+knitr::opts_chunk$set(warning = FALSE)
+
+panel.hist <- function(x, ...)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(usr[1:2], 0, 1.5) )
+  h <- hist(x, plot = FALSE)
+  breaks <- h$breaks; nB <- length(breaks)
+  y <- h$counts; y <- y/max(y)
+  rect(breaks[-nB], 0, breaks[-1], y, col = "lightblue", ...)
+}
+
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r <- abs(cor(x, y))
+  txt <- format(c(r, 0.123456789), digits = digits)[1]
+  txt <- paste0(prefix, txt)
+  if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+  text(0.5, 0.5, txt, cex = cex.cor * r,col=ifelse(r>=0.5,"red","black"))
+}
+```
+
+# Statistische Modellierung
+
+## Aufgabe 1
+
+\bbaufg{Aufgabe 1.1}
+Lade den Datensatz `state.x77` in R. Beschreibe die Daten anhand der internen Hilfe.
+\ebaufg
+
+Der Datensatz `state.x77` enthält eine Matrix mit 50 Zeilen und 8 Spalten, die die folgenden Statistiken in den jeweiligen Spalten enthält:
+
+- **Einwohnerzahl:** Bevölkerungsschätzung zum 1. Juli 1975
+
+- **Einkommen:** Pro-Kopf-Einkommen (1974)
+
+- **Analphabetismus:** Analphabetismus (1970, Prozent der Bevölkerung)
+
+- **Lebenserw:** Lebenserwartung in Jahren (1969-71)
+
+- **Ermordung**: Mord und nicht fahrlässige Tötung pro 100.000 Einwohner (1976)
+
+- **HS Grad:** Prozent Highschool-Absolventen (1970)
+
+- **Frost:** -Mittlere Anzahl der Tage mit Mindesttemperaturen unter dem Gefrierpunkt (1931-1960) in der Hauptstadt oder Großstadt
+
+- **Fläche:** Landfläche in Quadratmeilen
+
+\bbaufg{Aufgabe 1.2}
+Ermittle ein lineares Regressionsmodell, dass die Mordrate ('Murder') durch die unabhängigen Variablen Population, Income, Illiteracy,und Life Exp(ectancy) erklärt. Schreibe die Modellgleichung an und interpretiere die Werte der Koeffizienten im Kontext.
+
+Führe alle fünf für dieses Regressionsmodell geltenden Modellvoraussetzungen an und überprüfe diese Voraussetzungen nachweislich anhand der Zusammenfassung (summary), Quality Plots der Regression und der pairwise Scatterplot Matrix. Erkläre, ob diese Modell überhaupt gültig ist. Falls es gültig ist, gib die Qualität der Erklärung durch das Modell an.
+
+Führe eine Modellselektion der relevanten erklärenden Variablen durch.
+\ebaufg
+
+```{r}
+pairs(state.x77[,1:5], lower.panel = panel.smooth, upper.panel = panel.cor,
+diag.panel = panel.hist, las=1)
+```
+Man sieht hier deutlich, dass Life Expectancy und Illiteracy linear zusammenhängen, mit einem Korrelationskoeffizienten von 0.59. Bleiben beide Variablen im Modell drinnen, so würden diese unser Modell vollkommen zerstören. Daher muss eines von beiden raus.
+
+Murder und Life Expectancy bzw. Murder und Illiteracy dürfen korrelieren, da Murder die abhängige Variable darstellt.
+
+Entfernen wir nun Life Expectancy, schaut das so aus:
+
+```{r}
+pairs(state.x77[, c(1, 2, 3, 5)], lower.panel = panel.smooth, upper.panel = panel.cor,
+diag.panel = panel.hist, las=1)
+```
+
+\clearpage
+
+```{r}
+summary(lm(formula = Murder ~ .  - `Life Exp` - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+Dieses Modell ist für uns sehr schlecht, da bei drei Variablen die Irrtumswahrscheinlichkeit sehr hoch ist (bis 92 %!). Außerdem ist bei der Variable Income der Standard-Error größer als das Estimate selbst ist. Zusammen mit der extrem hohen Irrtumswahrscheinlichkeit kann diese Variable sehr schnell negativ werden.
+
+\bbfazit
+Dieses Modell ist für uns nicht geeignet!
+\ebfazit
+
+Schmeißen wir nun Illiteracy statt Life Expectancy raus:
+
+```{r}
+pairs(state.x77[, c(1, 2, 4, 5)], lower.panel = panel.smooth, upper.panel = panel.cor,
+diag.panel = panel.hist, las=1)
+```
+
+\clearpage
+
+```{r}
+summary(lm(formula = Murder ~ .  - Illiteracy - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+Dieses Modell ist nun viel besser als vorher (mit einem R-squared von 0.68 statt 0.54 vorher). Jedoch passt die Variable Income nach wie vor nicht. Mit einer Irrtumswahrscheinlichkeit von 68% ist diese nicht akzeptabel. Diese gehört also auch weg:
+
+```{r}
+summary(lm(formula = Murder ~ . - Income- Illiteracy - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+Dieses Modell ist nun das beste. Die Modellgleichung ist nun folgende:
+
+$$
+\text{Murder} = 154.7 + 2.413 \cdot 10^{-4} \cdot \text{Population} - 2.093 \cdot \text{Life Exp}
+$$
+
+```{r, fig.align='center', fig.height=6, fig.width=6}
+par(mfrow = c(2,2))
+plot(lm(formula = Murder ~ . - Income- Illiteracy - `HS Grad` - Frost - Area,
+           data = as.data.frame(state.x77)))
+```
+
+\clearpage
+
+## Aufgabe 2
+
+\bbaufg{Aufgabe 2.1}
+Installiere das Package 'MASS' mithilfe der Funktion install.packages. Lade den Datensatz 'Pima.tr' in R. Beschreibe die Daten anhand der internen Hilfe.
+\ebaufg
+
+Eine Population von Frauen, die mindestens 21 Jahre alt waren, von den Pima-Indianern abstammten und in der Nähe von Phoenix, Arizona, lebten, wurde nach den Kriterien der Weltgesundheitsorganisation auf Diabetes getestet. Die Daten wurden vom US National Institute of Diabetes and Digestive and Kidney Diseases erhoben. Wir haben die 532 vollständigen Datensätze verwendet, nachdem wir die (größtenteils fehlenden) Daten zum Seruminsulin herausgenommen hatte
+
+- **npreg**: Anzahl der Schwangerschaften.
+
+- **glu**: Plasmaglukosekonzentration bei einem oralen Glukosetoleranztest.
+
+- **bp**: diastolischer Blutdruck (mm Hg).
+
+- **skin**: Dicke der Hautfalte des Trizeps (mm).
+
+- **bmi**: Body-Mass-Index (Gewicht in kg/(Größe in m)^2).
+
+- **ped**: Diabetes-Stammbaumfunktion.
+
+- **age**: Alter in Jahren.
+
+- **type**: Ja oder Nein, für Diabetiker nach WHO-Kriterien.
+
+\bbaufg{Aufgabe 2.2}
+Ermittle ein logistisches Regressionsmodell, dass das Auftreten von Diabetes ('type') durch die übrigen unabhängigen Variablen Alter (age), Anzahl der Schwangerschaften (npreg), BMI, Glukosespiegel (glu), Blutdruck (bp), familiäre Häufung von Diabetesfällen (ped) und Hautfaltendickemessung am Oberarm (skin) erklärt. Schreibe die Modellgleichung an und interpretiere die Werte der Koeffizienten im Kontext.
+\ebaufg
+
+```{r, echo = FALSE, results='hide'}
+library(MASS)
+Pima.tr
+```
+
+```{r}
+pairs(Pima.tr, lower.panel = panel.smooth, upper.panel = panel.cor,
+diag.panel = panel.hist, las=1)
+```
+
+Hier sehen wir lineare Zusammenhänge zwischen age und npreg sowie bmi und skin. Für unseren Anwendungsfall macht es wenig Sinn, npreg und skin im Modell beizubehalten. Also fliegen sie raus:
+
+```{r}
+pairs(Pima.tr[, c(2, 3, 5, 6, 7)], lower.panel = panel.smooth, upper.panel = panel.cor,
+diag.panel = panel.hist, las=1)
+```
+
+Jetzt passt das. Schauen wir mal in die Summary hinein:
+
+\clearpage
+
+```{r}
+summary(glm(formula = type ~ . - npreg - skin, family = "binomial",
+           data = Pima.tr))
+```
+
+Hier sieht man deutlich, dass bp eine Irrtumswahrscheinlichkeit von 77.6 % (!) trägt. Die restlichen Variablen sind gerade noch ok, also schmeißen wir nur mal diese raus:
+
+\clearpage
+
+```{r}
+summary(glm(formula = type ~ . - npreg - skin - bp, family = "binomial",
+           data = Pima.tr))
+```
+
+Nun passen alle Variablen. Folgende Modellgleichung kann damit aufgestellt werden:
+
+$$
+\text{type} = -9.97 + 0.031 \cdot \text{plasma glucose concentration} - 0.077 \cdot \text{bmi} + 1.72 \cdot \text{diabetes pedigree} + 0.059 \cdot \text{age}
+$$
+
+```{r, fig.align='center', fig.height=6, fig.width=6}
+par(mfrow = c(2,2))
+plot(glm(formula = type ~ . - npreg - skin - bp, family = "binomial",
+           data = Pima.tr))
+```

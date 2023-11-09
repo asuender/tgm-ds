@@ -1,0 +1,93 @@
+---
+title: "Testfile"
+author: "Alexandra Posekany"
+date: "2022-09-20"
+output: 
+  pdf_document: 
+    keep_tex: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## Daten laden 
+#read.csv2("example.csv")
+
+## Pakete laden 
+library(xtable)
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** *button* a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r ersterUmgangmitR}
+summary(cars)
+cars_adaptiert <- cars
+cars_adaptiert$speedkmh <- cars_adaptiert$speed * 1.609344
+str(cars_adaptiert)
+x <- c(2,3,4)
+str(x)
+x <- c(2,"3",4)
+str(x)
+y<-c(TRUE,FALSE,TRUE)
+str(y)
+listen <- list(x,y,cars)
+str(listen)
+(listen[[3]])[1:10,]
+```
+
+
+
+```{r}
+schueler <- data.frame(alter = c(17,18,17,19,21), geschlecht = c("F","M","M","M","M"))
+str(schueler)
+schueler$geschlecht <- factor(schueler$geschlecht)
+str(schueler)
+summary(schueler)
+```
+
+```{r vonRzuLaTeX,echo=FALSE,results='asis'}
+names(cars_adaptiert) <- c("Speed (mph)","Stopping distance (ft)","Speed (kmh)")
+
+print.xtable(xtable(summary(cars_adaptiert),digits = 0,caption = "Zusammenfassung von cars; 1. Spalte speed in mph; 2. Spalte stopping distance in ft; 3. Spalte speed in km/h"),include.rownames = FALSE,comment = FALSE)
+```
+
+Hier unten sind Beschreibungen. 
+
+$$
+\int_{-3}^{4}{e^{-sin(x)} dx}
+$$
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=TRUE,eval=FALSE}
+plot(pressure)
+```
+
+```{r pressure2, echo=FALSE}
+plot(pressure,type="l")
+grid()
+points(pressure)
+```
+
+```{r echo=FALSE,fig.height=8,fig.width=8}
+plot(cars_adaptiert)
+```
+
+```{r echo=FALSE}
+plot(log(schueler[,1],base = 10))
+grid()
+```
+
+```{r echo=FALSE,fig.height=4,fig.width=6}
+plot(schueler[,2])
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

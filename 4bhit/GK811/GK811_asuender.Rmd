@@ -1,0 +1,202 @@
+---
+title: "[GK] 8.10.1 Grundlagen des maschinellen Lernens"
+author: "Andreas Sünder"
+date: "14.03.2023"
+output:
+  pdf_document:
+    includes:
+      in_header: ../header.tex
+      
+    fig_height: 5
+    
+    number_sections: true
+---
+
+\clearpage
+
+```{r setup, echo = FALSE, message = FALSE}
+library(ggplot2)
+library(MASS)
+library(caret)
+library(xtable)
+
+knitr::opts_chunk$set(warning = FALSE, comment = NA)
+```
+
+# Aufgabe 1
+
+Lade den Datensatz 'economics' aus dem Paket 'ggplot2' R.
+
+\bbaufg
+Passe ein lineares Modell an, das die Anzahl der Arbeitslosen 'unemploy' durch die mittleren Anzahl der Tage in Arbeitslosigkeit 'uempmed' erklärt und vice versa. Erkläre den Unterschied zwischen diesen beiden Modellen.
+\ebaufg
+
+```{r}
+lin1 <- lm(formula = unemploy ~ uempmed, economics)
+lin2 <- lm(formula = uempmed ~ unemploy, economics)
+
+summary(lin1)
+summary(lin2)
+```
+
+\bbaufg
+Stelle jeweils die Originaldaten und das angepasste lineare Modell in einem gemeinsamen Plot graphisch dar.
+\ebaufg
+
+```{r, fig.show="hold", out.width="50%"}
+ggplot(economics, mapping = aes(x = uempmed, y = unemploy)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+
+ggplot(economics, mapping = aes(x = unemploy, y = uempmed)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+\bbaufg
+Wende die Exponentialfunktion exp bzw Logarithmusfunktion log in geeigneter Weise an, um die Daten so zu transformieren, dass ein lineares Modell angepasst werden kann.
+\ebaufg
+
+```{r, fig.show="hold", out.width="50%"}
+ggplot(economics, mapping = aes(x = log(uempmed), y = unemploy)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+
+ggplot(economics, mapping = aes(x = unemploy, y = log(uempmed))) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+\bbaufg
+Passe ein polynomiales Modell mit einem Polynom 10. Grades an.
+\ebaufg
+
+```{r}
+poly1 <- lm(unemploy ~ poly(uempmed, 10), economics)
+poly2 <- lm(uempmed ~ poly(unemploy, 10), economics)
+summary(poly1)
+```
+
+\bbaufg
+Stelle die Originaldaten und das angepasste nichtlineare Modell im selben Plot graphisch dar (EK).
+\ebaufg
+
+```{r, out.width="75%", fig.align='center'}
+ggplot(economics, mapping = aes(x = uempmed, y = unemploy)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 10), se = FALSE)
+```
+
+\bbaufg
+Ermittle für alle drei Modelle den Root Mean Squared Error, Mean Squared Error und Median Absolute Deviation bei In-sample Prediction auf dem gesamten Datensatz.
+\ebaufg
+
+```{r, echo = FALSE, results='asis', message=FALSE, warning=FALSE}
+
+log1 <- lm(formula = unemploy ~ log(uempmed), economics)
+exp1 <- lm(formula = log(unemploy) ~ uempmed, economics)
+
+tabelle <- data.frame(
+  RMSE = c(
+    sqrt(mean(lin1$residuals^2)),
+    sqrt(mean(lin2$residuals^2)),
+    sqrt(mean(log1$residuals^2)),
+    sqrt(mean(exp1$residuals^2)),
+    sqrt(mean(poly1$residuals^2)),
+    sqrt(mean(poly2$residuals^2))
+  ),
+  
+  MSE = c(
+    mean(lin1$residuals^2),
+    mean(lin2$residuals^2),
+    mean(log1$residuals^2),
+    mean(exp1$residuals^2),
+    mean(poly1$residuals^2),
+    mean(poly2$residuals^2)
+  ),
+  
+  MAD = c(
+    mad(lin1$residuals),
+    mad(lin2$residuals),
+    mad(log1$residuals),
+    mad(exp1$residuals),
+    mad(poly1$residuals),
+    mad(poly2$residuals)
+  )
+)
+row.names(tabelle) <- c("lin1", "lin2", "log1", "exp1", "poly1", "poly2")
+
+print(xtable(tabelle), type = "latex")
+
+```
+
+Die Größenordnungen der Fehler von diesen drei Modellen sind absolut in Ordnung; es ist hier jedoch darauf zu achten, dass die Fehler dieselbe Skalierung haben wie die Originaldaten selber (sprich bei der Einheit "in Tausend" sind die Fehler entsprechend auch größer).
+
+\bbaufg
+Erkläre anhand der angepassten Modelle, was Underfitting, Overfitting und angemessene Modellanpassung bedeuten. Beschreibe, wie sich eine falsche Modellauswahl auf die Eigenschaften des Modell (Residuen, Signifikanz von Koeffizienten, Gütemaß etc.) auswirkt.
+\ebaufg
+
+Die ersten zwei (linearen) Modelle zeigen starkes Underfitting. Die einzelnen Werte der Originaldaten zeigen einen schlechten komplett linearen Zusammenhang, weshalb man mit linearen Modellen hier nicht beholfen ist. Beim Underfitting sind die Residuen sehr groß; die Precision ist zwar auch sehr hoch, jedoch ist die Accuracy minimal.
+
+Das polynominale Modell entspricht einem typischen Overfitting, bei einer Out-Of-Sample Validation schießen die Residuenfehler in die Höhe.
+
+Die Signifikanz ist bei den linearen Modellen extrem hoch, während bei dem polynominalen Modell manche Variablen fast keine Signifikanz besitzen und daher unnötig berücksichtigt werden.
+
+\clearpage
+
+# Aufgabe 2
+
+Aufbau auf WS: Lade den Datensatz 'Pima.tr' aus dem package 'MASS' in R. Ermittle ein logistisches Regressionsmodell, dass das Auftreten von Diabetes ('type') durch die übrigen unabhängigen Variablen Alter (age), Anzahl der Schwangerschaften (npreg), BMI, Glukosespiegel (glu), Blutdruck (bp), familiäre Häufung von Diabetesfällen (ped) und Hautfaltendickemessung am Oberarm (skin) erklärt. Der Pima Indian Datensatz wurde bereits von den Paketentwicklern in einem Trainingsdatensatz 'Pima.tr' und einen Testdatensatz 'Pima.te' bzw. 'Pima.te2' aufgeteilt. Nimm dein logistisches Regressionsmodell aus der 2. Übung und ermittle (within sample) True Positives, True Negatives, False Positives, False Negatives, Sensitivität und Spezifizität. Führe die Prädiktion für die 'Pima.te' Daten durch und ermittle die Qualität der Prädiktion durch (out of sample) True Positives, True Negatives, False Positives, False Negatives, Sensitivität und Spezifizität für unterschiedliche Cut-Offs.
+
+```{r}
+modell1 <- glm(formula = type ~ . - npreg - skin - bp, family = "binomial", data = Pima.tr)
+
+tr_pred <- round(predict(modell1, Pima.tr, type = "response"))
+tr2_pred <- round(predict(modell1, Pima.tr2, type = "response"))
+te_pred <- round(predict(modell1, Pima.te, type = "response"))
+```
+
+\bbaufg
+Stelle die Resultate beider Vorhersagen einander in einer Tabelle gegenüber. Erkläre anhand der durchgeführten Analysen die Konzepte Within-sample-prediction und Out-of-sample-prediction.
+\ebaufg
+
+**In-Sample-Prediction (`Pima.tr`):**
+
+```{r, echo = FALSE}
+table(Pima.tr$type, tr_pred)
+sprintf("Sensitivität: %.2f", 38/(30+38))
+sprintf("Spezifizität: %.2f", 116/(116+16))
+```
+
+**Out-Of-Sample-Prediction (`Pima.tr2`):**
+
+```{r, echo = FALSE}
+table(Pima.tr2$type, tr2_pred)
+sprintf("Sensitivität: %.2f", 55/(50+55))
+sprintf("Spezifizität: %.2f", 165/(27+165))
+```
+
+**Out-Of-Sample-Prediction (`Pima.te`):**
+
+```{r, echo = FALSE}
+table(Pima.te$type, te_pred)
+sprintf("Sensitivität: %.2f", 67/(42+67))
+sprintf("Spezifizität: %.2f", 196/(196+27))
+```
+
+Bei der in-sample-prediction dass ein Modell anhand der vorhandenen Daten trainiert und gleich darauf wiederverwendet wird, um Vorhersagen zu machen. Dabei werden diese Vorhersagen verglichen, indem Werte wie jene oben verwendet werden.
+
+Bei der out-of-sample-prediction werden zur Vorhersage Daten verwendet, die nicht in den Trainingsdaten enthalten sind (indem Teile der Originaldaten herausgenommen werden, die ausschließlich zum Testen verwendet werden).
+
+\bbaufg
+Erstelle einen gemeinsamen Datensatz Pima, der die Daten aus dem Trainings- und Testdatensatz enthält. Für diesen Datensatz führe eine 10-fache Kreuzvalidierung durch und stelle die Resultate dieser Kreuzvalidierung geeignet tabellarisch oder graphisch dar.
+\ebaufg
+
+```{r}
+Pima <- rbind(Pima.tr, Pima.te)
+
+ctrl <- trainControl(method = "cv", number = 10)
+model <- train(type ~ ., data = Pima, method = "glm", trControl = ctrl)
+
+model$resample
+```

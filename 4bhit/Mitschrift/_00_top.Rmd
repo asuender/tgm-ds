@@ -1,0 +1,47 @@
+---
+title: "Data Science Mitschrift"
+author: "Andreas Sünder, Benjamin Kissinger, Yusuf Akalin"
+date: "17.01.2022"
+output:
+  pdf_document:
+    includes:
+      in_header: ../header.tex
+    keep_tex:  true
+      
+    toc: true
+    toc_depth: 5
+
+    number_sections: true
+---
+
+\graphicspath{ {./Bilder/} }
+
+\newenvironment{conditions}[1][wobei:]
+  {#1 \begin{tabular}[t]{>{$}l<{$} @{${} \quad ... \quad {}$} l}}
+  {\end{tabular}\\[\belowdisplayskip]}
+
+```{r setup, echo = FALSE, message=FALSE}
+knitr::opts_chunk$set(warning = FALSE)
+
+panel.hist <- function(x, ...)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(usr[1:2], 0, 1.5) )
+  h <- hist(x, plot = FALSE)
+  breaks <- h$breaks; nB <- length(breaks)
+  y <- h$counts; y <- y/max(y)
+  rect(breaks[-nB], 0, breaks[-1], y, col = "lightblue", ...)
+}
+
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  r <- abs(cor(x, y))
+  txt <- format(c(r, 0.123456789), digits = digits)[1]
+  txt <- paste0(prefix, txt)
+  if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+  text(0.5, 0.5, txt, cex = cex.cor * r,col=ifelse(r>=0.5,"red","black"))
+}
+```
+  
